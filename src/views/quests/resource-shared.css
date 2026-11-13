@@ -1,0 +1,623 @@
+/* =====================================================================
+   任务资源模块 · 共享布局原语 (rs-*)
+   全屏锁定视口高度，禁止整页滚动；各分栏与详情卡片内部独立滚动
+   ===================================================================== */
+
+/* ---------- Custom slim tactical scrollbar ---------- */
+.qr-shell ::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.qr-shell ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.qr-shell ::-webkit-scrollbar-thumb {
+  background: rgba(164, 165, 170, 0.22);
+  border-radius: 3px;
+}
+
+.qr-shell ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 188, 19, 0.55);
+}
+
+/* ---------- Page grids (fill remaining viewport height) ---------- */
+.rs-workbench {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr) 400px;
+  gap: 16px;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.rs-split {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 16px;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+@media (max-width: 1360px) {
+  .rs-workbench {
+    grid-template-columns: 220px minmax(0, 1fr) 340px;
+  }
+}
+
+@media (max-width: 1080px) {
+  .rs-workbench,
+  .rs-split {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+}
+
+/* ---------- Generic panel pieces ---------- */
+.rs-panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+/* Direct panel children of workbench/split act as full-height flex columns */
+.rs-workbench > .rs-panel,
+.rs-split > .rs-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: 100%;
+}
+
+.rs-panel-head {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 16px 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.rs-panel-head .rs-count {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--tx-2);
+}
+
+.rs-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.rs-sticky {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: 100%;
+}
+
+/* ---------- Left rail ---------- */
+.rs-rail-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0;
+}
+
+.rs-rail-item {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  padding: 10px 14px 10px 16px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  color: var(--tx-2);
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+.rs-rail-item.active {
+  color: var(--tx-1);
+}
+
+.rs-rail-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.rs-rail-top strong {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rs-rail-icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.rs-rail-sub {
+  display: block;
+  font-size: 11.5px;
+  color: var(--tx-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rs-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-size: 14px;
+  color: var(--tx-1);
+}
+
+.rs-num small {
+  font-size: 11px;
+  color: var(--tx-3);
+}
+
+.rs-bar {
+  display: block;
+  height: 2px;
+  background: var(--line);
+}
+
+.rs-bar b {
+  display: block;
+  height: 100%;
+  background: var(--amber);
+}
+
+/* ---------- List rows (center column) ---------- */
+.rs-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 16px;
+  border-bottom: 1px solid var(--line-subtle);
+  cursor: pointer;
+}
+
+.rs-row-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  object-fit: contain;
+  padding: 3px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-2);
+  box-shadow: inset 0 -2px 0 var(--rc, transparent);
+}
+
+.rs-row-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.rs-row-title {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--tx-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rs-row-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--tx-3);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.rs-row.dim .rs-row-title,
+.rs-row.dim .rs-row-meta {
+  opacity: 0.5;
+}
+
+/* ---------- Checkbox (same as quest list) ---------- */
+.rs-check {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.rs-check:hover {
+  border-color: var(--cream);
+}
+
+.rs-check.checked {
+  border-color: var(--amber);
+  background: var(--amber);
+}
+
+.rs-check svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* ---------- Tags ---------- */
+.rs-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: 3px;
+  border: 1px solid color-mix(in srgb, var(--tc, var(--tx-3)) 50%, transparent);
+  background: color-mix(in srgb, var(--tc, var(--tx-3)) 13%, transparent);
+  color: var(--tc, var(--tx-2));
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.rs-tag.ok {
+  --tc: var(--st-ok);
+}
+.rs-tag.warn {
+  --tc: var(--amber);
+}
+.rs-tag.info {
+  --tc: var(--st-info);
+}
+.rs-tag.danger {
+  --tc: var(--st-danger);
+}
+
+/* Rarity colour carrier */
+.rc-common {
+  --rc: var(--r-common);
+}
+.rc-uncommon {
+  --rc: var(--r-uncommon);
+}
+.rc-rare {
+  --rc: var(--r-rare);
+}
+.rc-epic {
+  --rc: var(--r-epic);
+}
+.rc-legendary {
+  --rc: var(--r-legendary);
+}
+
+/* ---------- Pills (in-panel filters) ---------- */
+.rs-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.rs-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 24px;
+  padding: 0 9px;
+  border-radius: 3px;
+  border: 1px solid var(--line-strong);
+  background: var(--bg-2);
+  color: var(--tx-2);
+  font-family: var(--font-display);
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.14s ease;
+}
+
+.rs-pill:hover {
+  border-color: var(--amber);
+  color: var(--tx-1);
+}
+
+.rs-pill.active {
+  background: color-mix(in srgb, var(--amber) 20%, var(--bg-2));
+  border-color: var(--amber);
+  color: var(--cream);
+}
+
+.rs-pill em {
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  opacity: 0.7;
+}
+
+/* ---------- Inspector (right column: fixed header, scrollable body) ---------- */
+.rs-insp-head {
+  flex-shrink: 0;
+  position: relative;
+  padding: 15px 18px 16px;
+  border-top: 4px solid var(--amber);
+  background: var(--cream);
+  color: var(--ink);
+}
+
+.rs-insp-hero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.rs-insp-hero img {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  object-fit: contain;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  background: var(--ink);
+  box-shadow: inset 0 -3px 0 var(--rc, var(--amber));
+}
+
+.rs-insp-eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.rs-insp-eyebrow span {
+  padding: 1px 7px;
+  border-radius: 3px;
+  background: var(--ink);
+  color: var(--amber);
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.rs-insp-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.rs-insp-en {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+.rs-insp-kv {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 12px 0 0;
+  border-top: 1px solid rgba(9, 12, 25, 0.14);
+}
+
+.rs-insp-kv > div {
+  padding: 7px 0 0;
+  min-width: 0;
+}
+
+.rs-insp-kv > div:nth-child(2n) {
+  padding-left: 12px;
+  border-left: 1px solid rgba(9, 12, 25, 0.14);
+}
+
+.rs-insp-kv dt {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-3);
+}
+
+.rs-insp-kv dd {
+  margin: 2px 0 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.rs-insp-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 32px;
+  margin-top: 12px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.rs-insp-action.active {
+  background: var(--amber);
+  color: var(--ink);
+}
+
+.rs-insp-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 14px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Block = titled section inside inspector or main column */
+.rs-block-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 6px;
+  margin-bottom: 9px;
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.rs-block-head h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--tx-1);
+}
+
+.rs-block-head span {
+  font-size: 12px;
+  color: var(--tx-3);
+}
+
+.rs-text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--tx-2);
+}
+
+.rs-note {
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-2);
+  border-left: 3px solid var(--line-strong);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--tx-3);
+}
+
+/* Key facts strip (dark surface) */
+.rs-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.rs-facts > div {
+  padding: 9px 12px;
+  background: var(--bg-2);
+  min-width: 0;
+}
+
+.rs-facts dt {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--tx-3);
+}
+
+.rs-facts dd {
+  margin: 3px 0 0;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--tx-1);
+}
+
+.rs-facts dd small {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--tx-3);
+  margin-left: 2px;
+}
+
+.rs-empty {
+  padding: 40px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--tx-3);
+}
+
+/* ---------- Data table ---------- */
+.rs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.rs-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 8px 12px;
+  text-align: left;
+  font-family: var(--font-display);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--tx-3);
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--line-strong);
+  white-space: nowrap;
+}
+
+.rs-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line-subtle);
+  color: var(--tx-2);
+  vertical-align: middle;
+}
+
+.rs-table td.num,
+.rs-table th.num {
+  text-align: right;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.rs-table tr.active td {
+  background: rgba(249, 238, 223, 0.06);
+}
+
+.rs-table tr.active td:first-child {
+  box-shadow: inset 3px 0 0 var(--amber);
+}

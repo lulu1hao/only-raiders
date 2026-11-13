@@ -1,0 +1,103 @@
+{
+  "categories": [
+    {
+      "id": "blue-gate",
+      "code": "MAP REGION 01",
+      "name": "蓝门",
+      "enName": "The Blue Gate",
+      "accent": "#10b981",
+      "badge": "双地窖解谜区",
+      "summary": "位于高海拔山谷的奇袭者前哨与古建筑群。包含【奇袭者避难所】24选4红按钮地窖解谜与【古代要塞】11选3工业电池配电箱解谜，均配备完整3D山体地形与建筑高度剖切。",
+      "stages": [
+        {
+          "stageKey": "refuge",
+          "code": "BLUE GATE · 01",
+          "title": "蓝门 · 奇袭者避难所",
+          "enTitle": "Raider's Refuge (Church Cellar)",
+          "puzzleType": "24处红按钮刷新点 → 四联信号中继器 → 地窖铁门",
+          "nodeCount": 27,
+          "triangles": "241.5k",
+          "highlights": ["24处全量按钮点位", "四联信号中继器", "3D山谷地形", "钟楼与地窖剖切"],
+          "desc": "废弃教堂四周、墓地、石废墟、木屋及风车共分布 24 个红按钮刷新候选点，每局随机激活 4 处。全部按下点亮教堂中殿四联中继器，即可开启北侧或东北侧地窖铁门。"
+        },
+        {
+          "stageKey": "fort",
+          "code": "BLUE GATE · 02",
+          "title": "蓝门 · 古代要塞",
+          "enTitle": "Ancient Fort (Battery Cellar)",
+          "puzzleType": "11处工业电池刷新点 → 3座保险丝配电箱 → 地窖密室",
+          "nodeCount": 17,
+          "triangles": "307.9k",
+          "highlights": ["11处电池刷新点", "3座保险丝配电箱", "三联中继器", "3D高地山体地形"],
+          "desc": "在要塞主堡、南门断墙与外围营地的 11 个工业电池刷新点中搜寻 3 块电池，分别装入高塔外墙、中庭回廊与北角木棚的 3 座配电箱，解锁要塞底层地窖金库。"
+        }
+      ]
+    },
+    {
+      "id": "stella-montis",
+      "code": "MAP REGION 02",
+      "name": "星辰山 · 彭多拉山口与高空",
+      "enName": "Stella Montis / Frozen Trail & Shrouded Sky",
+      "accent": "#38bdf8",
+      "badge": "全图3D与旗舰副本",
+      "summary": "涵盖【星辰山】全图五层室内建筑群 3D 立体空间导航，以及【坠落帝王】3迷宫×6动态路线与【浮空护卫舰】10核护盾旗舰副本。",
+      "stages": [
+        {
+          "stageKey": "stella",
+          "code": "STELLA · FULL MAP",
+          "title": "星辰山 · 全图立体建筑群",
+          "enTitle": "Stella Montis Full 3D Facility",
+          "puzzleType": "5层高度剖切 × 7大主翼区 × 4处钥匙房 × 6处撤离点 × 跨层索道隧道",
+          "nodeCount": 27,
+          "triangles": "1,930.1k",
+          "highlights": ["全图52区块完整建模", "5档楼层剖切预设", "4间钥匙卡房精准定位", "6处地铁/通风井/舱门撤离"],
+          "desc": "针对全游戏最绕的双层多层室内迷宫【星辰山】打造的完整 3D 建筑群模型。支持按海拔高度自由剖切楼板，直观展示装配车间、装卸湾、医疗研究部、机械沙盒、大厅中庭、文化档案馆与底层种子金库的上下层连通关系。"
+        },
+        {
+          "stageKey": "walker",
+          "code": "P0-1 · COLLECTOR",
+          "title": "雪山 · 坠落帝王",
+          "enTitle": "Fallen Emperor (Walker_01 Interior)",
+          "puzzleType": "3套随机迷宫 × 6条动态舱门专属导航线 × 定时巨型粉碎机",
+          "nodeCount": 22,
+          "triangles": "1,584.3k",
+          "highlights": ["6条路线专属导航线", "开启/封死舱门着色", "定时往复巨型粉碎机", "16座耦合器战利品舱"],
+          "desc": "深入长达 200 米的坠落帝王内部四层舱室：根据每局随机加载的 Route 1A~3B 开启不同隔舱门，穿越分拣矩阵迷宫、定时合拢的左/右巨型粉碎压机与顶层高能激光室，解锁中央耦合器 16 座核心战利品舱。"
+        },
+        {
+          "stageKey": "frigate",
+          "code": "P0-2 · FRIGATE",
+          "title": "高空 · 浮空护卫舰",
+          "enTitle": "Floating ARC Frigate",
+          "puzzleType": "双舷吊桥弱点 → 4台酸雾排风扇 → 10核旋转护盾 → 货舱棘轮",
+          "nodeCount": 25,
+          "triangles": "819.3k",
+          "highlights": ["26座旋转护盾环", "32处弱点靶点位", "4台酸雾排风扇", "货舱双棘轮挂钩解谜"],
+          "desc": "从左右双舷战壕击破吊桥弱点登舰，破坏弱点门与酸雾排风扇，摧毁上层甲板 10 座旋转护盾发生器与中枢核心，最后在底层货舱交替操作棘轮开关锁死挂钩夺取珍贵货物。"
+        }
+      ]
+    },
+    {
+      "id": "dam-battlegrounds",
+      "code": "MAP REGION 03",
+      "name": "大坝战场",
+      "enName": "Dam Battlegrounds",
+      "accent": "#f59e0b",
+      "badge": "经典工业解谜",
+      "summary": "大坝决口下方的多层淹没工业建筑群。通过逆向追踪高压供电黄缆与发电机组，解开双回路通电闸门与地下金库。",
+      "stages": [
+        {
+          "stageKey": "caz",
+          "code": "DAM · SAMPLE A",
+          "title": "大坝 · 管制区淹没厂房",
+          "enTitle": "Controlled Access Zone (Flooded Powerhouse)",
+          "puzzleType": "回路A上层电柜 + 回路B底层动力站 → 4扇通电解谜门",
+          "nodeCount": 12,
+          "triangles": "268.4k",
+          "highlights": ["回路A/B双路供电", "4扇通电解谜门", "高压电缆走向可视", "多层厂房高度剖切"],
+          "desc": "位于大坝战场核心区的淹没发电厂房。通过修复上层涡轮机房电柜（回路 A）与底层动力站供电箱（回路 B），开启 4 扇通电解谜门与中层管制区密室。"
+        }
+      ]
+    }
+  ]
+}

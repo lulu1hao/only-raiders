@@ -1,0 +1,5526 @@
+{
+  "shelteredRetreat": {
+    "id": "proj-sheltered-retreat",
+    "name": "避风港（哨站解锁工程）",
+    "enName": "Sheltered Retreat",
+    "badge": "核心工程 · 解锁哨站与研究站",
+    "summary": "在斯佩兰扎建立您的专属哨站房间与研究站！完成以下 3 个阶段后即可正式开启【哨站 (Outpost)】、解锁【基础房间 (50栏位)】与【研究站 Lv.1】。",
+    "stages": [
+      {
+        "stage": 1,
+        "name": "阶段 1：研究地表居住条件",
+        "enName": "Study Topside Habitation",
+        "objective": "前往【蓝门 · 废弃农庄 (Ruined Homestead)】，使用相机拍摄任意一栋农舍建筑照片。",
+        "mapLinks": [
+          {
+            "mapId": "blue-gate",
+            "mapName": "蓝门",
+            "poiName": "废弃农庄",
+            "label": "跳转地图：蓝门 · 废弃农庄 (Ruined Homestead)"
+          }
+        ],
+        "requirements": [
+          {
+            "zhName": "基础相机（拍摄废弃农庄农舍）",
+            "enName": "Basic Camera",
+            "count": 1,
+            "icon": "/items/T_UI_Icon_BasicCamera.png"
+          }
+        ],
+        "rewards": [
+          {
+            "zhName": "高级相机蓝图",
+            "enName": "Advanced Camera Blueprint",
+            "count": 1,
+            "icon": "/items/T_UI_Icon_Recipe.png"
+          }
+        ]
+      },
+      {
+        "stage": 2,
+        "name": "阶段 2：收集哨站建筑材料",
+        "enName": "Gather Construction Materials",
+        "objective": "收集并提交加固哨站房间承重结构与电力管网所需的建筑板材与电子组件。",
+        "mapLinks": [
+          {
+            "mapId": "dam-battlegrounds",
+            "mapName": "大坝战场",
+            "poiName": "水处理控制中心",
+            "label": "跳转地图：大坝战场 · 工业区搜刮建材"
+          }
+        ],
+        "requirements": [
+          {
+            "zhName": "木板",
+            "enName": "Planks",
+            "count": 3,
+            "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+          },
+          {
+            "zhName": "金属板",
+            "enName": "Sheet Metal",
+            "count": 5,
+            "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+          },
+          {
+            "zhName": "ARC合金",
+            "enName": "ARC Alloy",
+            "count": 10,
+            "icon": "/items/T_UI_Icon_Salvage_Mat_ARC_Metal.png"
+          },
+          {
+            "zhName": "高级电子元件",
+            "enName": "Advanced Electrical Components",
+            "count": 3,
+            "icon": "/items/T_UI_Icon_Salvage_AdvancedElectricalComponents.png"
+          }
+        ],
+        "rewards": [
+          {
+            "zhName": "红色荧光棒蓝图",
+            "enName": "Red Light Stick Blueprint",
+            "count": 1,
+            "icon": "/items/T_UI_Icon_Recipe.png"
+          }
+        ]
+      },
+      {
+        "stage": 3,
+        "name": "阶段 3：保卫施工现场",
+        "enName": "Secure the Construction Site",
+        "objective": "清除威胁工程队的空中巡逻机与地面重装机甲：对任意飞行 ARC 单位造成 800 点伤害，并对“恶霸 (Bully)”造成 300 点伤害。",
+        "mapLinks": [
+          {
+            "mapId": "pendola-pass",
+            "mapName": "彭多拉山口",
+            "poiName": "铁路调车场",
+            "label": "跳转地图：彭多拉山口 · 讨伐恶霸与飞行ARC"
+          }
+        ],
+        "requirements": [
+          {
+            "zhName": "对飞行 ARC 单位造成伤害",
+            "enName": "Wasp Driver",
+            "count": 800,
+            "icon": "/items/T_UI_Icon_Salvage_Mat_Wasp_Part.png"
+          },
+          {
+            "zhName": "对“恶霸 (Bully)”造成伤害",
+            "enName": "Bully Fragmenter",
+            "count": 300,
+            "icon": "/items/T_UI_Icon_Salvage_Tarragon_Part.png"
+          }
+        ],
+        "rewards": [
+          {
+            "zhName": "酒店椅设计图",
+            "enName": "Hotel Chair",
+            "count": 1,
+            "icon": "/items/T_UI_Icon_Outpost_Furniture_HOR_Chair_01_A.png"
+          },
+          {
+            "zhName": "木板",
+            "enName": "Planks",
+            "count": 15,
+            "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+          },
+          {
+            "zhName": "耐磨布料",
+            "enName": "Durable Cloth",
+            "count": 5,
+            "icon": "/items/T_UI_Icon_Salvage_WovenCloth.png"
+          }
+        ]
+      }
+    ]
+  },
+  "raiderProjects": [
+    {
+      "id": "proj-trophy-display",
+      "name": "战利品展示柜工程",
+      "enName": "Trophy Display",
+      "badge": "常驻哨站工程 · 5 阶段",
+      "summary": "在哨站建造大型首领与机甲战利品陈列专柜，每完成一个阶段均可获得丰厚的满配武器、高阶蓝图与奇袭者代币奖励。",
+      "stages": [
+        {
+          "stage": 1,
+          "name": "阶段 1：游荡威胁 (Roaming Threats)",
+          "requirements": [
+            {
+              "zhName": "生锈的螺栓",
+              "enName": "Rusted Bolts",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Salvage_RustedBolts.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "“爆爆”触发器",
+              "enName": "Pop Trigger",
+              "count": 15,
+              "icon": "/items/T_UI_Icon_Salvage_PopPart.png",
+              "mapLinks": [
+                {
+                  "mapId": "stella-montis",
+                  "mapName": "星山",
+                  "poiName": "实验室",
+                  "label": "室内设施 · 击毁“自爆虫 (Pop)”滚球机甲掉落"
+                }
+              ]
+            },
+            {
+              "zhName": "“扁虱”舱",
+              "enName": "Tick Pod",
+              "count": 15,
+              "icon": "/items/T_UI_Icon_Salvage_Mat_Tick_Part.png",
+              "mapLinks": [
+                {
+                  "mapId": "buried-city",
+                  "mapName": "掩埋废城",
+                  "poiName": "地铁站",
+                  "label": "地下与室内暗处 · 击杀“扁虱 (Tick)”自爆蜘蛛掉落"
+                }
+              ]
+            },
+            {
+              "zhName": "“勘测师”保险库",
+              "enName": "Surveyor Vault",
+              "count": 5,
+              "icon": "/items/T_UI_Icon_Salvage_Rollbot_Part.png",
+              "mapLinks": [
+                {
+                  "mapId": "dam-battlegrounds",
+                  "mapName": "大坝战场",
+                  "poiName": "研究与行政中心",
+                  "label": "全战区 · 拦截并击毁“勘测者 (Surveyor)”高速球形机掉落"
+                }
+              ]
+            }
+          ],
+          "rewards": [
+            {
+              "zhName": "改装零件",
+              "enName": "Mod Components",
+              "count": 10,
+              "icon": "/items/T_UI_Icon_Salvage_ModComponents.png"
+            },
+            {
+              "zhName": "能量管",
+              "enName": "Power Rod",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Salvage_PowerRod.png"
+            },
+            {
+              "zhName": "奇袭者代币",
+              "enName": "Raider Tokens",
+              "count": 10,
+              "icon": "/items/T_UI_Icon_Currency_Hard.png"
+            },
+            {
+              "zhName": "轻型枪械零件蓝图",
+              "enName": "Light Gun Parts Blueprint",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Recipe.png"
+            }
+          ]
+        },
+        {
+          "stage": 2,
+          "name": "阶段 2：高耸威慑 (Soaring Menaces)",
+          "requirements": [
+            {
+              "zhName": "“侦察员”中继器",
+              "enName": "Spotter Relay",
+              "count": 10,
+              "icon": "/items/T_UI_Icon_Salvage_PingerPart.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "过期的防毒面具",
+              "enName": "Expired Respirator",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Salvage_Trinket_ExpiredRespirator.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "“黄蜂”引擎",
+              "enName": "Wasp Driver",
+              "count": 20,
+              "icon": "/items/T_UI_Icon_Salvage_Mat_Wasp_Part.png",
+              "mapLinks": [
+                {
+                  "mapId": "dam-battlegrounds",
+                  "mapName": "大坝战场",
+                  "poiName": "水坝主体",
+                  "label": "全战区 · 击毁“黄蜂 (Wasp)”巡逻无人机必掉"
+                }
+              ]
+            },
+            {
+              "zhName": "“马蜂”引擎",
+              "enName": "Hornet Driver",
+              "count": 15,
+              "icon": "/items/T_UI_Icon_Salvage_Mat_Hornet_Part.png",
+              "mapLinks": [
+                {
+                  "mapId": "spaceport",
+                  "mapName": "太空港",
+                  "poiName": "发射台",
+                  "label": "全战区 · 击毁“大黄蜂 (Hornet)”重甲无人机掉落"
+                }
+              ]
+            }
+          ],
+          "rewards": [
+            {
+              "zhName": "补水喷雾",
+              "enName": "Vita Spray",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_HealthSpray.png"
+            },
+            {
+              "zhName": "光电斗篷",
+              "enName": "Photoelectric Cloak",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_ARCFriendifierGadgetV2.png"
+            },
+            {
+              "zhName": "奇袭者代币",
+              "enName": "Raider Tokens",
+              "count": 20,
+              "icon": "/items/T_UI_Icon_Currency_Hard.png"
+            },
+            {
+              "zhName": "生命针剂蓝图",
+              "enName": "Vita Shot Blueprint",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Recipe.png"
+            }
+          ]
+        },
+        {
+          "stage": 3,
+          "name": "阶段 3：凶猛死敌 (Ferocious Foes)",
+          "requirements": [
+            {
+              "zhName": "ARC高性能钢",
+              "enName": "ARC Performance Steel",
+              "count": 10,
+              "icon": "/items/T_UI_Icon_Salvage_Mat_Intact_Baron_Ingot.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "“粉碎者”陀螺仪",
+              "enName": "Shredder Gyro",
+              "count": 5,
+              "icon": "/items/T_UI_Icon_Salvage_RunnerPart.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "“跳跃者”脉冲单元",
+              "enName": "Leaper Pulse Unit",
+              "count": 10,
+              "icon": "/items/T_UI_Icon_Salvage_Mat_Bison_Part.png",
+              "mapLinks": [
+                {
+                  "mapId": "dam-battlegrounds",
+                  "mapName": "大坝战场",
+                  "poiName": "红湖阳台",
+                  "label": "高危区 · 击毁“跳跃者 (Leaper)”四足突击机甲掉落"
+                }
+              ]
+            },
+            {
+              "zhName": "“堡垒”电池",
+              "enName": "Bastion Cell",
+              "count": 5,
+              "icon": "/items/T_UI_Icon_Salvage_Chonk_Part.png",
+              "mapLinks": [
+                {
+                  "mapId": "spaceport",
+                  "mapName": "太空港",
+                  "poiName": "中央机库",
+                  "label": "高危区 · 击毁重装“壁垒 (Bastion)”机甲核心掉落"
+                }
+              ]
+            }
+          ],
+          "rewards": [
+            {
+              "zhName": "动能转换器",
+              "enName": "Kinetic Converter",
+              "count": 1,
+              "icon": "/mods/kinetic-converter.png"
+            },
+            {
+              "zhName": "“铁砧”分流器",
+              "enName": "Anvil Splitter",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_WeaponMod_Tech_ProjectileSplitter.png"
+            },
+            {
+              "zhName": "奇袭者代币",
+              "enName": "Raider Tokens",
+              "count": 30,
+              "icon": "/items/T_UI_Icon_Currency_Hard.png"
+            },
+            {
+              "zhName": "霰弹枪消音器蓝图",
+              "enName": "Shotgun Silencer Blueprint",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Recipe.png"
+            }
+          ]
+        },
+        {
+          "stage": 4,
+          "name": "阶段 4：统治级毁灭者 (Dominant Destroyers)",
+          "requirements": [
+            {
+              "zhName": "ARC合成树脂",
+              "enName": "ARC Synthetic Resin",
+              "count": 10,
+              "icon": "/items/T_UI_Icon_Salvage_Mat_Intact_Baron_Oil.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "磁力加速器",
+              "enName": "Magnetic Accelerator",
+              "count": 10,
+              "icon": "/items/T_UI_Icon_Salvage_MagneticAccelerator.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "“火箭手”引擎",
+              "enName": "Rocketeer Driver",
+              "count": 8,
+              "icon": "/items/T_UI_Icon_Salvage_Mat_HeavyDronePart.png",
+              "mapLinks": [
+                {
+                  "mapId": "spaceport",
+                  "mapName": "太空港",
+                  "poiName": "发射塔",
+                  "label": "高危区 · 击毁“火箭兵 (Rocketeer)”重型飞行器掉落"
+                }
+              ]
+            },
+            {
+              "zhName": "“女王”反应堆",
+              "enName": "Queen Reactor",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Salvage_Peppermint_Part.png",
+              "mapLinks": []
+            }
+          ],
+          "rewards": [
+            {
+              "zhName": "山猫 IV",
+              "enName": "Bobcat IV",
+              "count": 1,
+              "icon": "/weapons/bobcat.png"
+            },
+            {
+              "zhName": "狼群",
+              "enName": "Wolfpack",
+              "count": 5,
+              "icon": "/items/T_UI_Icon_ScatterMissileGrenade.png"
+            },
+            {
+              "zhName": "奇袭者代币",
+              "enName": "Raider Tokens",
+              "count": 40,
+              "icon": "/items/T_UI_Icon_Currency_Hard.png"
+            },
+            {
+              "zhName": "山猫蓝图",
+              "enName": "Bobcat Blueprint",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Recipe.png"
+            }
+          ]
+        },
+        {
+          "stage": 5,
+          "name": "阶段 5：不屈巨兽 (Indomitable Behemoths)",
+          "requirements": [
+            {
+              "zhName": "离巢模块",
+              "enName": "Exodus Modules",
+              "count": 5,
+              "icon": "/items/T_UI_Icon_Salvage_ExodusPrototype.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "盖革计数器",
+              "enName": "Geiger Counter",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Salvage_GeigerCounter.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "“投弹手”电池",
+              "enName": "Bombardier Cell",
+              "count": 8,
+              "icon": "/items/T_UI_Icon_Salvage_MonkPart.png",
+              "mapLinks": [
+                {
+                  "mapId": "blue-gate",
+                  "mapName": "蓝门",
+                  "poiName": "要塞",
+                  "label": "高危区 · 击毁“投弹手 (Bombardier)”重火力机甲掉落"
+                }
+              ]
+            },
+            {
+              "zhName": "“族母”反应堆",
+              "enName": "Matriarch Reactor",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Salvage_SpearmintPart.png",
+              "mapLinks": []
+            }
+          ],
+          "rewards": [
+            {
+              "zhName": "安全钩",
+              "enName": "Snap Hook",
+              "count": 2,
+              "icon": "/items/T_UI_Icon_SnapHook.png"
+            },
+            {
+              "zhName": "远日点",
+              "enName": "Aphelion",
+              "count": 1,
+              "icon": "/weapons/aphelion.png"
+            },
+            {
+              "zhName": "奇袭者代币",
+              "enName": "Raider Tokens",
+              "count": 50,
+              "icon": "/items/T_UI_Icon_Currency_Hard.png"
+            },
+            {
+              "zhName": "安全钩蓝图",
+              "enName": "Snap Hook Blueprint",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Recipe.png"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proj-weather-monitor",
+      "name": "气象监测系统工程",
+      "enName": "Weather Monitor System",
+      "badge": "哨站设施工程 · 5 阶段",
+      "summary": "搭建地表极端风暴与电磁气象预警终端，完成后解锁哨站【气象站桌椅套装】及多款战术装备奖励。",
+      "stages": [
+        {
+          "stage": 1,
+          "name": "阶段 1：大气气压 (Atmospheric Pressure)",
+          "requirements": [
+            {
+              "zhName": "塑料零件",
+              "enName": "Plastic Parts",
+              "count": 25,
+              "icon": "/items/T_UI_Icon_Salvage_Plastic.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "金属零件",
+              "enName": "Metal Parts",
+              "count": 15,
+              "icon": "/items/T_UI_Icon_Salvage_ScrapMetal.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "ARC合金",
+              "enName": "ARC Alloy",
+              "count": 5,
+              "icon": "/items/T_UI_Icon_Salvage_Mat_ARC_Metal.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "油",
+              "enName": "Oil",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Salvage_Oil.png",
+              "mapLinks": []
+            }
+          ],
+          "rewards": [
+            {
+              "zhName": "耐磨布料",
+              "enName": "Durable Cloth",
+              "count": 5,
+              "icon": "/items/T_UI_Icon_Salvage_WovenCloth.png"
+            },
+            {
+              "zhName": "大毛蕊花",
+              "enName": "Great Mullein",
+              "count": 5,
+              "icon": "/items/T_UI_Icon_Salvage_TorchGinger.png"
+            },
+            {
+              "zhName": "防腐剂",
+              "enName": "Antiseptic",
+              "count": 5,
+              "icon": "/items/T_UI_Icon_Salvage_AntiSeptic.png"
+            },
+            {
+              "zhName": "生命针剂",
+              "enName": "Vita Shot",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_HealthPack_01.png"
+            }
+          ]
+        },
+        {
+          "stage": 2,
+          "name": "阶段 2：日光辐射 (Sunlight)",
+          "requirements": [
+            {
+              "zhName": "“告密者”扫描仪",
+              "enName": "Snitch Scanner",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Salvage_Mat_Snitch_Part.png",
+              "mapLinks": [
+                {
+                  "mapId": "dam-battlegrounds",
+                  "mapName": "大坝战场",
+                  "poiName": "发电建筑群",
+                  "label": "全战区 · 在报警前击落“告密者 (Snitch)”侦察机掉落"
+                }
+              ]
+            },
+            {
+              "zhName": "导线",
+              "enName": "Wires",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Salvage_Wires.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "传感器",
+              "enName": "Sensors",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Salvage_Sensors.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "“彗星”点火器",
+              "enName": "Comet Igniter",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Salvage_CometPart.png",
+              "mapLinks": []
+            }
+          ],
+          "rewards": [
+            {
+              "zhName": "处理器",
+              "enName": "Processor",
+              "count": 10,
+              "icon": "/items/T_UI_Icon_Salvage_Processor.png"
+            },
+            {
+              "zhName": "高级电子元件",
+              "enName": "Advanced Electrical Components",
+              "count": 5,
+              "icon": "/items/T_UI_Icon_Salvage_AdvancedElectricalComponents.png"
+            },
+            {
+              "zhName": "滑索",
+              "enName": "Zipline",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Zipline.png"
+            },
+            {
+              "zhName": "奇袭者暗门钥匙",
+              "enName": "Raider Hatch Key",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_KeyItem_RaiderHatchKey.png"
+            }
+          ]
+        },
+        {
+          "stage": 3,
+          "name": "阶段 3：降水监测 (Precipitation)",
+          "requirements": [
+            {
+              "zhName": "ARC能量电池",
+              "enName": "ARC Powercell",
+              "count": 5,
+              "icon": "/items/T_UI_Icon_Salvage_Mat_ARC_Core.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "小罐",
+              "enName": "Canister",
+              "count": 5,
+              "icon": "/items/T_UI_Icon_Salvage_Canister.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "钢质弹簧",
+              "enName": "Steel Spring",
+              "count": 5,
+              "icon": "/items/T_UI_Icon_Salvage_SteelSpring.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "品质手表",
+              "enName": "Fine Wristwatch",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Salvage_FineWristwatch_01.png",
+              "mapLinks": []
+            }
+          ],
+          "rewards": [
+            {
+              "zhName": "中型枪械零件",
+              "enName": "Medium Gun Parts",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Salvage_MediumGunParts.png"
+            },
+            {
+              "zhName": "复杂枪械零件",
+              "enName": "Complex Gun Parts",
+              "count": 2,
+              "icon": "/items/T_UI_Icon_Salvage_ComplexGunParts.png"
+            },
+            {
+              "zhName": "高级机械元件",
+              "enName": "Advanced Mechanical Components",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Salvage_AdvancedGunParts.png"
+            },
+            {
+              "zhName": "叛逆 III",
+              "enName": "Renegade III",
+              "count": 1,
+              "icon": "/weapons/renegade.png"
+            }
+          ]
+        },
+        {
+          "stage": 4,
+          "name": "阶段 4：湿度传感 (Humidity)",
+          "requirements": [
+            {
+              "zhName": "胶带",
+              "enName": "Duct Tape",
+              "count": 10,
+              "icon": "/items/T_UI_Icon_Salvage_DuctTape.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "生锈的螺栓",
+              "enName": "Rusted Bolts",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Salvage_RustedBolts.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "水泵",
+              "enName": "Water Pump",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Salvage_WaterPump.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "“黄蜂”引擎",
+              "enName": "Wasp Driver",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Salvage_Mat_Wasp_Part.png",
+              "mapLinks": [
+                {
+                  "mapId": "dam-battlegrounds",
+                  "mapName": "大坝战场",
+                  "poiName": "水坝主体",
+                  "label": "全战区 · 击毁“黄蜂 (Wasp)”巡逻无人机必掉"
+                }
+              ]
+            }
+          ],
+          "rewards": [
+            {
+              "zhName": "炸药混合物",
+              "enName": "Explosive Compound",
+              "count": 10,
+              "icon": "/items/T_UI_Icon_Salvage_RefinedExplosives.png"
+            },
+            {
+              "zhName": "耀眼明星",
+              "enName": "Showstopper",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_StunGrenade.png"
+            },
+            {
+              "zhName": "开拓者",
+              "enName": "Trailblazer",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Throwable_Trailblazer.png"
+            },
+            {
+              "zhName": "加长枪管III",
+              "enName": "Extended Barrel III",
+              "count": 1,
+              "icon": "/mods/extended-barrel-iii.png"
+            }
+          ]
+        },
+        {
+          "stage": 5,
+          "name": "阶段 5：极端温差 (Temperature)",
+          "requirements": [
+            {
+              "zhName": "相机镜头",
+              "enName": "Camera Lens",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Salvage_CameraLens_01.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "损坏的散热器",
+              "enName": "Damaged Heat Sink",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Salvage_DamagedHeatSink.png",
+              "mapLinks": [
+                {
+                  "mapId": "spaceport",
+                  "mapName": "太空港",
+                  "poiName": "通信塔",
+                  "label": "太空港 · 控制塔机房与科技服务器机柜"
+                }
+              ]
+            },
+            {
+              "zhName": "“萤火虫”燃烧炉",
+              "enName": "Firefly Burner",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Salvage_Hornetflamethrower_Part.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "变电器",
+              "enName": "Voltage Converter",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Salvage_VoltageConverter.png",
+              "mapLinks": []
+            }
+          ],
+          "rewards": [
+            {
+              "zhName": "中型护盾",
+              "enName": "Medium Shield",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Armor_MediumBody.png"
+            },
+            {
+              "zhName": "爆能护盾充能器",
+              "enName": "Surge Shield Recharger",
+              "count": 5,
+              "icon": "/items/T_UI_Icon_Armorpack.png"
+            },
+            {
+              "zhName": "消毒绷带",
+              "enName": "Sterilized Bandage",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_HealingHoT_Medium.png"
+            },
+            {
+              "zhName": "战术Mk. 3（复苏）",
+              "enName": "Tactical Mk. 3 (Revival)",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Augment_Raider_T4_Revival.png"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proj-high-gain-antenna",
+      "name": "高增益天线工程",
+      "enName": "High-Gain Antenna",
+      "badge": "通信设施工程 · 5 阶段",
+      "summary": "架设远程高增益阵列天线以增强地下斯佩兰扎与地表战区的加密遥测链路。",
+      "stages": [
+        {
+          "stage": 1,
+          "name": "阶段 1：基础铁塔架设",
+          "requirements": [
+            {
+              "zhName": "ARC合金",
+              "enName": "ARC Alloy",
+              "count": 50,
+              "icon": "/items/T_UI_Icon_Salvage_Mat_ARC_Metal.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "ARC弹性橡胶",
+              "enName": "ARC Flex Rubber",
+              "count": 10,
+              "icon": "/items/T_UI_Icon_Salvage_Mat_Intact_Baron_Rubber.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "ARC高性能钢",
+              "enName": "ARC Performance Steel",
+              "count": 10,
+              "icon": "/items/T_UI_Icon_Salvage_Mat_Intact_Baron_Ingot.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "高级ARC能量电池",
+              "enName": "Advanced ARC Powercell",
+              "count": 15,
+              "icon": "/items/T_UI_Icon_Salvage_AdvancedARCPowercell.png",
+              "mapLinks": []
+            }
+          ],
+          "rewards": [
+            {
+              "zhName": "奔流 II",
+              "enName": "Torrente II",
+              "count": 1,
+              "icon": "/weapons/torrente.png"
+            },
+            {
+              "zhName": "中型扩容弹匣 III",
+              "enName": "Extended Medium Mag III",
+              "count": 1,
+              "icon": "/mods/extended-medium-mag-iii.png"
+            },
+            {
+              "zhName": "加长枪管III",
+              "enName": "Extended Barrel III",
+              "count": 1,
+              "icon": "/mods/extended-barrel-iii.png"
+            },
+            {
+              "zhName": "减震枪托",
+              "enName": "Padded Stock",
+              "count": 1,
+              "icon": "/mods/padded-stock.png"
+            }
+          ]
+        },
+        {
+          "stage": 2,
+          "name": "阶段 2：馈线与波导铺设",
+          "requirements": [
+            {
+              "zhName": "ARC冷却剂",
+              "enName": "ARC Coolant",
+              "count": 15,
+              "icon": "/items/T_UI_Icon_Salvage_ArcCoolant_01.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "ARC隔热衬里",
+              "enName": "ARC Thermo Lining",
+              "count": 15,
+              "icon": "/items/T_UI_Icon_Salvage_Mat_Intact_Baron_Cloth.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "“汽化者”调节器",
+              "enName": "Vaporizer Regulator",
+              "count": 4,
+              "icon": "/items/T_UI_Icon_Salvage_HeavyDroneLaser_Part.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "“评估者”矩阵",
+              "enName": "Assessor Matrix",
+              "count": 6,
+              "icon": "/items/T_UI_Icon_Salvage_Extractor_Part.png",
+              "mapLinks": []
+            }
+          ],
+          "rewards": [
+            {
+              "zhName": "山猫 III",
+              "enName": "Bobcat III",
+              "count": 1,
+              "icon": "/weapons/bobcat.png"
+            },
+            {
+              "zhName": "轻型扩容弹匣 III",
+              "enName": "Extended Light Mag III",
+              "count": 1,
+              "icon": "/mods/extended-light-mag-iii.png"
+            },
+            {
+              "zhName": "垂直握把 III",
+              "enName": "Vertical Grip III",
+              "count": 1,
+              "icon": "/mods/vertical-grip-iii.png"
+            },
+            {
+              "zhName": "奇袭者代币",
+              "enName": "Raider Tokens",
+              "count": 100,
+              "icon": "/items/T_UI_Icon_Currency_Hard.png"
+            }
+          ]
+        },
+        {
+          "stage": 3,
+          "name": "阶段 3：信号放大器校准",
+          "requirements": [
+            {
+              "zhName": "“勘测师”保险库",
+              "enName": "Surveyor Vault",
+              "count": 10,
+              "icon": "/items/T_UI_Icon_Salvage_Rollbot_Part.png",
+              "mapLinks": [
+                {
+                  "mapId": "dam-battlegrounds",
+                  "mapName": "大坝战场",
+                  "poiName": "研究与行政中心",
+                  "label": "全战区 · 拦截并击毁“勘测者 (Surveyor)”高速球形机掉落"
+                }
+              ]
+            },
+            {
+              "zhName": "ARC合成树脂",
+              "enName": "ARC Synthetic Resin",
+              "count": 20,
+              "icon": "/items/T_UI_Icon_Salvage_Mat_Intact_Baron_Oil.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "“汽化者”调节器",
+              "enName": "Vaporizer Regulator",
+              "count": 15,
+              "icon": "/items/T_UI_Icon_Salvage_HeavyDroneLaser_Part.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "“评估者”矩阵",
+              "enName": "Assessor Matrix",
+              "count": 18,
+              "icon": "/items/T_UI_Icon_Salvage_Extractor_Part.png",
+              "mapLinks": []
+            }
+          ],
+          "rewards": [
+            {
+              "zhName": "补水喷雾",
+              "enName": "Vita Spray",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_HealthSpray.png"
+            },
+            {
+              "zhName": "光电斗篷",
+              "enName": "Photoelectric Cloak",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_ARCFriendifierGadgetV2.png"
+            },
+            {
+              "zhName": "安全钩",
+              "enName": "Snap Hook",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_SnapHook.png"
+            },
+            {
+              "zhName": "奇袭者代币",
+              "enName": "Raider Tokens",
+              "count": 400,
+              "icon": "/items/T_UI_Icon_Currency_Hard.png"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proj-avian-alarm",
+      "name": "鸟鸣警报（生态鸟舍工程）",
+      "enName": "Avian Alarm",
+      "badge": "哨站生态工程 · 5 阶段",
+      "summary": "在哨站建立生态鸟舍与早期生物预警系统，完成后可解锁【破旧/坚固鸟舍桌子】等专属哨站家具。",
+      "stages": [
+        {
+          "stage": 1,
+          "name": "阶段 1：栖木与框架搭建",
+          "requirements": [],
+          "rewards": [
+            {
+              "zhName": "码头主管探测器",
+              "enName": "Dockmaster's Detector",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_MetalDetector_01.png"
+            },
+            {
+              "zhName": "奇袭者代币",
+              "enName": "Raider Tokens",
+              "count": 25,
+              "icon": "/items/T_UI_Icon_Currency_Hard.png"
+            }
+          ]
+        },
+        {
+          "stage": 2,
+          "name": "阶段 2：温控与饮水系统",
+          "requirements": [
+            {
+              "zhName": "“扁虱”舱",
+              "enName": "Tick Pod",
+              "count": 7,
+              "icon": "/items/T_UI_Icon_Salvage_Mat_Tick_Part.png",
+              "mapLinks": [
+                {
+                  "mapId": "buried-city",
+                  "mapName": "掩埋废城",
+                  "poiName": "地铁站",
+                  "label": "地下与室内暗处 · 击杀“扁虱 (Tick)”自爆蜘蛛掉落"
+                }
+              ]
+            },
+            {
+              "zhName": "小罐",
+              "enName": "Canister",
+              "count": 20,
+              "icon": "/items/T_UI_Icon_Salvage_Canister.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "苔藓",
+              "enName": "Moss",
+              "count": 12,
+              "icon": "/items/T_UI_Icon_Consumable_Moss.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "“暮光指南针”舰船模型",
+              "enName": "\"Twilight Compass\" Ship Model",
+              "count": 5,
+              "icon": "/items/T_UI_Icon_Salvage_Trinket_BoatModel_B.png",
+              "mapLinks": []
+            }
+          ],
+          "rewards": [
+            {
+              "zhName": "重型枪械零件蓝图",
+              "enName": "Heavy Gun Parts Blueprint",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Recipe.png"
+            },
+            {
+              "zhName": "涌能线圈",
+              "enName": "Surge Coil",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_EmitterTrap_TeslaCoil.png"
+            },
+            {
+              "zhName": "奇袭者代币",
+              "enName": "Raider Tokens",
+              "count": 25,
+              "icon": "/items/T_UI_Icon_Currency_Hard.png"
+            }
+          ]
+        },
+        {
+          "stage": 3,
+          "name": "阶段 3：饲料与种子储备",
+          "requirements": [
+            {
+              "zhName": "“彗星”点火器",
+              "enName": "Comet Igniter",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Salvage_CometPart.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "肥料",
+              "enName": "Fertilizer",
+              "count": 10,
+              "icon": "/items/T_UI_Icon_Salvage_Fertilizer.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "生锈的工具",
+              "enName": "Rusted Tools",
+              "count": 8,
+              "icon": "/items/T_UI_Icon_Salvage_RustedTools.png",
+              "mapLinks": [
+                {
+                  "mapId": "dam-battlegrounds",
+                  "mapName": "大坝战场",
+                  "poiName": "水处理控制中心",
+                  "label": "大坝战场 · 工业维修间工具柜"
+                },
+                {
+                  "mapId": "spaceport",
+                  "mapName": "太空港",
+                  "poiName": "火箭组装厂",
+                  "label": "太空港 · 机库与组装厂工具箱"
+                }
+              ]
+            },
+            {
+              "zhName": "“极速”舰船模型",
+              "enName": "\"Velocity\" Ship Model",
+              "count": 5,
+              "icon": "/items/T_UI_Icon_Salvage_Trinket_BoatModel_D.png",
+              "mapLinks": []
+            }
+          ],
+          "rewards": [
+            {
+              "zhName": "铁砧 IV",
+              "enName": "Anvil IV",
+              "count": 1,
+              "icon": "/weapons/anvil.png"
+            },
+            {
+              "zhName": "“铁砧”分流器",
+              "enName": "Anvil Splitter",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_WeaponMod_Tech_ProjectileSplitter.png"
+            },
+            {
+              "zhName": "奇袭者代币",
+              "enName": "Raider Tokens",
+              "count": 50,
+              "icon": "/items/T_UI_Icon_Currency_Hard.png"
+            }
+          ]
+        },
+        {
+          "stage": 4,
+          "name": "阶段 4：声学传感器接入",
+          "requirements": [
+            {
+              "zhName": "“汽化者”调节器",
+              "enName": "Vaporizer Regulator",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Salvage_HeavyDroneLaser_Part.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "滤水器",
+              "enName": "Water Filter",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Salvage_WaterFilter.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "龙舌兰",
+              "enName": "Agave",
+              "count": 8,
+              "icon": "/items/T_UI_Icon_Consumable_Agave.png",
+              "mapLinks": [
+                {
+                  "mapId": "buried-city",
+                  "mapName": "掩埋废城",
+                  "poiName": "外围荒漠",
+                  "label": "掩埋废城 · 荒漠岩石区龙舌兰丛"
+                },
+                {
+                  "mapId": "spaceport",
+                  "mapName": "太空港",
+                  "poiName": "燃料库",
+                  "label": "太空港 · 荒漠边缘龙舌兰植株"
+                }
+              ]
+            },
+            {
+              "zhName": "“金色海妖”舰船模型",
+              "enName": "\"Sirena Dorata\" Ship Model",
+              "count": 5,
+              "icon": "/items/T_UI_Icon_Salvage_Trinket_BoatModel_E.png",
+              "mapLinks": []
+            }
+          ],
+          "rewards": [
+            {
+              "zhName": "凝胶眼贴",
+              "enName": "Gel Patches",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_FaceStyle_GelPatches.png"
+            },
+            {
+              "zhName": "裂潮镇酒店311号房卡",
+              "enName": "Riven Tides Hotel Keycard No. 311",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Salvage_RivenTidesHotelKey_Shared.png"
+            },
+            {
+              "zhName": "奇袭者代币",
+              "enName": "Raider Tokens",
+              "count": 50,
+              "icon": "/items/T_UI_Icon_Currency_Hard.png"
+            }
+          ]
+        },
+        {
+          "stage": 5,
+          "name": "阶段 5：生态鸟舍完工",
+          "requirements": [
+            {
+              "zhName": "“涡轮”压缩机",
+              "enName": "Turbine Compressor",
+              "count": 2,
+              "icon": "/items/T_UI_Icon_Salvage_Monolith_Part.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "红珊瑚首饰",
+              "enName": "Red Coral Jewelry",
+              "count": 3,
+              "icon": "/items/T_UI_Icon_Salvage_RedCoralJewelry_01.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "植物的根",
+              "enName": "Roots",
+              "count": 4,
+              "icon": "/items/T_UI_Icon_Salvage_Roots.png",
+              "mapLinks": []
+            },
+            {
+              "zhName": "\"Leviathan's Crown\" Ship Model",
+              "enName": "\"Leviathan's Crown\" Ship Model",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Salvage_Trinket_BoatModel_C.png",
+              "mapLinks": []
+            }
+          ],
+          "rewards": [
+            {
+              "zhName": "鸟屋",
+              "enName": "Bird House",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_BackpackAttachment_BirdHouse_01_A.png"
+            },
+            {
+              "zhName": "举拳",
+              "enName": "Fist In Air",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Emote_FistInAir.png"
+            },
+            {
+              "zhName": "原声吉他",
+              "enName": "Acoustic Guitar",
+              "count": 1,
+              "icon": "/items/T_UI_Icon_Gadget_Instrument_AcousticGuitar.png"
+            },
+            {
+              "zhName": "奇袭者代币",
+              "enName": "Raider Tokens",
+              "count": 100,
+              "icon": "/items/T_UI_Icon_Currency_Hard.png"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "outpostRooms": [
+    {
+      "id": "room-base",
+      "name": "基础房间",
+      "enName": "Base Room",
+      "code": "Level_OutpostRoom_Base",
+      "badge": "核心主厅 · 50 栏位",
+      "unlockCondition": "完成 3 阶段【避风港 (Sheltered Retreat)】哨站解锁工程后立即开启",
+      "stationUnlocks": [
+        "内设 8 个工坊工作台栏位（可安置武器工作台、研究站、精加工机等全部工坊设施）",
+        "哨站等级提升（Lv.1 → Lv.4）同步解锁【研究站 Lv.1 ~ Lv.4】与【武器工作台 Lv.4 武器增幅】上限"
+      ],
+      "image": "/items/T_UI_Icon_OutpostRoom_Base.png",
+      "heroImage": "/items/T_UI_Outpost_Fullscreen_3840x2160.webp",
+      "themeDesc": "斯佩兰扎地表下方的核心庇护主厅。兼具全部 8 座制造/研究工作台的工业空间与生活起居陈列区。",
+      "totalSlots": 50,
+      "slotSummary": {
+        "workbench": 8,
+        "floor": 33,
+        "wall": 6,
+        "ceiling": 3
+      },
+      "slotBreakdown": [
+        {
+          "type": "工作台栏位 (Workbench)",
+          "size": "标准工坊台位",
+          "count": 8,
+          "usage": "放置武器台、研究站、装备台、精加工机等核心设施"
+        },
+        {
+          "type": "地面小型栏位 (Floor)",
+          "size": "50 × 50 cm",
+          "count": 6,
+          "usage": "放置单人椅、吧台凳、床头柜、破旧书架（8格藏品）"
+        },
+        {
+          "type": "地面标准栏位 (Floor)",
+          "size": "100 × 100 cm",
+          "count": 14,
+          "usage": "放置储备箱（仓库互通）、衣柜、餐馆橱柜（16格）、私室书架（12格）"
+        },
+        {
+          "type": "地面长型栏位 (Floor)",
+          "size": "100 × 200 cm",
+          "count": 2,
+          "usage": "放置坚固书架（24格藏品）、冬季桌（14格）、簇绒沙发（5格）、床铺"
+        },
+        {
+          "type": "地面中型栏位 (Floor)",
+          "size": "200 × 200 cm",
+          "count": 6,
+          "usage": "放置大型餐桌、双人床铺、书房钢琴与组合沙发"
+        },
+        {
+          "type": "地面大型栏位 (Floor)",
+          "size": "200 × 300 / 300 × 200 cm",
+          "count": 4,
+          "usage": "放置宽幅实验室储物柜、多色几何长沙发与主题陈列区"
+        },
+        {
+          "type": "地面特大栏位 (Floor)",
+          "size": "200 × 400 cm",
+          "count": 1,
+          "usage": "主厅中央旗舰家具或大型覆布景观位"
+        },
+        {
+          "type": "墙面挂载栏位 (Wall)",
+          "size": "100 × 200 cm",
+          "count": 6,
+          "usage": "挂载武器架（每架存放 3~4 把实体枪械）与巢穴墙面书架（6~7格藏品）"
+        },
+        {
+          "type": "吊顶灯具栏位 (Ceiling)",
+          "size": "100 × 100 cm",
+          "count": 3,
+          "usage": "安装枝形吊灯、玻璃吊灯、餐馆吊灯改善主厅照明"
+        }
+      ]
+    },
+    {
+      "id": "room-panoramic",
+      "name": "全景房间",
+      "enName": "Panoramic Room",
+      "code": "LI_OutpostRoom_Module_01_B",
+      "badge": "扩展模块 · 22 栏位",
+      "unlockCondition": "解锁哨站扩展房间槽位（Extended Modules）后，在房间槽位中建造安装",
+      "stationUnlocks": [
+        "提供 300×300 超大型中央陈列位与拱形全景天窗采光",
+        "适合打造高容量战利品博物馆与武器陈列室"
+      ],
+      "image": "/items/T_UI_Outpost_Modules1.webp",
+      "heroImage": "/items/T_UI_Outpost_Modules1.webp",
+      "themeDesc": "拥有挑高拱形玻璃穹顶与开阔视野的扩展房间。自然光线充足，中心设有 300×300 巨型展位。",
+      "totalSlots": 22,
+      "slotSummary": {
+        "workbench": 0,
+        "floor": 18,
+        "wall": 1,
+        "ceiling": 3
+      },
+      "slotBreakdown": [
+        {
+          "type": "地面标准栏位 (Floor)",
+          "size": "100 × 100 cm",
+          "count": 10,
+          "usage": "高密度布置餐馆橱柜（16格）、私室书架（12格）或展示盒"
+        },
+        {
+          "type": "地面中型栏位 (Floor)",
+          "size": "200 × 200 cm",
+          "count": 4,
+          "usage": "布置书房沙发、钢琴或四季主题桌台"
+        },
+        {
+          "type": "地面大型栏位 (Floor)",
+          "size": "200 × 300 / 300 × 200 cm",
+          "count": 3,
+          "usage": "布置大型卡座沙发或宽幅储物柜"
+        },
+        {
+          "type": "地面超大型中心位 (Floor)",
+          "size": "300 × 300 cm",
+          "count": 1,
+          "usage": "房间正中央核心景观或大型组合家具区"
+        },
+        {
+          "type": "墙面挂载栏位 (Wall)",
+          "size": "100 × 200 cm",
+          "count": 1,
+          "usage": "挂载精致武器架（4把武器）或华丽巢穴书架（7格藏品）"
+        },
+        {
+          "type": "吊顶灯具栏位 (Ceiling)",
+          "size": "100×100 (×2) + 300×100 (×1)",
+          "count": 3,
+          "usage": "含 1 个 300×100 巨型主吊灯位与 2 个标准吊灯位"
+        }
+      ]
+    },
+    {
+      "id": "room-timeless",
+      "name": "永恒房间",
+      "enName": "Timeless Room",
+      "code": "LI_OutpostRoom_Module_01_C",
+      "badge": "扩展模块 · 22 栏位",
+      "unlockCondition": "解锁哨站扩展房间槽位后建造安装",
+      "stationUnlocks": [
+        "复古绿木护墙板与古典弧形落地窗设计",
+        "与书房系列（Study）、威尼斯梳妆台、枝形吊灯完美契合"
+      ],
+      "image": "/items/T_UI_Outpost_Modules2.webp",
+      "heroImage": "/items/T_UI_Outpost_Modules2.webp",
+      "themeDesc": "采用旧世界经典绿色木质护墙板与弧形观景窗的典雅沙龙房间，尽显旧时代人文气息。",
+      "totalSlots": 22,
+      "slotSummary": {
+        "workbench": 0,
+        "floor": 18,
+        "wall": 1,
+        "ceiling": 3
+      },
+      "slotBreakdown": [
+        {
+          "type": "地面标准栏位 (Floor)",
+          "size": "100 × 100 cm",
+          "count": 10,
+          "usage": "布置教职员衣橱（7格）、威尼斯梳妆台与档案库落地灯"
+        },
+        {
+          "type": "地面中型栏位 (Floor)",
+          "size": "200 × 200 cm",
+          "count": 4,
+          "usage": "布置书房钢琴（3格）、精致教职员桌（8格）"
+        },
+        {
+          "type": "地面大型栏位 (Floor)",
+          "size": "200 × 300 / 300 × 200 cm",
+          "count": 3,
+          "usage": "布置红色/精致书房沙发与簇绒沙发（5格）"
+        },
+        {
+          "type": "地面超大型中心位 (Floor)",
+          "size": "300 × 300 cm",
+          "count": 1,
+          "usage": "沙龙会客主区"
+        },
+        {
+          "type": "墙面挂载栏位 (Wall)",
+          "size": "100 × 200 cm",
+          "count": 1,
+          "usage": "挂载武器架或华丽书架"
+        },
+        {
+          "type": "吊顶灯具栏位 (Ceiling)",
+          "size": "100×100 (×2) + 300×100 (×1)",
+          "count": 3,
+          "usage": "安装枝形吊灯与书房吊灯"
+        }
+      ]
+    },
+    {
+      "id": "room-chalet",
+      "name": "木屋房间",
+      "enName": "Chalet Room",
+      "code": "LI_OutpostRoom_Module_02_B",
+      "badge": "扩展模块 · 22 栏位",
+      "unlockCondition": "解锁哨站扩展房间槽位后建造安装",
+      "stationUnlocks": [
+        "高山原木横梁结构与斜顶采光天窗",
+        "与高山衣柜（Alpine Wardrobe）、冬季桌子（14格）、冬青灌木等木质家具绝配"
+      ],
+      "image": "/items/T_UI_Outpost_Modules3.webp",
+      "heroImage": "/items/T_UI_Outpost_Modules3.webp",
+      "themeDesc": "温暖坚实的高山原木斜顶木屋，仿佛置身彭多拉山口的避寒猎人小屋。",
+      "totalSlots": 22,
+      "slotSummary": {
+        "workbench": 0,
+        "floor": 18,
+        "wall": 1,
+        "ceiling": 3
+      },
+      "slotBreakdown": [
+        {
+          "type": "地面标准栏位 (Floor)",
+          "size": "100 × 100 cm",
+          "count": 10,
+          "usage": "放置高山衣柜（换装终端）、华丽储备箱（仓库互通+2饰品）"
+        },
+        {
+          "type": "地面中型栏位 (Floor)",
+          "size": "200 × 200 cm",
+          "count": 4,
+          "usage": "放置冬季桌子（14格超大容量）、破旧鸟舍桌子（5格）"
+        },
+        {
+          "type": "地面大型栏位 (Floor)",
+          "size": "200 × 300 / 300 × 200 cm",
+          "count": 3,
+          "usage": "放置华丽巢穴床与休息区沙发"
+        },
+        {
+          "type": "地面超大型中心位 (Floor)",
+          "size": "300 × 300 cm",
+          "count": 1,
+          "usage": "木屋核心起居区"
+        },
+        {
+          "type": "墙面挂载栏位 (Wall)",
+          "size": "100 × 200 cm",
+          "count": 1,
+          "usage": "挂载猎枪展示架或木质墙架"
+        },
+        {
+          "type": "吊顶灯具栏位 (Ceiling)",
+          "size": "100×100 (×2) + 300×100 (×1)",
+          "count": 3,
+          "usage": "安装暖光吊灯"
+        }
+      ]
+    },
+    {
+      "id": "room-studious",
+      "name": "笃学房间",
+      "enName": "Studious Room",
+      "code": "LI_OutpostRoom_Module_03_B",
+      "badge": "扩展模块 · 22 栏位",
+      "unlockCondition": "解锁哨站扩展房间槽位后建造安装",
+      "stationUnlocks": [
+        "工业混凝土墙面、通风管网与高窗设计",
+        "适合搭配实验室储物柜（Lab Cabinet）、气象站桌椅与坚固重型货架（24格）"
+      ],
+      "image": "/items/T_UI_Outpost_Modules4.webp",
+      "heroImage": "/items/T_UI_Outpost_Modules4.webp",
+      "themeDesc": "硬朗的工业与科研实验室风格模块，配备精密管线与天窗，专为技术流奇袭者打造。",
+      "totalSlots": 22,
+      "slotSummary": {
+        "workbench": 0,
+        "floor": 18,
+        "wall": 1,
+        "ceiling": 3
+      },
+      "slotBreakdown": [
+        {
+          "type": "地面标准栏位 (Floor)",
+          "size": "100 × 100 cm",
+          "count": 10,
+          "usage": "布置诊所医疗橱柜、蓝色实验室储物柜、私室书架（12格）"
+        },
+        {
+          "type": "地面中型栏位 (Floor)",
+          "size": "200 × 200 cm",
+          "count": 4,
+          "usage": "布置坚固书架（24格全游最高容量）、气象站桌子（3格）"
+        },
+        {
+          "type": "地面大型栏位 (Floor)",
+          "size": "200 × 300 / 300 × 200 cm",
+          "count": 3,
+          "usage": "布置坚固实验室储物柜（宽·4格）、绿色实验室沙发"
+        },
+        {
+          "type": "地面超大型中心位 (Floor)",
+          "size": "300 × 300 cm",
+          "count": 1,
+          "usage": "科研中心主展台"
+        },
+        {
+          "type": "墙面挂载栏位 (Wall)",
+          "size": "100 × 200 cm",
+          "count": 1,
+          "usage": "挂载重型军械展示架（4把武器）"
+        },
+        {
+          "type": "吊顶灯具栏位 (Ceiling)",
+          "size": "100×100 (×2) + 300×100 (×1)",
+          "count": 3,
+          "usage": "安装实验室吊灯与工作灯"
+        }
+      ]
+    }
+  ],
+  "raiderDenStages": [
+    {
+      "level": "Lv.1",
+      "name": "初始避难所巢穴",
+      "stashRequirement": "初始解锁（随仓库储备箱 Lv.1 开启）",
+      "shelfSlots": 8,
+      "floorSlots": 2,
+      "weaponSlots": 3,
+      "unlockedFurniture": [
+        "破旧巢穴床 (1枕头位)",
+        "破旧巢穴书架",
+        "破旧储备箱 (仓库互通+1饰品)",
+        "破旧武器架 (3把武器)"
+      ],
+      "summary": "在破旧砖墙房间中搭起床垫与木箱。展架可陈列 8 件战利品摆件，地面可摆放 2 件大型藏品，墙面自动展示仓库中综合评分最高的 3 把武器。"
+    },
+    {
+      "level": "Lv.2",
+      "name": "整洁铁架巢穴",
+      "stashRequirement": "扩建主仓库储备箱达到 Lv.2",
+      "shelfSlots": 8,
+      "floorSlots": 2,
+      "weaponSlots": 3,
+      "unlockedFurniture": [
+        "金属衣架 (Clothing Rack)",
+        "地面编织地毯"
+      ],
+      "summary": "清除地面杂物并铺设暖色地毯，新增金属挂衣架展示您已解锁的奇袭者时装。"
+    },
+    {
+      "level": "Lv.4",
+      "name": "坚固床架与扩容展架",
+      "stashRequirement": "扩建主仓库储备箱达到 Lv.4",
+      "shelfSlots": 11,
+      "floorSlots": 2,
+      "weaponSlots": 4,
+      "unlockedFurniture": [
+        "坚固巢穴床 (1枕头位)",
+        "坚固巢穴书架 (3格)",
+        "坚固储备箱 (仓库互通+1饰品)",
+        "坚固武器架 (4把武器)"
+      ],
+      "summary": "床垫升级为带床头板的坚固铁架床，主展示架扩容至 11 个藏品格，墙面武器架升级为 4 联装。"
+    },
+    {
+      "level": "Lv.7",
+      "name": "精致起居室与软装升级",
+      "stashRequirement": "扩建主仓库储备箱达到 Lv.7",
+      "shelfSlots": 13,
+      "floorSlots": 2,
+      "weaponSlots": 4,
+      "unlockedFurniture": [
+        "精致巢穴床 (1枕头位)",
+        "精致巢穴书架 (6格)",
+        "精致储备箱 (仓库互通+2饰品)",
+        "精致武器架 (4把武器)"
+      ],
+      "summary": "换装大号绿色波纹地毯与精致双人床，展架扩容至 13 个藏品格，并在哨站解锁精致系列家具图纸。"
+    },
+    {
+      "level": "Lv.10",
+      "name": "华丽大师巢穴（满级形态）",
+      "stashRequirement": "扩建主仓库储备箱达到 Lv.10 满级",
+      "shelfSlots": 14,
+      "floorSlots": 2,
+      "weaponSlots": 4,
+      "unlockedFurniture": [
+        "华丽巢穴床 (1枕头位)",
+        "华丽巢穴书架 (7格)",
+        "华丽储备箱 (仓库互通+2饰品)",
+        "华丽衣柜 (换装终端)"
+      ],
+      "summary": "铺设顶级华丽地毯与实木大床，默认陈列架达到 14 个藏品格上限，同时解锁哨站全套【华丽 (Ornate)】大师级家具建造权限！"
+    }
+  ],
+  "furnitureCategories": [
+    {
+      "id": "ALL",
+      "label": "全部家具",
+      "count": 100
+    },
+    {
+      "id": "Storage",
+      "label": "仓库与储物架",
+      "count": 30
+    },
+    {
+      "id": "Decoration",
+      "label": "武器架与装饰",
+      "count": 11
+    },
+    {
+      "id": "Tables",
+      "label": "桌子与台面",
+      "count": 13
+    },
+    {
+      "id": "Seating",
+      "label": "座椅与沙发",
+      "count": 32
+    },
+    {
+      "id": "Beds",
+      "label": "床铺与软装",
+      "count": 4
+    },
+    {
+      "id": "Lighting",
+      "label": "灯具与照明",
+      "count": 10
+    }
+  ],
+  "furnitureList": [
+    {
+      "id": "furn-74-sturdy-shelf",
+      "name": "坚固书架",
+      "enName": "Sturdy Shelf",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "epic",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Shelves_02_B.png",
+      "placement": "地面 (Floor)",
+      "size": "100 × 200 cm",
+      "functionalRole": "高密度多层储物与藏品展示架（24格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "战利品摆件 (Trinkets)、首领纪念品、自然标本、研究典籍与架子饰品",
+      "storageSlots": 24,
+      "storageBadge": "📦 可存放 24 件藏品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 25,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1000,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "生锈的螺栓 (Rusted Bolts)",
+          "zhName": "生锈的螺栓",
+          "enName": "Rusted Bolts",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_RustedBolts.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-56-diner-cupboard",
+      "name": "餐馆橱柜",
+      "enName": "Diner Cupboard",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "epic",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Cmr_CupboardCafe_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "高密度多层储物与藏品展示架（16格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "战利品摆件 (Trinkets)、首领纪念品、自然标本、研究典籍与架子饰品",
+      "storageSlots": 16,
+      "storageBadge": "📦 可存放 16 件藏品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "金属支架 (Metal Brackets)",
+          "zhName": "金属支架",
+          "enName": "Metal Brackets",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_MetalBrackets.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 20,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1000,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 40,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-55-chambers-shelf",
+      "name": "私室书架",
+      "enName": "Chambers Shelf",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "epic",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Chambers_Shelf_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "高密度多层储物与藏品展示架（12格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "战利品摆件 (Trinkets)、首领纪念品、自然标本、研究典籍与架子饰品",
+      "storageSlots": 12,
+      "storageBadge": "📦 可存放 12 件藏品",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-73-battered-shelf",
+      "name": "破旧书架",
+      "enName": "Battered Shelf",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "rare",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Shelves_02_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "高密度多层储物与藏品展示架（8格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "战利品摆件 (Trinkets)、首领纪念品、自然标本、研究典籍与架子饰品",
+      "storageSlots": 8,
+      "storageBadge": "📦 可存放 8 件藏品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1000,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "生锈的螺栓 (Rusted Bolts)",
+          "zhName": "生锈的螺栓",
+          "enName": "Rusted Bolts",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_RustedBolts.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-62-ornate-den-shelf",
+      "name": "华丽巢穴书架",
+      "enName": "Ornate Den Shelf",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "rare",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_RaiderDen_Shelves_04.png",
+      "placement": "墙面 (Wall)",
+      "size": "100 × 200 cm",
+      "functionalRole": "高密度多层储物与藏品展示架（7格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "战利品摆件 (Trinkets)、首领纪念品、自然标本、研究典籍与架子饰品",
+      "storageSlots": 7,
+      "storageBadge": "📦 可存放 7 件藏品",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 25,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-63-faculty-closet",
+      "name": "教职员衣橱",
+      "enName": "Faculty Closet",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "rare",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Res_Closet_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "高密度多层储物与藏品展示架（7格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "战利品摆件 (Trinkets)、首领纪念品、自然标本、研究典籍与架子饰品",
+      "storageSlots": 7,
+      "storageBadge": "📦 可存放 7 件藏品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 25,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1500,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "生锈的螺栓 (Rusted Bolts)",
+          "zhName": "生锈的螺栓",
+          "enName": "Rusted Bolts",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_RustedBolts.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-61-polished-den-shelf",
+      "name": "精致巢穴书架",
+      "enName": "Polished Den Shelf",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "rare",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_RaiderDen_Shelves_03.png",
+      "placement": "墙面 (Wall)",
+      "size": "100 × 200 cm",
+      "functionalRole": "高密度多层储物与藏品展示架（6格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "战利品摆件 (Trinkets)、首领纪念品、自然标本、研究典籍与架子饰品",
+      "storageSlots": 6,
+      "storageBadge": "📦 可存放 6 件藏品",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 20,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-70-sturdy-lab-cabinet-wide-",
+      "name": "坚固实验室储物柜（宽）",
+      "enName": "Sturdy Lab Cabinet (Wide)",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Rsr_Cabinet_M_02_X200cm_B.png",
+      "placement": "地面 (Floor)",
+      "size": "200 × 300 cm",
+      "functionalRole": "高密度多层储物与藏品展示架（4格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "战利品摆件 (Trinkets)、首领纪念品、自然标本、研究典籍与架子饰品",
+      "storageSlots": 4,
+      "storageBadge": "📦 可存放 4 件藏品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 500,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "金属支架 (Metal Brackets)",
+          "zhName": "金属支架",
+          "enName": "Metal Brackets",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_MetalBrackets.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-60-sturdy-den-shelf",
+      "name": "坚固巢穴书架",
+      "enName": "Sturdy Den Shelf",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_RaiderDen_Shelves_02.png",
+      "placement": "墙面 (Wall)",
+      "size": "100 × 200 cm",
+      "functionalRole": "高密度多层储物与藏品展示架（3格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "战利品摆件 (Trinkets)、首领纪念品、自然标本、研究典籍与架子饰品",
+      "storageSlots": 3,
+      "storageBadge": "📦 可存放 3 件藏品",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-78-ornate-stash",
+      "name": "华丽储备箱",
+      "enName": "Ornate Stash",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "epic",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Stash_01_D.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "【核心交互】主仓库直通终端 + 箱顶藏品陈列",
+      "storageType": "stash",
+      "storageTypeLabel": "直接打开斯佩兰扎主仓库存取全部物资 + 箱顶可摆放 2 件战利品摆件/饰品",
+      "storageSlots": 2,
+      "storageBadge": "🏦 仓库互通 + 2 饰品位",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 20,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "离子溅射仪 (Ion Sputter)",
+          "zhName": "离子溅射仪",
+          "enName": "Ion Sputter",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_IonSputter.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-68-sturdy-lab-cabinet",
+      "name": "坚固实验室储物柜",
+      "enName": "Sturdy Lab Cabinet",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Rsr_Cabinet_M_02_X100cm_B.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "高密度多层储物与藏品展示架（2格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "战利品摆件 (Trinkets)、首领纪念品、自然标本、研究典籍与架子饰品",
+      "storageSlots": 2,
+      "storageBadge": "📦 可存放 2 件藏品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 500,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "金属支架 (Metal Brackets)",
+          "zhName": "金属支架",
+          "enName": "Metal Brackets",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_MetalBrackets.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-77-polished-stash",
+      "name": "精致储备箱",
+      "enName": "Polished Stash",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "epic",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Stash_01_C.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "【核心交互】主仓库直通终端 + 箱顶藏品陈列",
+      "storageType": "stash",
+      "storageTypeLabel": "直接打开斯佩兰扎主仓库存取全部物资 + 箱顶可摆放 2 件战利品摆件/饰品",
+      "storageSlots": 2,
+      "storageBadge": "🏦 仓库互通 + 2 饰品位",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "流量控制器 (Flow Controller)",
+          "zhName": "流量控制器",
+          "enName": "Flow Controller",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_FlowController.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-72-blue-lab-cabinet",
+      "name": "蓝色实验室储物柜",
+      "enName": "Blue Lab Cabinet",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Rsr_Cabinet_S_02_A_Blue.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "高密度多层储物与藏品展示架（2格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "战利品摆件 (Trinkets)、首领纪念品、自然标本、研究典籍与架子饰品",
+      "storageSlots": 2,
+      "storageBadge": "📦 可存放 2 件藏品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 20,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1000,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "生锈的螺栓 (Rusted Bolts)",
+          "zhName": "生锈的螺栓",
+          "enName": "Rusted Bolts",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_RustedBolts.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-59-battered-den-shelf",
+      "name": "破旧巢穴书架",
+      "enName": "Battered Den Shelf",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_RaiderDen_Shelves_01.png",
+      "placement": "墙面 (Wall)",
+      "size": "100 × 200 cm",
+      "functionalRole": "高密度多层储物与藏品展示架（2格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "战利品摆件 (Trinkets)、首领纪念品、自然标本、研究典籍与架子饰品",
+      "storageSlots": 2,
+      "storageBadge": "📦 可存放 2 件藏品",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-67-battered-lab-cabinet",
+      "name": "破旧实验室储物柜",
+      "enName": "Battered Lab Cabinet",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Rsr_Cabinet_M_02_X100cm_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "高密度多层储物与藏品展示架（2格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "战利品摆件 (Trinkets)、首领纪念品、自然标本、研究典籍与架子饰品",
+      "storageSlots": 2,
+      "storageBadge": "📦 可存放 2 件藏品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1000,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "机械元件 (Mechanical Components)",
+          "zhName": "机械元件",
+          "enName": "Mechanical Components",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_MechanicalComponents.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-69-battered-lab-cabinet-wide-",
+      "name": "破旧实验室储物柜（宽）",
+      "enName": "Battered Lab Cabinet (Wide)",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Rsr_Cabinet_M_02_X200cm_A.png",
+      "placement": "地面 (Floor)",
+      "size": "200 × 300 cm",
+      "functionalRole": "高密度多层储物与藏品展示架（2格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "战利品摆件 (Trinkets)、首领纪念品、自然标本、研究典籍与架子饰品",
+      "storageSlots": 2,
+      "storageBadge": "📦 可存放 2 件藏品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 20,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1000,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "金属支架 (Metal Brackets)",
+          "zhName": "金属支架",
+          "enName": "Metal Brackets",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_MetalBrackets.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-66-study-tv-stand",
+      "name": "书房电视柜",
+      "enName": "Study TV Stand",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Res_TvUnit_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "高密度多层储物与藏品展示架（2格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "战利品摆件 (Trinkets)、首领纪念品、自然标本、研究典籍与架子饰品",
+      "storageSlots": 2,
+      "storageBadge": "📦 可存放 2 件藏品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "橡胶零件 (Rubber Parts)",
+          "zhName": "橡胶零件",
+          "enName": "Rubber Parts",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_Rubber.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 500,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "金属支架 (Metal Brackets)",
+          "zhName": "金属支架",
+          "enName": "Metal Brackets",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_MetalBrackets.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-76-sturdy-stash",
+      "name": "坚固储备箱",
+      "enName": "Sturdy Stash",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "rare",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Stash_01_B.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "【核心交互】主仓库直通终端 + 箱顶藏品陈列",
+      "storageType": "stash",
+      "storageTypeLabel": "直接打开斯佩兰扎主仓库存取全部物资 + 箱顶可摆放 1 件战利品摆件/饰品",
+      "storageSlots": 1,
+      "storageBadge": "🏦 仓库互通 + 1 饰品位",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "变电器 (Voltage Converter)",
+          "zhName": "变电器",
+          "enName": "Voltage Converter",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_VoltageConverter.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-75-battered-stash",
+      "name": "破旧储备箱",
+      "enName": "Battered Stash",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "rare",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Stash_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "【核心交互】主仓库直通终端 + 箱顶藏品陈列",
+      "storageType": "stash",
+      "storageTypeLabel": "直接打开斯佩兰扎主仓库存取全部物资 + 箱顶可摆放 1 件战利品摆件/饰品",
+      "storageSlots": 1,
+      "storageBadge": "🏦 仓库互通 + 1 饰品位",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "化学品 (Chemicals)",
+          "zhName": "化学品",
+          "enName": "Chemicals",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_Chemicals.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-71-small-lab-cabinet",
+      "name": "小型实验室储物柜",
+      "enName": "Small Lab Cabinet",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Rsr_Cabinet_S_01_B.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "高密度多层储物与藏品展示架（1格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "战利品摆件 (Trinkets)、首领纪念品、自然标本、研究典籍与架子饰品",
+      "storageSlots": 1,
+      "storageBadge": "📦 可存放 1 件藏品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "橡胶零件 (Rubber Parts)",
+          "zhName": "橡胶零件",
+          "enName": "Rubber Parts",
+          "count": 4,
+          "icon": "/items/T_UI_Icon_Salvage_Rubber.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 8,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 500,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "金属零件 (Metal Parts)",
+          "zhName": "金属零件",
+          "enName": "Metal Parts",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_ScrapMetal.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-57-diner-shelf",
+      "name": "餐馆货架",
+      "enName": "Diner Shelf",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Cmr_Shelf_03_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "室内储物柜与梳妆台装饰",
+      "storageType": "none",
+      "storageTypeLabel": "封闭式储物柜外观布置",
+      "storageSlots": 0,
+      "storageBadge": "🗄️ 储物柜家具",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 30,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1500,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "激光水平仪 (Laser Level)",
+          "zhName": "激光水平仪",
+          "enName": "Laser Level",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_FrozenTrailMechanical3.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-83-warehouse-dresser",
+      "name": "仓库餐具柜",
+      "enName": "Warehouse Dresser",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Wrh_Drawers_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "室内储物柜与梳妆台装饰",
+      "storageType": "none",
+      "storageTypeLabel": "封闭式储物柜外观布置",
+      "storageSlots": 0,
+      "storageBadge": "🗄️ 储物柜家具",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 20,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 4,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1000,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 30,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-58-console-chest",
+      "name": "电视柜",
+      "enName": "Console Chest",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_ConsoleChest_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "室内储物柜与梳妆台装饰",
+      "storageType": "none",
+      "storageTypeLabel": "封闭式储物柜外观布置",
+      "storageSlots": 0,
+      "storageBadge": "🗄️ 储物柜家具",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 20,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-54-alpine-wardrobe",
+      "name": "高山衣柜",
+      "enName": "Alpine Wardrobe",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_AlpineWardrobe_01.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "【核心交互】奇袭者外观换装衣柜终端",
+      "storageType": "wardrobe",
+      "storageTypeLabel": "在哨站内直接打开奇袭者定制界面，自由更换时装、头盔、背包挂件与配色",
+      "storageSlots": 0,
+      "storageBadge": "👗 角色换装终端",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "金属支架 (Metal Brackets)",
+          "zhName": "金属支架",
+          "enName": "Metal Brackets",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_MetalBrackets.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 30,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-82-ornate-wardrobe",
+      "name": "华丽衣柜",
+      "enName": "Ornate Wardrobe",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "rare",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Wardrobe_01_D.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "【核心交互】奇袭者外观换装衣柜终端",
+      "storageType": "wardrobe",
+      "storageTypeLabel": "在哨站内直接打开奇袭者定制界面，自由更换时装、头盔、背包挂件与配色",
+      "storageSlots": 0,
+      "storageBadge": "👗 角色换装终端",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "金属支架 (Metal Brackets)",
+          "zhName": "金属支架",
+          "enName": "Metal Brackets",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_MetalBrackets.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 50,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-80-sturdy-wardrobe",
+      "name": "坚固衣柜",
+      "enName": "Sturdy Wardrobe",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Wardrobe_01_B.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "【核心交互】奇袭者外观换装衣柜终端",
+      "storageType": "wardrobe",
+      "storageTypeLabel": "在哨站内直接打开奇袭者定制界面，自由更换时装、头盔、背包挂件与配色",
+      "storageSlots": 0,
+      "storageBadge": "👗 角色换装终端",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 8,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 4,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-65-faculty-dresser",
+      "name": "教职员梳妆台",
+      "enName": "Faculty Dresser",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Res_Drawer_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "室内储物柜与梳妆台装饰",
+      "storageType": "none",
+      "storageTypeLabel": "封闭式储物柜外观布置",
+      "storageSlots": 0,
+      "storageBadge": "🗄️ 储物柜家具",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "化学品 (Chemicals)",
+          "zhName": "化学品",
+          "enName": "Chemicals",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Chemicals.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 25,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1500,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "剥线钳 (Cable Stripper)",
+          "zhName": "剥线钳",
+          "enName": "Cable Stripper",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_FrozenTrailMechanical1.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-81-polished-wardrobe",
+      "name": "精致衣柜",
+      "enName": "Polished Wardrobe",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "rare",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Wardrobe_01_C.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "【核心交互】奇袭者外观换装衣柜终端",
+      "storageType": "wardrobe",
+      "storageTypeLabel": "在哨站内直接打开奇袭者定制界面，自由更换时装、头盔、背包挂件与配色",
+      "storageSlots": 0,
+      "storageBadge": "👗 角色换装终端",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 30,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-79-venetian-dresser",
+      "name": "威尼斯梳妆台",
+      "enName": "Venetian Dresser",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_VenetianDresser_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "室内储物柜与梳妆台装饰",
+      "storageType": "none",
+      "storageTypeLabel": "封闭式储物柜外观布置",
+      "storageSlots": 0,
+      "storageBadge": "🗄️ 储物柜家具",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 25,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-64-clinic-medical-cabinet",
+      "name": "诊所医疗橱柜",
+      "enName": "Clinic Medical Cabinet",
+      "category": "Storage",
+      "categoryZh": "仓库与储物架",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Res_DrawerMedical_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "室内储物柜与梳妆台装饰",
+      "storageType": "none",
+      "storageTypeLabel": "封闭式储物柜外观布置",
+      "storageSlots": 0,
+      "storageBadge": "🗄️ 储物柜家具",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "化学品 (Chemicals)",
+          "zhName": "化学品",
+          "enName": "Chemicals",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_Chemicals.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 19,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1000,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 20,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-10-sturdy-weapon-rack",
+      "name": "坚固武器架",
+      "enName": "Sturdy Weapon Rack",
+      "category": "Decoration",
+      "categoryZh": "武器架与装饰",
+      "rarity": "rare",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_WeaponDisplay_01_B.png",
+      "placement": "墙面 (Wall)",
+      "size": "100 × 200 cm",
+      "functionalRole": "墙面军械陈列架（实体展示枪械与已安装配件）",
+      "storageType": "weapon",
+      "storageTypeLabel": "任意主/副武器（Inventory.ItemType.Weapon，支持展示改装配件外观）",
+      "storageSlots": 4,
+      "storageBadge": "🔫 可挂放 4 把武器",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-11-polished-weapon-rack",
+      "name": "精致武器架",
+      "enName": "Polished Weapon Rack",
+      "category": "Decoration",
+      "categoryZh": "武器架与装饰",
+      "rarity": "rare",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_WeaponDisplay_01_C.png",
+      "placement": "墙面 (Wall)",
+      "size": "100 × 200 cm",
+      "functionalRole": "墙面军械陈列架（实体展示枪械与已安装配件）",
+      "storageType": "weapon",
+      "storageTypeLabel": "任意主/副武器（Inventory.ItemType.Weapon，支持展示改装配件外观）",
+      "storageSlots": 4,
+      "storageBadge": "🔫 可挂放 4 把武器",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 20,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-9-battered-weapon-rack",
+      "name": "破旧武器架",
+      "enName": "Battered Weapon Rack",
+      "category": "Decoration",
+      "categoryZh": "武器架与装饰",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_WeaponDisplay_01_A.png",
+      "placement": "墙面 (Wall)",
+      "size": "100 × 200 cm",
+      "functionalRole": "墙面军械陈列架（实体展示枪械与已安装配件）",
+      "storageType": "weapon",
+      "storageTypeLabel": "任意主/副武器（Inventory.ItemType.Weapon，支持展示改装配件外观）",
+      "storageSlots": 3,
+      "storageBadge": "🔫 可挂放 3 把武器",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-7-study-piano",
+      "name": "书房钢琴",
+      "enName": "Study Piano",
+      "category": "Decoration",
+      "categoryZh": "武器架与装饰",
+      "rarity": "rare",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Res_Piano_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "100 × 200 cm",
+      "functionalRole": "特色景观与藏品展示（3格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "乐谱、纪念摆件、精致藏品与装饰物",
+      "storageSlots": 3,
+      "storageBadge": "🏆 可陈列 3 件藏品",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 50,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        },
+        {
+          "item": "高级机械元件 (Advanced Mechanical Components)",
+          "zhName": "高级机械元件",
+          "enName": "Advanced Mechanical Components",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_AdvancedGunParts.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-8-holly-bush",
+      "name": "冬青灌木",
+      "enName": "Holly Bush",
+      "category": "Decoration",
+      "categoryZh": "武器架与装饰",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_South_Forest_Bush_Holly_01_C.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "空间装饰与陈列",
+      "storageType": "none",
+      "storageTypeLabel": "无附属存放格（纯外观/照明家具）",
+      "storageSlots": 0,
+      "storageBadge": "✨ 空间装饰",
+      "unlockMethod": "完成冬季庆典工程项目解锁",
+      "craftMaterials": [
+        {
+          "item": "肥料 (Fertilizer)",
+          "zhName": "肥料",
+          "enName": "Fertilizer",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_Fertilizer.png"
+        },
+        {
+          "item": "混合种子 (Assorted Seeds)",
+          "zhName": "混合种子",
+          "enName": "Assorted Seeds",
+          "count": 30,
+          "icon": "/items/T_UI_Icon_Salvage_Seeds.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-1-draped-debris-a",
+      "name": "覆布残骸A",
+      "enName": "Draped Debris A",
+      "category": "Decoration",
+      "categoryZh": "武器架与装饰",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_DebrisDraped_01.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "空间装饰与陈列",
+      "storageType": "none",
+      "storageTypeLabel": "无附属存放格（纯外观/照明家具）",
+      "storageSlots": 0,
+      "storageBadge": "✨ 空间装饰",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        },
+        {
+          "item": "布料 (Fabric)",
+          "zhName": "布料",
+          "enName": "Fabric",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Fabric.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-2-draped-debris-b",
+      "name": "覆布残骸B",
+      "enName": "Draped Debris B",
+      "category": "Decoration",
+      "categoryZh": "武器架与装饰",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_DebrisDraped_02.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "空间装饰与陈列",
+      "storageType": "none",
+      "storageTypeLabel": "无附属存放格（纯外观/照明家具）",
+      "storageSlots": 0,
+      "storageBadge": "✨ 空间装饰",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        },
+        {
+          "item": "布料 (Fabric)",
+          "zhName": "布料",
+          "enName": "Fabric",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Fabric.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-3-draped-debris-c",
+      "name": "覆布残骸C",
+      "enName": "Draped Debris C",
+      "category": "Decoration",
+      "categoryZh": "武器架与装饰",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_DebrisDraped_03.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "空间装饰与陈列",
+      "storageType": "none",
+      "storageTypeLabel": "无附属存放格（纯外观/照明家具）",
+      "storageSlots": 0,
+      "storageBadge": "✨ 空间装饰",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        },
+        {
+          "item": "布料 (Fabric)",
+          "zhName": "布料",
+          "enName": "Fabric",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Fabric.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-4-draped-debris-e",
+      "name": "覆布残骸E",
+      "enName": "Draped Debris E",
+      "category": "Decoration",
+      "categoryZh": "武器架与装饰",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_DebrisDraped_04.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "空间装饰与陈列",
+      "storageType": "none",
+      "storageTypeLabel": "无附属存放格（纯外观/照明家具）",
+      "storageSlots": 0,
+      "storageBadge": "✨ 空间装饰",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        },
+        {
+          "item": "布料 (Fabric)",
+          "zhName": "布料",
+          "enName": "Fabric",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Fabric.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-5-draped-debris-f",
+      "name": "覆布残骸F",
+      "enName": "Draped Debris F",
+      "category": "Decoration",
+      "categoryZh": "武器架与装饰",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_DebrisDraped_05.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "空间装饰与陈列",
+      "storageType": "none",
+      "storageTypeLabel": "无附属存放格（纯外观/照明家具）",
+      "storageSlots": 0,
+      "storageBadge": "✨ 空间装饰",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        },
+        {
+          "item": "布料 (Fabric)",
+          "zhName": "布料",
+          "enName": "Fabric",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Fabric.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-6-draped-debris-g",
+      "name": "覆布残骸G",
+      "enName": "Draped Debris G",
+      "category": "Decoration",
+      "categoryZh": "武器架与装饰",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_DebrisDraped_06.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "空间装饰与陈列",
+      "storageType": "none",
+      "storageTypeLabel": "无附属存放格（纯外观/照明家具）",
+      "storageSlots": 0,
+      "storageBadge": "✨ 空间装饰",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        },
+        {
+          "item": "布料 (Fabric)",
+          "zhName": "布料",
+          "enName": "Fabric",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Fabric.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-87-winter-table",
+      "name": "冬季桌子",
+      "enName": "Winter Table",
+      "category": "Tables",
+      "categoryZh": "桌子与台面",
+      "rarity": "epic",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_ProjectWinter_Table_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "100 × 200 cm",
+      "functionalRole": "桌面多格物品与仪器陈列台（14格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "桌面藏品摆件、电子仪器、餐具器皿、植物标本与小型战利品",
+      "storageSlots": 14,
+      "storageBadge": "🗂️ 桌面存放 14 件物品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "金属支架 (Metal Brackets)",
+          "zhName": "金属支架",
+          "enName": "Metal Brackets",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_MetalBrackets.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 20,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1000,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 40,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-91-cafeteria-table",
+      "name": "食堂桌子",
+      "enName": "Cafeteria Table",
+      "category": "Tables",
+      "categoryZh": "桌子与台面",
+      "rarity": "epic",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_CafeteriaTable_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "100 × 200 cm",
+      "functionalRole": "桌面多格物品与仪器陈列台（10格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "桌面藏品摆件、电子仪器、餐具器皿、植物标本与小型战利品",
+      "storageSlots": 10,
+      "storageBadge": "🗂️ 桌面存放 10 件物品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "橡胶零件 (Rubber Parts)",
+          "zhName": "橡胶零件",
+          "enName": "Rubber Parts",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_Rubber.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 500,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "金属支架 (Metal Brackets)",
+          "zhName": "金属支架",
+          "enName": "Metal Brackets",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_MetalBrackets.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-95-polished-faculty-table",
+      "name": "精致教职员桌",
+      "enName": "Polished Faculty Table",
+      "category": "Tables",
+      "categoryZh": "桌子与台面",
+      "rarity": "rare",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_Res_Table_03_A.png",
+      "placement": "地面 (Floor)",
+      "size": "100 × 200 cm",
+      "functionalRole": "桌面多格物品与仪器陈列台（8格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "桌面藏品摆件、电子仪器、餐具器皿、植物标本与小型战利品",
+      "storageSlots": 8,
+      "storageBadge": "🗂️ 桌面存放 8 件物品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "化学品 (Chemicals)",
+          "zhName": "化学品",
+          "enName": "Chemicals",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_Chemicals.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 30,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1500,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "激光水平仪 (Laser Level)",
+          "zhName": "激光水平仪",
+          "enName": "Laser Level",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_FrozenTrailMechanical3.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-93-battered-faculty-table",
+      "name": "破旧教职员桌",
+      "enName": "Battered Faculty Table",
+      "category": "Tables",
+      "categoryZh": "桌子与台面",
+      "rarity": "rare",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_Res_Table_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "100 × 200 cm",
+      "functionalRole": "桌面多格物品与仪器陈列台（8格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "桌面藏品摆件、电子仪器、餐具器皿、植物标本与小型战利品",
+      "storageSlots": 8,
+      "storageBadge": "🗂️ 桌面存放 8 件物品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 500,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "金属支架 (Metal Brackets)",
+          "zhName": "金属支架",
+          "enName": "Metal Brackets",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_MetalBrackets.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-94-sturdy-faculty-table",
+      "name": "坚固教职员桌",
+      "enName": "Sturdy Faculty Table",
+      "category": "Tables",
+      "categoryZh": "桌子与台面",
+      "rarity": "rare",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_Res_Table_02_A.png",
+      "placement": "地面 (Floor)",
+      "size": "100 × 200 cm",
+      "functionalRole": "桌面多格物品与仪器陈列台（6格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "桌面藏品摆件、电子仪器、餐具器皿、植物标本与小型战利品",
+      "storageSlots": 6,
+      "storageBadge": "🗂️ 桌面存放 6 件物品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 18,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 4,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1000,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "机械元件 (Mechanical Components)",
+          "zhName": "机械元件",
+          "enName": "Mechanical Components",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_MechanicalComponents.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-84-battered-aviary-table",
+      "name": "破旧鸟舍桌子",
+      "enName": "Battered Aviary Table",
+      "category": "Tables",
+      "categoryZh": "桌子与台面",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_BirdCageProject_Table_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "100 × 200 cm",
+      "functionalRole": "桌面多格物品与仪器陈列台（5格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "桌面藏品摆件、电子仪器、餐具器皿、植物标本与小型战利品",
+      "storageSlots": 5,
+      "storageBadge": "🗂️ 桌面存放 5 件物品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "化学品 (Chemicals)",
+          "zhName": "化学品",
+          "enName": "Chemicals",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_Chemicals.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 20,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1500,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "激光水平仪 (Laser Level)",
+          "zhName": "激光水平仪",
+          "enName": "Laser Level",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_FrozenTrailMechanical3.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-92-diner-table",
+      "name": "餐馆桌子",
+      "enName": "Diner Table",
+      "category": "Tables",
+      "categoryZh": "桌子与台面",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_Cmr_Table_02_A.png",
+      "placement": "地面 (Floor)",
+      "size": "100 × 200 cm",
+      "functionalRole": "桌面多格物品与仪器陈列台（3格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "桌面藏品摆件、电子仪器、餐具器皿、植物标本与小型战利品",
+      "storageSlots": 3,
+      "storageBadge": "🗂️ 桌面存放 3 件物品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 20,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "径向压力机 (Radial Press)",
+          "zhName": "径向压力机",
+          "enName": "Radial Press",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_FrozenTrailMechanical4.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 2000,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "小雕像 (Statuette)",
+          "zhName": "小雕像",
+          "enName": "Statuette",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_Statuette_01.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-88-weather-station-table",
+      "name": "气象站桌子",
+      "enName": "Weather Station Table",
+      "category": "Tables",
+      "categoryZh": "桌子与台面",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_WeatherMonitor_01_Table.png",
+      "placement": "地面 (Floor)",
+      "size": "100 × 200 cm",
+      "functionalRole": "桌面多格物品与仪器陈列台（3格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "桌面藏品摆件、电子仪器、餐具器皿、植物标本与小型战利品",
+      "storageSlots": 3,
+      "storageBadge": "🗂️ 桌面存放 3 件物品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 18,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1000,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 30,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-85-sturdy-aviary-table",
+      "name": "坚固鸟舍桌子",
+      "enName": "Sturdy Aviary Table",
+      "category": "Tables",
+      "categoryZh": "桌子与台面",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_BirdCageProject_Table_02_A.png",
+      "placement": "地面 (Floor)",
+      "size": "100 × 200 cm",
+      "functionalRole": "桌面多格物品与仪器陈列台（2格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "桌面藏品摆件、电子仪器、餐具器皿、植物标本与小型战利品",
+      "storageSlots": 2,
+      "storageBadge": "🗂️ 桌面存放 2 件物品",
+      "unlockMethod": "完成【鸟鸣警报 (Avian Alarm)】工程项目解锁",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 20,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "径向压力机 (Radial Press)",
+          "zhName": "径向压力机",
+          "enName": "Radial Press",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_FrozenTrailMechanical4.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-86-chambers-nightstand",
+      "name": "私室床头柜",
+      "enName": "Chambers Nightstand",
+      "category": "Tables",
+      "categoryZh": "桌子与台面",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Chambers_BedTable_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "桌面多格物品与仪器陈列台（2格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "桌面藏品摆件、电子仪器、餐具器皿、植物标本与小型战利品",
+      "storageSlots": 2,
+      "storageBadge": "🗂️ 桌面存放 2 件物品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "化学品 (Chemicals)",
+          "zhName": "化学品",
+          "enName": "Chemicals",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_Chemicals.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1500,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "径向压力机 (Radial Press)",
+          "zhName": "径向压力机",
+          "enName": "Radial Press",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_FrozenTrailMechanical4.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-90-bar-table",
+      "name": "吧台桌",
+      "enName": "Bar Table",
+      "category": "Tables",
+      "categoryZh": "桌子与台面",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_BarTable_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "100 × 200 cm",
+      "functionalRole": "哨站工作桌与吧台家具",
+      "storageType": "none",
+      "storageTypeLabel": "标准工业桌台布置",
+      "storageSlots": 0,
+      "storageBadge": "📐 标准桌台",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 14,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 4,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-96-restaurant-table",
+      "name": "餐厅桌子",
+      "enName": "Restaurant Table",
+      "category": "Tables",
+      "categoryZh": "桌子与台面",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_RST_Table_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "100 × 200 cm",
+      "functionalRole": "哨站工作桌与吧台家具",
+      "storageType": "none",
+      "storageTypeLabel": "标准工业桌台布置",
+      "storageSlots": 0,
+      "storageBadge": "📐 标准桌台",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 30,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1500,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "激光水平仪 (Laser Level)",
+          "zhName": "激光水平仪",
+          "enName": "Laser Level",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_FrozenTrailMechanical3.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-89-warehouse-desk",
+      "name": "仓库办公桌",
+      "enName": "Warehouse Desk",
+      "category": "Tables",
+      "categoryZh": "桌子与台面",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Wrh_Desk_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "100 × 200 cm",
+      "functionalRole": "哨站工作桌与吧台家具",
+      "storageType": "none",
+      "storageTypeLabel": "标准工业桌台布置",
+      "storageSlots": 0,
+      "storageBadge": "📐 标准桌台",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "橡胶零件 (Rubber Parts)",
+          "zhName": "橡胶零件",
+          "enName": "Rubber Parts",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_Rubber.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 20,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-53-tufted-sofa",
+      "name": "簇绒沙发",
+      "enName": "Tufted Sofa",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "rare",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Sofa_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "200 × 300 cm",
+      "functionalRole": "休闲座椅/沙发软装与饰品陈列（5格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "沙发靠枕、坐垫软装与小型随身饰品",
+      "storageSlots": 5,
+      "storageBadge": "🛋️ 可摆放 5 件软装/饰品",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "弹簧垫 (Spring Cushion)",
+          "zhName": "弹簧垫",
+          "enName": "Spring Cushion",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_SpringCushion.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 20,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 2000,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "极为舒适的枕头 (Very Comfortable Pillow)",
+          "zhName": "极为舒适的枕头",
+          "enName": "Very Comfortable Pillow",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_ComfortablePillow_01.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-23-diner-sofa",
+      "name": "餐馆沙发",
+      "enName": "Diner Sofa",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "rare",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Cmr_Sofa_03_A.png",
+      "placement": "地面 (Floor)",
+      "size": "200 × 300 cm",
+      "functionalRole": "休闲座椅/沙发软装与饰品陈列（3格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "沙发靠枕、坐垫软装与小型随身饰品",
+      "storageSlots": 3,
+      "storageBadge": "🛋️ 可摆放 3 件软装/饰品",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 20,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        },
+        {
+          "item": "弹簧垫 (Spring Cushion)",
+          "zhName": "弹簧垫",
+          "enName": "Spring Cushion",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_SpringCushion.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-51-geometric-fabric-chair",
+      "name": "几何布料椅",
+      "enName": "Geometric Fabric Chair",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Res_Sofa_01_Y150_A_Patterns_Geo.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "休闲座椅/沙发软装与饰品陈列（2格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "沙发靠枕、坐垫软装与小型随身饰品",
+      "storageSlots": 2,
+      "storageBadge": "🛋️ 可摆放 2 件软装/饰品",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "耐磨布料 (Durable Cloth)",
+          "zhName": "耐磨布料",
+          "enName": "Durable Cloth",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_WovenCloth.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-29-green-geometric-chair",
+      "name": "绿色几何椅",
+      "enName": "Green Geometric Chair",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Res_Sofa_01_Y150_A_Patterns_Green_Grometry.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "休闲座椅/沙发软装与饰品陈列（2格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "沙发靠枕、坐垫软装与小型随身饰品",
+      "storageSlots": 2,
+      "storageBadge": "🛋️ 可摆放 2 件软装/饰品",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "耐磨布料 (Durable Cloth)",
+          "zhName": "耐磨布料",
+          "enName": "Durable Cloth",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_WovenCloth.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-44-study-armchair",
+      "name": "书房扶手椅",
+      "enName": "Study Armchair",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Res_Sofa_01_Y150_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "休闲座椅/沙发软装与饰品陈列（2格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "沙发靠枕、坐垫软装与小型随身饰品",
+      "storageSlots": 2,
+      "storageBadge": "🛋️ 可摆放 2 件软装/饰品",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 25,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        },
+        {
+          "item": "极为舒适的枕头 (Very Comfortable Pillow)",
+          "zhName": "极为舒适的枕头",
+          "enName": "Very Comfortable Pillow",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_ComfortablePillow_01.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-49-security-chair",
+      "name": "安保椅",
+      "enName": "Security Chair",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_Sct_Chair_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "休闲座椅/沙发软装与饰品陈列（1格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "沙发靠枕、坐垫软装与小型随身饰品",
+      "storageSlots": 1,
+      "storageBadge": "🛋️ 可摆放 1 件软装/饰品",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "耐磨布料 (Durable Cloth)",
+          "zhName": "耐磨布料",
+          "enName": "Durable Cloth",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_WovenCloth.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-48-sturdy-lab-chair",
+      "name": "坚固实验室椅",
+      "enName": "Sturdy Lab Chair",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_Rsr_Chair_02_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "休闲座椅/沙发软装与饰品陈列（1格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "沙发靠枕、坐垫软装与小型随身饰品",
+      "storageSlots": 1,
+      "storageBadge": "🛋️ 可摆放 1 件软装/饰品",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "布料 (Fabric)",
+          "zhName": "布料",
+          "enName": "Fabric",
+          "count": 4,
+          "icon": "/items/T_UI_Icon_Salvage_Fabric.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 8,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-43-hotel-chair",
+      "name": "酒店椅",
+      "enName": "Hotel Chair",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_HOR_Chair_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "休闲座椅/沙发软装与饰品陈列（1格容量）",
+      "storageType": "trinket",
+      "storageTypeLabel": "沙发靠枕、坐垫软装与小型随身饰品",
+      "storageSlots": 1,
+      "storageBadge": "🛋️ 可摆放 1 件软装/饰品",
+      "unlockMethod": "完成【避风港】哨站解锁工程第 3 阶段奖励设计图",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        },
+        {
+          "item": "耐磨布料 (Durable Cloth)",
+          "zhName": "耐磨布料",
+          "enName": "Durable Cloth",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_WovenCloth.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-22-barstool",
+      "name": "吧台凳",
+      "enName": "Barstool",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_BarStool_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "布料 (Fabric)",
+          "zhName": "布料",
+          "enName": "Fabric",
+          "count": 4,
+          "icon": "/items/T_UI_Icon_Salvage_Fabric.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 8,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-27-diner-stool",
+      "name": "餐馆高凳",
+      "enName": "Diner Stool",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Hme_Stool_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "布料 (Fabric)",
+          "zhName": "布料",
+          "enName": "Fabric",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_Fabric.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 500,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "金属零件 (Metal Parts)",
+          "zhName": "金属零件",
+          "enName": "Metal Parts",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_ScrapMetal.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-50-warehouse-chair",
+      "name": "仓库椅子",
+      "enName": "Warehouse Chair",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_Wrh_Chair_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-30-solid-green-chair",
+      "name": "纯绿色椅",
+      "enName": "Solid Green Chair",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Res_Sofa_01_Y150_A_ResearchCompany_BC.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "耐磨布料 (Durable Cloth)",
+          "zhName": "耐磨布料",
+          "enName": "Durable Cloth",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_WovenCloth.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-33-multicolored-geometric-sofa",
+      "name": "多色几何沙发",
+      "enName": "Multicolored Geometric Sofa",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Res_Sofa_01_Y300_A_Patterns_Geo.png",
+      "placement": "地面 (Floor)",
+      "size": "200 × 300 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "耐磨布料 (Durable Cloth)",
+          "zhName": "耐磨布料",
+          "enName": "Durable Cloth",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_WovenCloth.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-31-red-study-sofa",
+      "name": "红色书房沙发",
+      "enName": "Red Study Sofa",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Res_Sofa_01_Y300_A.png",
+      "placement": "地面 (Floor)",
+      "size": "200 × 300 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "弹簧垫 (Spring Cushion)",
+          "zhName": "弹簧垫",
+          "enName": "Spring Cushion",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_SpringCushion.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1500,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "极为舒适的枕头 (Very Comfortable Pillow)",
+          "zhName": "极为舒适的枕头",
+          "enName": "Very Comfortable Pillow",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_ComfortablePillow_01.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-25-sturdy-bureau-sofa",
+      "name": "坚固办公室沙发",
+      "enName": "Sturdy Bureau Sofa",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Gvt_Sofa_02_A.png",
+      "placement": "地面 (Floor)",
+      "size": "200 × 300 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-42-sturdy-bureau-chair",
+      "name": "坚固办公椅",
+      "enName": "Sturdy Bureau Chair",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_Gvt_Chair_02_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "布料 (Fabric)",
+          "zhName": "布料",
+          "enName": "Fabric",
+          "count": 4,
+          "icon": "/items/T_UI_Icon_Salvage_Fabric.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 8,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-45-sturdy-faculty-chair",
+      "name": "坚固教职员椅",
+      "enName": "Sturdy Faculty Chair",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_Res_Chair_02_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "化学品 (Chemicals)",
+          "zhName": "化学品",
+          "enName": "Chemicals",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_Chemicals.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-40-polished-diner-chair",
+      "name": "精致餐馆椅",
+      "enName": "Polished Diner Chair",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_Cmr_Chair_03_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-46-polished-faculty-chair",
+      "name": "精致教职员椅",
+      "enName": "Polished Faculty Chair",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_Res_Chair_03_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "化学品 (Chemicals)",
+          "zhName": "化学品",
+          "enName": "Chemicals",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_Chemicals.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 9,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-36-polished-study-sofa",
+      "name": "精致书房沙发",
+      "enName": "Polished Study Sofa",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Res_Sofa_03_A.png",
+      "placement": "地面 (Floor)",
+      "size": "200 × 300 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        },
+        {
+          "item": "耐磨布料 (Durable Cloth)",
+          "zhName": "耐磨布料",
+          "enName": "Durable Cloth",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_WovenCloth.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-26-polished-round-sofa",
+      "name": "精致圆形沙发",
+      "enName": "Polished Round Sofa",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Gvt_Sofa_03_A.png",
+      "placement": "地面 (Floor)",
+      "size": "200 × 300 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "在【研究站】消耗研究点数与样本研发设计图，或战区搜刮获取家具设计图",
+      "craftMaterials": [
+        {
+          "item": "弹簧垫 (Spring Cushion)",
+          "zhName": "弹簧垫",
+          "enName": "Spring Cushion",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_SpringCushion.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": [
+        {
+          "item": "研究点数 (Research Points)",
+          "zhName": "研究点数",
+          "enName": "Research Points",
+          "count": 1500,
+          "icon": "/items/T_UI_Icon_Currency_ResearchPoints.png"
+        },
+        {
+          "item": "极为舒适的枕头 (Very Comfortable Pillow)",
+          "zhName": "极为舒适的枕头",
+          "enName": "Very Comfortable Pillow",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_ComfortablePillow_01.png"
+        }
+      ]
+    },
+    {
+      "id": "furn-34-green-geometric-sofa",
+      "name": "绿色几何沙发",
+      "enName": "Green Geometric Sofa",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Res_Sofa_01_Y300_A_Patterns_Green_Grometry.png",
+      "placement": "地面 (Floor)",
+      "size": "200 × 300 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "耐磨布料 (Durable Cloth)",
+          "zhName": "耐磨布料",
+          "enName": "Durable Cloth",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_WovenCloth.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-35-green-lab-sofa",
+      "name": "绿色实验室沙发",
+      "enName": "Green Lab Sofa",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Res_Sofa_01_Y300_A_ResearchCompany_BC.png",
+      "placement": "地面 (Floor)",
+      "size": "200 × 300 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "布料 (Fabric)",
+          "zhName": "布料",
+          "enName": "Fabric",
+          "count": 12,
+          "icon": "/items/T_UI_Icon_Salvage_Fabric.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-24-battered-bureau-sofa",
+      "name": "破旧办公室沙发",
+      "enName": "Battered Bureau Sofa",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Gvt_Sofa_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "200 × 300 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "弹簧垫 (Spring Cushion)",
+          "zhName": "弹簧垫",
+          "enName": "Spring Cushion",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_SpringCushion.png"
+        },
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-41-battered-bureau-chair",
+      "name": "破旧办公椅",
+      "enName": "Battered Bureau Chair",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_Gvt_Chair_01.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "布料 (Fabric)",
+          "zhName": "布料",
+          "enName": "Fabric",
+          "count": 4,
+          "icon": "/items/T_UI_Icon_Salvage_Fabric.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 8,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-39-battered-diner-chair",
+      "name": "破旧餐馆椅",
+      "enName": "Battered Diner Chair",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_Cmr_Chair_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-47-battered-lab-chair",
+      "name": "破旧实验室椅",
+      "enName": "Battered Lab Chair",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_Rsr_Chair_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "钢质弹簧 (Steel Spring)",
+          "zhName": "钢质弹簧",
+          "enName": "Steel Spring",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_SteelSpring.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 8,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-38-weather-station-chair",
+      "name": "气象站椅子",
+      "enName": "Weather Station Chair",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_WeatherMonitor_01_Chair.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "完成【气象监测系统 (Weather Monitor)】工程项目解锁",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 6,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-37-lab-stool",
+      "name": "实验室高凳",
+      "enName": "Lab Stool",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Rsr_Stool_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "塑料零件 (Plastic Parts)",
+          "zhName": "塑料零件",
+          "enName": "Plastic Parts",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_Plastic.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-28-study-armchair",
+      "name": "书房扶手椅",
+      "enName": "Study Armchair",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_Res_Armchair_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "耐磨布料 (Durable Cloth)",
+          "zhName": "耐磨布料",
+          "enName": "Durable Cloth",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_WovenCloth.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-52-printed-fabric-chair",
+      "name": "印花布料椅",
+      "enName": "Printed Fabric Chair",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Res_Sofa_01_Y150_A_Patterns.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "耐磨布料 (Durable Cloth)",
+          "zhName": "耐磨布料",
+          "enName": "Durable Cloth",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_WovenCloth.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-32-printed-lab-sofa",
+      "name": "印花实验室沙发",
+      "enName": "Printed Lab Sofa",
+      "category": "Seating",
+      "categoryZh": "座椅与沙发",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Res_Sofa_01_Y300_A_Patterns.png",
+      "placement": "地面 (Floor)",
+      "size": "200 × 300 cm",
+      "functionalRole": "哨站休息区座椅家具",
+      "storageType": "none",
+      "storageTypeLabel": "提供哨站座位布置，无额外物品存放槽",
+      "storageSlots": 0,
+      "storageBadge": "🪑 休息区座椅",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "耐磨布料 (Durable Cloth)",
+          "zhName": "耐磨布料",
+          "enName": "Durable Cloth",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_WovenCloth.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-100-ornate-den-bed",
+      "name": "华丽巢穴床",
+      "enName": "Ornate Den Bed",
+      "category": "Beds",
+      "categoryZh": "床铺与软装",
+      "rarity": "rare",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_RaiderDen_Bed_04.png",
+      "placement": "地面 (Floor)",
+      "size": "100 × 200 cm",
+      "functionalRole": "奇袭者休息床铺与床品软装展示",
+      "storageType": "pillow",
+      "storageTypeLabel": "枕头与床品靠垫类软装（Outpost.Decoration.Bed.Pillow，如极为舒适的枕头）",
+      "storageSlots": 1,
+      "storageBadge": "🛏️ 可放置 1 个枕头软装",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 20,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        },
+        {
+          "item": "极为舒适的枕头 (Very Comfortable Pillow)",
+          "zhName": "极为舒适的枕头",
+          "enName": "Very Comfortable Pillow",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_ComfortablePillow_01.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-98-sturdy-den-bed",
+      "name": "坚固巢穴床",
+      "enName": "Sturdy Den Bed",
+      "category": "Beds",
+      "categoryZh": "床铺与软装",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_RaiderDen_Bed_02.png",
+      "placement": "地面 (Floor)",
+      "size": "100 × 200 cm",
+      "functionalRole": "奇袭者休息床铺与床品软装展示",
+      "storageType": "pillow",
+      "storageTypeLabel": "枕头与床品靠垫类软装（Outpost.Decoration.Bed.Pillow，如极为舒适的枕头）",
+      "storageSlots": 1,
+      "storageBadge": "🛏️ 可放置 1 个枕头软装",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "破烂毯子 (Torn Blanket)",
+          "zhName": "破烂毯子",
+          "enName": "Torn Blanket",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_TornBlanket.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-99-polished-den-bed",
+      "name": "精致巢穴床",
+      "enName": "Polished Den Bed",
+      "category": "Beds",
+      "categoryZh": "床铺与软装",
+      "rarity": "rare",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_RaiderDen_Bed_03.png",
+      "placement": "地面 (Floor)",
+      "size": "100 × 200 cm",
+      "functionalRole": "奇袭者休息床铺与床品软装展示",
+      "storageType": "pillow",
+      "storageTypeLabel": "枕头与床品靠垫类软装（Outpost.Decoration.Bed.Pillow，如极为舒适的枕头）",
+      "storageSlots": 1,
+      "storageBadge": "🛏️ 可放置 1 个枕头软装",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "木板 (Planks)",
+          "zhName": "木板",
+          "enName": "Planks",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_Planks.png"
+        },
+        {
+          "item": "破烂毯子 (Torn Blanket)",
+          "zhName": "破烂毯子",
+          "enName": "Torn Blanket",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_TornBlanket.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-97-battered-den-bed",
+      "name": "破旧巢穴床",
+      "enName": "Battered Den Bed",
+      "category": "Beds",
+      "categoryZh": "床铺与软装",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_Outpost_Furniture_RaiderDen_Bed_01.png",
+      "placement": "地面 (Floor)",
+      "size": "100 × 200 cm",
+      "functionalRole": "奇袭者休息床铺与床品软装展示",
+      "storageType": "pillow",
+      "storageTypeLabel": "枕头与床品靠垫类软装（Outpost.Decoration.Bed.Pillow，如极为舒适的枕头）",
+      "storageSlots": 1,
+      "storageBadge": "🛏️ 可放置 1 个枕头软装",
+      "unlockMethod": "随奇袭者巢穴（主仓库储备箱）等级提升自动解锁",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "破烂毯子 (Torn Blanket)",
+          "zhName": "破烂毯子",
+          "enName": "Torn Blanket",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_TornBlanket.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-18-bureau-ceiling-lamp",
+      "name": "办公室吊灯",
+      "enName": "Bureau Ceiling Lamp",
+      "category": "Lighting",
+      "categoryZh": "灯具与照明",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Gvt_LampCeiling_01_A.png",
+      "placement": "吊顶 (Ceiling)",
+      "size": "100 × 100 cm",
+      "functionalRole": "哨站房间环境照明灯具（可开关控制）",
+      "storageType": "none",
+      "storageTypeLabel": "提供房间局部暖光/冷光照明，无附属物品存放格",
+      "storageSlots": 0,
+      "storageBadge": "💡 环境照明灯具",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "灯泡 (Light Bulb)",
+          "zhName": "灯泡",
+          "enName": "Light Bulb",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_Trinket_LightBulb.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-17-glass-ceiling-lamp",
+      "name": "玻璃吊灯",
+      "enName": "Glass Ceiling Lamp",
+      "category": "Lighting",
+      "categoryZh": "灯具与照明",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_GlassCeilingLamp_01_A.png",
+      "placement": "吊顶 (Ceiling)",
+      "size": "100 × 100 cm",
+      "functionalRole": "哨站房间环境照明灯具（可开关控制）",
+      "storageType": "none",
+      "storageTypeLabel": "提供房间局部暖光/冷光照明，无附属物品存放格",
+      "storageSlots": 0,
+      "storageBadge": "💡 环境照明灯具",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "灯泡 (Light Bulb)",
+          "zhName": "灯泡",
+          "enName": "Light Bulb",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_Trinket_LightBulb.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-14-diner-ceiling-lamp",
+      "name": "餐馆吊灯",
+      "enName": "Diner Ceiling Lamp",
+      "category": "Lighting",
+      "categoryZh": "灯具与照明",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Cmr_LampCeiling_01_A.png",
+      "placement": "吊顶 (Ceiling)",
+      "size": "100 × 100 cm",
+      "functionalRole": "哨站房间环境照明灯具（可开关控制）",
+      "storageType": "none",
+      "storageTypeLabel": "提供房间局部暖光/冷光照明，无附属物品存放格",
+      "storageSlots": 0,
+      "storageBadge": "💡 环境照明灯具",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "灯泡 (Light Bulb)",
+          "zhName": "灯泡",
+          "enName": "Light Bulb",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_Trinket_LightBulb.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-21-archive-floor-lamp",
+      "name": "档案库落地灯",
+      "enName": "Archive Floor Lamp",
+      "category": "Lighting",
+      "categoryZh": "灯具与照明",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_CA_LampFloor_02_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "哨站房间环境照明灯具（可开关控制）",
+      "storageType": "none",
+      "storageTypeLabel": "提供房间局部暖光/冷光照明，无附属物品存放格",
+      "storageSlots": 0,
+      "storageBadge": "💡 环境照明灯具",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 15,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "灯泡 (Light Bulb)",
+          "zhName": "灯泡",
+          "enName": "Light Bulb",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_Trinket_LightBulb.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-13-chandelier",
+      "name": "吊灯",
+      "enName": "Chandelier",
+      "category": "Lighting",
+      "categoryZh": "灯具与照明",
+      "rarity": "uncommon",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Chandelier_01_A.png",
+      "placement": "吊顶 (Ceiling)",
+      "size": "300 × 100 cm",
+      "functionalRole": "哨站房间环境照明灯具（可开关控制）",
+      "storageType": "none",
+      "storageTypeLabel": "提供房间局部暖光/冷光照明，无附属物品存放格",
+      "storageSlots": 0,
+      "storageBadge": "💡 环境照明灯具",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "烛台 (Candle Holder)",
+          "zhName": "烛台",
+          "enName": "Candle Holder",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Salvage_CandleHolder.png"
+        },
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 20,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-15-work-light",
+      "name": "工作灯",
+      "enName": "Work Light",
+      "category": "Lighting",
+      "categoryZh": "灯具与照明",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_ConstructionLight_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 100 cm",
+      "functionalRole": "哨站房间环境照明灯具（可开关控制）",
+      "storageType": "none",
+      "storageTypeLabel": "提供房间局部暖光/冷光照明，无附属物品存放格",
+      "storageSlots": 0,
+      "storageBadge": "💡 环境照明灯具",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 5,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "红色荧光棒 (Red Light Stick)",
+          "zhName": "红色荧光棒",
+          "enName": "Red Light Stick",
+          "count": 3,
+          "icon": "/items/T_UI_Icon_Throwable_Glowstick_Red.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-16-floor-lamp",
+      "name": "落地灯",
+      "enName": "Floor Lamp",
+      "category": "Lighting",
+      "categoryZh": "灯具与照明",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_FloorLamp_02_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "哨站房间环境照明灯具（可开关控制）",
+      "storageType": "none",
+      "storageTypeLabel": "提供房间局部暖光/冷光照明，无附属物品存放格",
+      "storageSlots": 0,
+      "storageBadge": "💡 环境照明灯具",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "灯泡 (Light Bulb)",
+          "zhName": "灯泡",
+          "enName": "Light Bulb",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_Trinket_LightBulb.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-20-lab-ceiling-light",
+      "name": "实验室吊灯",
+      "enName": "Lab Ceiling Light",
+      "category": "Lighting",
+      "categoryZh": "灯具与照明",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Rsr_CeilingLight_01_A.png",
+      "placement": "吊顶 (Ceiling)",
+      "size": "100 × 100 cm",
+      "functionalRole": "哨站房间环境照明灯具（可开关控制）",
+      "storageType": "none",
+      "storageTypeLabel": "提供房间局部暖光/冷光照明，无附属物品存放格",
+      "storageSlots": 0,
+      "storageBadge": "💡 环境照明灯具",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "灯泡 (Light Bulb)",
+          "zhName": "灯泡",
+          "enName": "Light Bulb",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_Trinket_LightBulb.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-19-study-ceiling-lamp",
+      "name": "书房吊灯",
+      "enName": "Study Ceiling Lamp",
+      "category": "Lighting",
+      "categoryZh": "灯具与照明",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Res_CeilingLamp_01_A.png",
+      "placement": "吊顶 (Ceiling)",
+      "size": "100 × 100 cm",
+      "functionalRole": "哨站房间环境照明灯具（可开关控制）",
+      "storageType": "none",
+      "storageTypeLabel": "提供房间局部暖光/冷光照明，无附属物品存放格",
+      "storageSlots": 0,
+      "storageBadge": "💡 环境照明灯具",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 10,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "灯泡 (Light Bulb)",
+          "zhName": "灯泡",
+          "enName": "Light Bulb",
+          "count": 2,
+          "icon": "/items/T_UI_Icon_Salvage_Trinket_LightBulb.png"
+        }
+      ],
+      "researchMaterials": []
+    },
+    {
+      "id": "furn-12-chambers-lamp",
+      "name": "私室灯",
+      "enName": "Chambers Lamp",
+      "category": "Lighting",
+      "categoryZh": "灯具与照明",
+      "rarity": "common",
+      "icon": "/items/T_UI_Icon_OutpostFurniture_Chambers_Lamp_01_A.png",
+      "placement": "地面 (Floor)",
+      "size": "50 × 50 cm",
+      "functionalRole": "哨站房间环境照明灯具（可开关控制）",
+      "storageType": "none",
+      "storageTypeLabel": "提供房间局部暖光/冷光照明，无附属物品存放格",
+      "storageSlots": 0,
+      "storageBadge": "💡 环境照明灯具",
+      "unlockMethod": "初始或巢穴等级自动解锁（无需研究站研发）",
+      "craftMaterials": [
+        {
+          "item": "金属板 (Sheet Metal)",
+          "zhName": "金属板",
+          "enName": "Sheet Metal",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_SheetMetal.png"
+        },
+        {
+          "item": "灯泡 (Light Bulb)",
+          "zhName": "灯泡",
+          "enName": "Light Bulb",
+          "count": 1,
+          "icon": "/items/T_UI_Icon_Salvage_Trinket_LightBulb.png"
+        }
+      ],
+      "researchMaterials": []
+    }
+  ]
+}

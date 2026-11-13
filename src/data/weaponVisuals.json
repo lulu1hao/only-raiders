@@ -1,0 +1,476 @@
+{
+  "source": "ARC Raiders paks (2026-11-06) via CUE4Parse extractor; see tools/buildWeaponVisualAssets.py",
+  "ammoIcons": {
+    "Light Ammo": "weapons/ammo/Light.png",
+    "Medium Ammo": "weapons/ammo/Medium.png",
+    "Heavy Ammo": "weapons/ammo/Heavy.png",
+    "Shotgun Ammo": "weapons/ammo/Shotgun.png",
+    "Energy Clip": "weapons/ammo/Energy.png",
+    "Launcher Ammo": "weapons/ammo/Launcher.png"
+  },
+  "ampIcons": {
+    "T_UI_Icon_Upgrade_Amplified": "weapons/amps/Amplified.png",
+    "T_UI_Icon_Upgrade_AntiShieldRounds": "weapons/amps/AntiShieldRounds.png",
+    "T_UI_Icon_Upgrade_ArcWeakPoint": "weapons/amps/ArcWeakPoint.png",
+    "T_UI_Icon_Upgrade_BurstFirst": "weapons/amps/BurstFirst.png",
+    "T_UI_Icon_Upgrade_Burst_03": "weapons/amps/Burst_03.png",
+    "T_UI_Icon_Upgrade_CarbineConversion": "weapons/amps/CarbineConversion.png",
+    "T_UI_Icon_Upgrade_DrumMag": "weapons/amps/DrumMag.png",
+    "T_UI_Icon_Upgrade_ExplosiveRounds": "weapons/amps/ExplosiveRounds.png",
+    "T_UI_Icon_Upgrade_FullAuto": "weapons/amps/FullAuto.png",
+    "T_UI_Icon_Upgrade_IncendiaryAmmo": "weapons/amps/IncendiaryAmmo.png",
+    "T_UI_Icon_Upgrade_IncendiaryGranadeAmmo": "weapons/amps/IncendiaryGranadeAmmo.png",
+    "T_UI_Icon_Upgrade_IncreaseMag": "weapons/amps/IncreaseMag.png",
+    "T_UI_Icon_Upgrade_Increase_Velocity": "weapons/amps/Increase_Velocity.png",
+    "T_UI_Icon_Upgrade_IncreasedBurst_plus": "weapons/amps/IncreasedBurst_plus.png",
+    "T_UI_Icon_Upgrade_MagReload_00": "weapons/amps/MagReload_00.png",
+    "T_UI_Icon_Upgrade_MagReload_01": "weapons/amps/MagReload_01.png",
+    "T_UI_Icon_Upgrade_MoreBulletsReload": "weapons/amps/MoreBulletsReload.png",
+    "T_UI_Icon_Upgrade_ProjectileSplitter": "weapons/amps/ProjectileSplitter.png",
+    "T_UI_Icon_Upgrade_RampingDamage": "weapons/amps/RampingDamage.png",
+    "T_UI_Icon_Upgrade_ScopeVariant": "weapons/amps/ScopeVariant.png",
+    "T_UI_Icon_Upgrade_SemiAuto": "weapons/amps/SemiAuto.png",
+    "T_UI_Icon_Upgrade_SlugRounds": "weapons/amps/SlugRounds.png",
+    "T_UI_Icon_Upgrade_SprintShooting": "weapons/amps/SprintShooting.png",
+    "T_UI_Icon_Upgrade_StraightBolt": "weapons/amps/StraightBolt.png",
+    "T_UI_Icon_Upgrade_TrackerRonds": "weapons/amps/TrackerRonds.png"
+  },
+  "weapons": {
+    "tempest": {
+      "folder": "AssaultRifle_Bullpup_01",
+      "ammo": "Medium Ammo",
+      "imageSmall": "weapons/small/tempest.png"
+    },
+    "arpeggio": {
+      "folder": "AssaultRifle_Burst_01",
+      "ammo": "Medium Ammo",
+      "imageSmall": "weapons/small/arpeggio.png"
+    },
+    "bettina": {
+      "folder": "AssaultRifle_Heavy_01",
+      "ammo": "Heavy Ammo",
+      "imageSmall": "weapons/small/bettina.png",
+      "ascended": {
+        "rarity": "Legendary",
+        "image": "weapons/ascended/bettina.png",
+        "imageSmall": "weapons/ascended/small/bettina.png",
+        "ascensionIcon": "T_UI_Icon_Upgrade_Amplified",
+        "amps": {
+          "bigger-mag": {
+            "icon": "T_UI_Icon_Upgrade_IncreaseMag",
+            "removesSlotPositions": []
+          },
+          "semi-auto": {
+            "icon": "T_UI_Icon_Upgrade_SemiAuto",
+            "removesSlotPositions": []
+          },
+          "x-rounds": {
+            "icon": "T_UI_Icon_Upgrade_ExplosiveRounds",
+            "removesSlotPositions": []
+          }
+        }
+      }
+    },
+    "rattler": {
+      "folder": "AssaultRifle_LowTier_01",
+      "ammo": "Medium Ammo",
+      "imageSmall": "weapons/small/rattler.png",
+      "ascended": {
+        "rarity": "Legendary",
+        "image": "weapons/ascended/rattler.png",
+        "imageSmall": "weapons/ascended/small/rattler.png",
+        "ascensionIcon": "T_UI_Icon_Upgrade_Amplified",
+        "amps": {
+          "drum-mag": {
+            "icon": "T_UI_Icon_Upgrade_DrumMag",
+            "removesSlotPositions": []
+          },
+          "incendiary-rounds": {
+            "icon": "T_UI_Icon_Upgrade_IncendiaryAmmo",
+            "removesSlotPositions": []
+          },
+          "more-reload": {
+            "icon": "T_UI_Icon_Upgrade_MoreBulletsReload",
+            "removesSlotPositions": []
+          }
+        }
+      }
+    },
+    "kettle": {
+      "folder": "AssaultRifle_Pneumatic_01",
+      "ammo": "Light Ammo",
+      "imageSmall": "weapons/small/kettle.png",
+      "ascended": {
+        "rarity": "Legendary",
+        "image": "weapons/ascended/kettle.png",
+        "imageSmall": "weapons/ascended/small/kettle.png",
+        "ascensionIcon": "T_UI_Icon_Upgrade_Amplified",
+        "amps": {
+          "anti-shield": {
+            "icon": "T_UI_Icon_Upgrade_AntiShieldRounds",
+            "removesSlotPositions": []
+          },
+          "full-auto": {
+            "icon": "T_UI_Icon_Upgrade_FullAuto",
+            "removesSlotPositions": []
+          },
+          "x-rounds": {
+            "icon": "T_UI_Icon_Upgrade_ExplosiveRounds",
+            "removesSlotPositions": [
+              2
+            ]
+          }
+        }
+      }
+    },
+    "ferro": {
+      "folder": "BattleRifle_BreachAction_01",
+      "ammo": "Heavy Ammo",
+      "imageSmall": "weapons/small/ferro.png"
+    },
+    "aphelion": {
+      "folder": "BattleRifle_EnergyBurst_01",
+      "ammo": "Energy Clip",
+      "imageSmall": "weapons/small/aphelion.png",
+      "ascended": {
+        "rarity": "Legendary",
+        "image": "weapons/ascended/aphelion.png",
+        "imageSmall": "weapons/ascended/small/aphelion.png",
+        "ascensionIcon": "T_UI_Icon_Upgrade_Amplified",
+        "amps": {
+          "bigger-mag": {
+            "icon": "T_UI_Icon_Upgrade_IncreaseMag",
+            "removesSlotPositions": []
+          },
+          "charged-burst": {
+            "icon": "T_UI_Icon_Upgrade_MagReload_01",
+            "removesSlotPositions": []
+          },
+          "incendiary-rounds": {
+            "icon": "T_UI_Icon_Upgrade_IncendiaryAmmo",
+            "removesSlotPositions": []
+          },
+          "increased-burst": {
+            "icon": "T_UI_Icon_Upgrade_BurstFirst",
+            "removesSlotPositions": []
+          }
+        }
+      }
+    },
+    "renegade": {
+      "folder": "BattleRifle_LeverAction_01",
+      "ammo": "Medium Ammo",
+      "imageSmall": "weapons/small/renegade.png",
+      "ascended": {
+        "rarity": "Legendary",
+        "image": "weapons/ascended/renegade.png",
+        "imageSmall": "weapons/ascended/small/renegade.png",
+        "ascensionIcon": "T_UI_Icon_Upgrade_Amplified",
+        "amps": {
+          "more-reload": {
+            "icon": "T_UI_Icon_Upgrade_MoreBulletsReload",
+            "removesSlotPositions": []
+          },
+          "scoped": {
+            "icon": "T_UI_Icon_Upgrade_ScopeVariant",
+            "removesSlotPositions": [
+              1
+            ]
+          }
+        }
+      }
+    },
+    "stiletto": {
+      "folder": "BattleRifle_SemiAuto_Light_01",
+      "ammo": "Light Ammo",
+      "imageSmall": "weapons/small/stiletto.png"
+    },
+    "bantam": {
+      "folder": "HandCannon_DoubleAction_Snubnose_01",
+      "ammo": "Heavy Ammo",
+      "imageSmall": "weapons/small/bantam.png"
+    },
+    "anvil": {
+      "folder": "HandCannon_SingleAction_01",
+      "ammo": "Heavy Ammo",
+      "imageSmall": "weapons/small/anvil.png",
+      "ascended": {
+        "rarity": "Legendary",
+        "image": "weapons/ascended/anvil.png",
+        "imageSmall": "weapons/ascended/small/anvil.png",
+        "ascensionIcon": "T_UI_Icon_Upgrade_Amplified",
+        "amps": {
+          "anvil-splitter": {
+            "icon": "T_UI_Icon_Upgrade_ProjectileSplitter",
+            "removesSlotPositions": []
+          },
+          "x-rounds": {
+            "icon": "T_UI_Icon_Upgrade_ExplosiveRounds",
+            "removesSlotPositions": []
+          }
+        }
+      }
+    },
+    "torrente": {
+      "folder": "LMG_Medium_01",
+      "ammo": "Medium Ammo",
+      "imageSmall": "weapons/small/torrente.png"
+    },
+    "burletta": {
+      "folder": "Pistol_01",
+      "ammo": "Light Ammo",
+      "imageSmall": "weapons/small/burletta.png",
+      "ascended": {
+        "rarity": "Legendary",
+        "image": "weapons/ascended/burletta.png",
+        "imageSmall": "weapons/ascended/small/burletta.png",
+        "ascensionIcon": "T_UI_Icon_Upgrade_Amplified",
+        "amps": {
+          "burst-fire": {
+            "icon": "T_UI_Icon_Upgrade_Burst_03",
+            "removesSlotPositions": []
+          },
+          "full-auto": {
+            "icon": "T_UI_Icon_Upgrade_FullAuto",
+            "removesSlotPositions": []
+          },
+          "increased-burst": {
+            "icon": "T_UI_Icon_Upgrade_IncreasedBurst_plus",
+            "removesSlotPositions": []
+          },
+          "sprint-shooting": {
+            "icon": "T_UI_Icon_Upgrade_SprintShooting",
+            "removesSlotPositions": []
+          }
+        }
+      }
+    },
+    "venator": {
+      "folder": "Pistol_HighPower_01",
+      "ammo": "Medium Ammo",
+      "imageSmall": "weapons/small/venator.png"
+    },
+    "hairpin": {
+      "folder": "Pistol_Silenced_01",
+      "ammo": "Light Ammo",
+      "imageSmall": "weapons/small/hairpin.png",
+      "ascended": {
+        "rarity": "Legendary",
+        "image": "weapons/ascended/hairpin.png",
+        "imageSmall": "weapons/ascended/small/hairpin.png",
+        "ascensionIcon": "T_UI_Icon_Upgrade_Amplified",
+        "amps": {
+          "incendiary-rounds": {
+            "icon": "T_UI_Icon_Upgrade_IncendiaryAmmo",
+            "removesSlotPositions": []
+          },
+          "semi-auto": {
+            "icon": "T_UI_Icon_Upgrade_SemiAuto",
+            "removesSlotPositions": []
+          },
+          "sprint-shooting": {
+            "icon": "T_UI_Icon_Upgrade_SprintShooting",
+            "removesSlotPositions": []
+          },
+          "tracker-rounds": {
+            "icon": "T_UI_Icon_Upgrade_TrackerRonds",
+            "removesSlotPositions": []
+          }
+        }
+      }
+    },
+    "bobcat": {
+      "folder": "SMG_01",
+      "ammo": "Light Ammo",
+      "imageSmall": "weapons/small/bobcat.png"
+    },
+    "stitcher": {
+      "folder": "SMG_LowTier_01",
+      "ammo": "Light Ammo",
+      "imageSmall": "weapons/small/stitcher.png"
+    },
+    "canto": {
+      "folder": "SMG_Medium_01",
+      "ammo": "Medium Ammo",
+      "imageSmall": "weapons/small/canto.png",
+      "ascended": {
+        "rarity": "Legendary",
+        "image": "weapons/ascended/canto.png",
+        "imageSmall": "weapons/ascended/small/canto.png",
+        "ascensionIcon": "T_UI_Icon_Upgrade_Amplified",
+        "amps": {
+          "carbine-conversion": {
+            "icon": "T_UI_Icon_Upgrade_CarbineConversion",
+            "removesSlotPositions": [
+              3
+            ]
+          },
+          "incendiary-rounds": {
+            "icon": "T_UI_Icon_Upgrade_IncendiaryAmmo",
+            "removesSlotPositions": []
+          },
+          "sprint-shooting": {
+            "icon": "T_UI_Icon_Upgrade_SprintShooting",
+            "removesSlotPositions": [
+              3
+            ]
+          }
+        }
+      }
+    },
+    "dolabra": {
+      "folder": "Shotgun_Energy_Adjustable_01",
+      "ammo": "Energy Clip",
+      "imageSmall": "weapons/small/dolabra.png"
+    },
+    "il_toro": {
+      "folder": "Shotgun_PumpAction_01",
+      "ammo": "Shotgun Ammo",
+      "imageSmall": "weapons/small/il_toro.png",
+      "ascended": {
+        "rarity": "Legendary",
+        "image": "weapons/ascended/il_toro.png",
+        "imageSmall": "weapons/ascended/small/il_toro.png",
+        "ascensionIcon": "T_UI_Icon_Upgrade_Amplified",
+        "amps": {
+          "more-reload": {
+            "icon": "T_UI_Icon_Upgrade_MoreBulletsReload",
+            "removesSlotPositions": []
+          },
+          "slug-rounds": {
+            "icon": "T_UI_Icon_Upgrade_SlugRounds",
+            "removesSlotPositions": []
+          }
+        }
+      }
+    },
+    "vulcano": {
+      "folder": "Shotgun_SemiAuto_01",
+      "ammo": "Shotgun Ammo",
+      "imageSmall": "weapons/small/vulcano.png"
+    },
+    "osprey": {
+      "folder": "SniperRifle_BoltAction_Medium_01",
+      "ammo": "Medium Ammo",
+      "imageSmall": "weapons/small/osprey.png",
+      "ascended": {
+        "rarity": "Legendary",
+        "image": "weapons/ascended/osprey.png",
+        "imageSmall": "weapons/ascended/small/osprey.png",
+        "ascensionIcon": "T_UI_Icon_Upgrade_Amplified",
+        "amps": {
+          "anti-weak-point": {
+            "icon": "T_UI_Icon_Upgrade_ArcWeakPoint",
+            "removesSlotPositions": []
+          },
+          "ergonomic-bolt": {
+            "icon": "T_UI_Icon_Upgrade_StraightBolt",
+            "removesSlotPositions": [
+              3
+            ]
+          },
+          "tracker-rounds": {
+            "icon": "T_UI_Icon_Upgrade_TrackerRonds",
+            "removesSlotPositions": []
+          }
+        }
+      }
+    },
+    "equalizer": {
+      "folder": "Special_BeamRifle_01",
+      "ammo": "Energy Clip",
+      "imageSmall": "weapons/small/equalizer.png",
+      "ascended": {
+        "rarity": "Legendary",
+        "image": "weapons/ascended/equalizer.png",
+        "imageSmall": "weapons/ascended/small/equalizer.png",
+        "ascensionIcon": "T_UI_Icon_Upgrade_Amplified",
+        "amps": {
+          "anti-weak-point": {
+            "icon": "T_UI_Icon_Upgrade_ArcWeakPoint",
+            "removesSlotPositions": []
+          },
+          "bigger-mag": {
+            "icon": "T_UI_Icon_Upgrade_IncreaseMag",
+            "removesSlotPositions": []
+          },
+          "ramping-damage": {
+            "icon": "T_UI_Icon_Upgrade_RampingDamage",
+            "removesSlotPositions": []
+          }
+        }
+      }
+    },
+    "jupiter": {
+      "folder": "Special_Railgun_01",
+      "ammo": "Energy Clip",
+      "imageSmall": "weapons/small/jupiter.png",
+      "ascended": {
+        "rarity": "Legendary",
+        "image": "weapons/ascended/jupiter.png",
+        "imageSmall": "weapons/ascended/small/jupiter.png",
+        "ascensionIcon": "T_UI_Icon_Upgrade_Amplified",
+        "amps": {
+          "bigger-mag": {
+            "icon": "T_UI_Icon_Upgrade_IncreaseMag",
+            "removesSlotPositions": []
+          },
+          "ergonomic-bolt": {
+            "icon": "T_UI_Icon_Upgrade_StraightBolt",
+            "removesSlotPositions": []
+          },
+          "scoped": {
+            "icon": "T_UI_Icon_Upgrade_ScopeVariant",
+            "removesSlotPositions": []
+          }
+        }
+      }
+    },
+    "rascal": {
+      "folder": "Launcher_AntiArc_SingleShot_01",
+      "ammo": "Launcher Ammo",
+      "imageSmall": "weapons/small/rascal.png",
+      "ascended": {
+        "rarity": "Legendary",
+        "image": "weapons/ascended/rascal.png",
+        "imageSmall": "weapons/ascended/small/rascal.png",
+        "ascensionIcon": "T_UI_Icon_Upgrade_Amplified",
+        "amps": {
+          "high-velocity": {
+            "icon": "T_UI_Icon_Upgrade_Increase_Velocity",
+            "removesSlotPositions": []
+          },
+          "incendiary-grenades": {
+            "icon": "T_UI_Icon_Upgrade_IncendiaryGranadeAmmo",
+            "removesSlotPositions": []
+          },
+          "sprint-shooting": {
+            "icon": "T_UI_Icon_Upgrade_SprintShooting",
+            "removesSlotPositions": []
+          }
+        }
+      }
+    },
+    "hullcracker": {
+      "folder": "Launcher_AntiArc_Medium_01",
+      "ammo": "Launcher Ammo",
+      "imageSmall": "weapons/small/hullcracker.png",
+      "ascended": {
+        "rarity": "Legendary",
+        "image": "weapons/ascended/hullcracker.png",
+        "imageSmall": "weapons/ascended/small/hullcracker.png",
+        "ascensionIcon": "T_UI_Icon_Upgrade_Amplified",
+        "amps": {
+          "incendiary-grenades": {
+            "icon": "T_UI_Icon_Upgrade_IncendiaryGranadeAmmo",
+            "removesSlotPositions": []
+          },
+          "mag-reload": {
+            "icon": "T_UI_Icon_Upgrade_MagReload_00",
+            "removesSlotPositions": []
+          }
+        }
+      }
+    }
+  }
+}

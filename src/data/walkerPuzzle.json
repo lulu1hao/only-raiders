@@ -1,0 +1,1562 @@
+{
+  "id": "fallen-emperor-walker",
+  "title": "雪山 · 坠落帝王内部迷宫",
+  "subtitle": "Fallen Emperor / Collector Interior (FrozenTrail_01 · Walker_01)",
+  "modelUrl": "/maps/walker.glb",
+  "center": [
+    -35,
+    -5,
+    -10
+  ],
+  "bounds": {
+    "min": [
+      -138,
+      -68,
+      -80
+    ],
+    "max": [
+      75,
+      56,
+      42
+    ]
+  },
+  "crusherSpec": {
+    "strokeMeters": 9.45,
+    "cycleSeconds": 9,
+    "openHoldSeconds": 2,
+    "slamSeconds": 1.1,
+    "closedHoldSeconds": 1.7,
+    "retractSeconds": 4.2,
+    "desc": "左/右两座巨型机械粉碎压机 (BP_MovablePlatform_CollectorCompactor_C / BP_Collector_Compactor_02_C) 沿 Y 轴相向往复冲压 9.45m（张开间距 21.0m → 闭合间隙 2.1m）。"
+  },
+  "mazes": [
+    {
+      "id": "maze_01",
+      "label": "迷宫 1 (Maze 01)",
+      "color": "#f59e0b",
+      "desc": "分拣矩阵变体 1：39 块高墙隔断，中路迂回通道"
+    },
+    {
+      "id": "maze_02",
+      "label": "迷宫 2 (Maze 02)",
+      "color": "#06b6d4",
+      "desc": "分拣矩阵变体 2：46 块高墙隔断，双翼走廊分流"
+    },
+    {
+      "id": "maze_03",
+      "label": "迷宫 3 (Maze 03)",
+      "color": "#10b981",
+      "desc": "分拣矩阵变体 3：48 块高墙隔断，高密度曲折迷宫"
+    },
+    {
+      "id": "all",
+      "label": "叠加对比",
+      "color": "#a855f7",
+      "desc": "同时显示 3 套迷宫隔断以对比刷点差异"
+    }
+  ],
+  "routes": [
+    {
+      "id": "route_1a",
+      "label": "路线 1A",
+      "color": "#10b981",
+      "openDoorCount": 9,
+      "matrixActive": true,
+      "openDoorsSummary": "右底矩阵门 · 左翼上层后门 · 顶层弹药舱门 · 顶层激光室门 · 耦合器右前上层门 (+4 扇单向捷径门)",
+      "desc": "【矩阵弱点 + 顶层激光全线】开启右底矩阵门进入 35 处矩阵弱点，经左翼“粉碎者”与左翼上层门登顶弹药舱，穿顶层激光室直抵耦合器右前上层门。"
+    },
+    {
+      "id": "route_1b",
+      "label": "路线 1B",
+      "color": "#f59e0b",
+      "openDoorCount": 9,
+      "matrixActive": false,
+      "openDoorsSummary": "左/右双底矩阵门 · 顶层弹药舱门 · 右翼中上层门 · 耦合器右前上层门 (+4 扇单向捷径门)",
+      "desc": "【双底绕行 + 右翼上层突破】底层矩阵弱点关闭，左/右底舱门双开；经左翼粉碎压机与左翼弱点群登顶弹药舱，转入右翼中上层门直达耦合器核心。"
+    },
+    {
+      "id": "route_2a",
+      "label": "路线 2A",
+      "color": "#06b6d4",
+      "openDoorCount": 9,
+      "matrixActive": false,
+      "openDoorsSummary": "中央中下层门 · 中央中上层门 · 右翼后/外双中层门 · 左翼上层三连门 (后/中/前)",
+      "desc": "【中央升降井 + 左右双翼中上层】中路中央中下/中上层隔舱门全开！从升降井切入右翼外廊与“粉碎者”，再沿左翼上层三道连续敞开舱门直通耦合器。"
+    },
+    {
+      "id": "route_2b",
+      "label": "路线 2B",
+      "color": "#ec4899",
+      "openDoorCount": 2,
+      "matrixActive": true,
+      "openDoorsSummary": "仅开启中央中下层门 (-45.7, 0.1, -29.4) 与右翼内侧单向门（其余 12 扇隔舱门全部封死）",
+      "desc": "【高压封锁 + 专属转盘攀爬】12 扇常规隔舱门全部锁死！必须从中央中下层门进入分拣矩阵击破 35 处弱点，并借 2B 专属刷新的左翼旋转弹药转盘向上攀爬。"
+    },
+    {
+      "id": "route_3a",
+      "label": "路线 3A",
+      "color": "#a855f7",
+      "openDoorCount": 10,
+      "matrixActive": false,
+      "openDoorsSummary": "左/右双底门 · 左翼上层后门 · 中央中上层门 · 右翼后/外双中层门 (+4 扇单向逃生门)",
+      "desc": "【左进右出 · 中层横切动线】从左底门进入左翼“粉碎者”，穿左翼上层后门与中央中上层门横切至右翼外廊，无需绕行顶层激光室即可切入耦合器核心。"
+    },
+    {
+      "id": "route_3b",
+      "label": "路线 3B",
+      "color": "#38bdf8",
+      "openDoorCount": 7,
+      "matrixActive": false,
+      "openDoorsSummary": "左/右双底门 · 中央中上层门 · 顶层弹药舱门 · 顶层激光室门 (+2 扇单向捷径门)",
+      "desc": "【右翼压机 + 顶层激光突袭】从右底门进入右翼“粉碎者”，经中央中上层门与左翼弹药舱门登上顶层紫外高能激光室，从高处突入耦合器金库。"
+    }
+  ],
+  "routePaths": {
+    "route_1a": {
+      "color": "#10b981",
+      "segments": [
+        {
+          "fromId": "front-entrance-door",
+          "toId": "signal-relay-quad",
+          "label": "前部主通道潜入",
+          "points": [
+            [
+              65.2,
+              0,
+              -58.9
+            ],
+            [
+              28.5,
+              0,
+              -59.1
+            ],
+            [
+              -32.6,
+              0,
+              -53.3
+            ]
+          ]
+        },
+        {
+          "fromId": "signal-relay-quad",
+          "toId": "sorting-matrix-weakpoints",
+          "label": "经右底开启舱门 (-62,-15,-46) 入矩阵",
+          "points": [
+            [
+              -32.6,
+              0,
+              -53.3
+            ],
+            [
+              -49.1,
+              -0.1,
+              -58.8
+            ],
+            [
+              -62,
+              -15.3,
+              -46.1
+            ],
+            [
+              -78.1,
+              0,
+              -44.3
+            ]
+          ]
+        },
+        {
+          "fromId": "sorting-matrix-weakpoints",
+          "toId": "compactor-press-left",
+          "label": "击破35弱点 → 穿过冷却塔与左“粉碎者”",
+          "points": [
+            [
+              -78.1,
+              0,
+              -44.3
+            ],
+            [
+              -81,
+              0,
+              -32.7
+            ],
+            [
+              -81.5,
+              0,
+              -19.5
+            ],
+            [
+              -88.7,
+              15.9,
+              -7.7
+            ]
+          ]
+        },
+        {
+          "fromId": "compactor-press-left",
+          "toId": "payload-magazine-left",
+          "label": "经左翼上层开启舱门 (-68,+27,+8) 登转盘",
+          "points": [
+            [
+              -88.7,
+              15.9,
+              -7.7
+            ],
+            [
+              -67.9,
+              27,
+              7.7
+            ],
+            [
+              -99.2,
+              7,
+              19.9
+            ]
+          ]
+        },
+        {
+          "fromId": "payload-magazine-left",
+          "toId": "laser-blockers-tunnel",
+          "label": "经顶层弹药门 (-95,+18,+32) 与激光门 (-70,-44,+45)",
+          "points": [
+            [
+              -99.2,
+              7,
+              19.9
+            ],
+            [
+              -95,
+              17.7,
+              31.6
+            ],
+            [
+              -91,
+              -7,
+              27.1
+            ],
+            [
+              -70.2,
+              -43.6,
+              45.1
+            ],
+            [
+              -61.5,
+              -69.5,
+              42.5
+            ]
+          ]
+        },
+        {
+          "fromId": "laser-blockers-tunnel",
+          "toId": "carrier-coupler-core",
+          "label": "穿激光走廊 → 经耦合器右前门 (-28,-11,+10) 入核心",
+          "points": [
+            [
+              -61.5,
+              -69.5,
+              42.5
+            ],
+            [
+              -26.8,
+              -70.1,
+              46.5
+            ],
+            [
+              -27.9,
+              -10.5,
+              10.4
+            ],
+            [
+              -11.8,
+              0,
+              -14.5
+            ]
+          ]
+        },
+        {
+          "fromId": "carrier-coupler-core",
+          "toId": "exit-door-right",
+          "label": "经右翼内侧门 (-36,-10,0) 撤离",
+          "points": [
+            [
+              -11.8,
+              0,
+              -14.5
+            ],
+            [
+              -36.2,
+              -10.4,
+              -0.1
+            ],
+            [
+              -24.2,
+              -21.5,
+              -42.8
+            ]
+          ]
+        }
+      ]
+    },
+    "route_1b": {
+      "color": "#f59e0b",
+      "segments": [
+        {
+          "fromId": "front-entrance-door",
+          "toId": "signal-relay-quad",
+          "label": "前部主通道潜入",
+          "points": [
+            [
+              65.2,
+              0,
+              -58.9
+            ],
+            [
+              28.5,
+              0,
+              -59.1
+            ],
+            [
+              -32.6,
+              0,
+              -53.3
+            ]
+          ]
+        },
+        {
+          "fromId": "signal-relay-quad",
+          "toId": "sorting-matrix-maze",
+          "label": "经左底开启舱门 (-62,+15,-46) 快速绕过矩阵",
+          "points": [
+            [
+              -32.6,
+              0,
+              -53.3
+            ],
+            [
+              -49.1,
+              -0.1,
+              -58.8
+            ],
+            [
+              -62,
+              15.4,
+              -46.1
+            ],
+            [
+              -81,
+              10,
+              -32.7
+            ]
+          ]
+        },
+        {
+          "fromId": "sorting-matrix-maze",
+          "toId": "compactor-press-left",
+          "label": "登上左翼巨型粉碎压机顶廊",
+          "points": [
+            [
+              -81,
+              10,
+              -32.7
+            ],
+            [
+              -88.7,
+              15.9,
+              -7.7
+            ]
+          ]
+        },
+        {
+          "fromId": "compactor-press-left",
+          "toId": "payload-magazine-right",
+          "label": "击破左翼弱点群 → 经顶层弹药舱门 (-95,+18,+32)",
+          "points": [
+            [
+              -88.7,
+              15.9,
+              -7.7
+            ],
+            [
+              -68.7,
+              23.2,
+              8.2
+            ],
+            [
+              -99.2,
+              7,
+              19.9
+            ],
+            [
+              -95,
+              17.7,
+              31.6
+            ],
+            [
+              -91,
+              -7,
+              27.1
+            ]
+          ]
+        },
+        {
+          "fromId": "payload-magazine-right",
+          "toId": "carrier-coupler-core",
+          "label": "经右翼中上层门 (-50,-23,+10) 与右前门 (-28,-11,+10) 入核心",
+          "points": [
+            [
+              -91,
+              -7,
+              27.1
+            ],
+            [
+              -50,
+              -23,
+              10.4
+            ],
+            [
+              -27.9,
+              -10.5,
+              10.4
+            ],
+            [
+              -11.8,
+              0,
+              -14.5
+            ]
+          ]
+        },
+        {
+          "fromId": "carrier-coupler-core",
+          "toId": "exit-door-right",
+          "label": "经右翼内侧门 (-36,-10,0) 撤离",
+          "points": [
+            [
+              -11.8,
+              0,
+              -14.5
+            ],
+            [
+              -36.2,
+              -10.4,
+              -0.1
+            ],
+            [
+              -24.2,
+              -21.5,
+              -42.8
+            ]
+          ]
+        }
+      ]
+    },
+    "route_2a": {
+      "color": "#06b6d4",
+      "segments": [
+        {
+          "fromId": "front-entrance-door",
+          "toId": "signal-relay-quad",
+          "label": "前部主通道潜入",
+          "points": [
+            [
+              65.2,
+              0,
+              -58.9
+            ],
+            [
+              28.5,
+              0,
+              -59.1
+            ],
+            [
+              -32.6,
+              0,
+              -53.3
+            ]
+          ]
+        },
+        {
+          "fromId": "signal-relay-quad",
+          "toId": "central-piston-elevator",
+          "label": "搭乘中央活塞升降机上行",
+          "points": [
+            [
+              -32.6,
+              0,
+              -53.3
+            ],
+            [
+              -36.2,
+              0,
+              -32.3
+            ]
+          ]
+        },
+        {
+          "fromId": "central-piston-elevator",
+          "toId": "compactor-press-right",
+          "label": "穿中央中下/中上双门 → 右翼后/外双门抵右“粉碎者”",
+          "points": [
+            [
+              -36.2,
+              0,
+              -32.3
+            ],
+            [
+              -45.7,
+              0.1,
+              -29.4
+            ],
+            [
+              -52,
+              0,
+              -13.5
+            ],
+            [
+              -62.4,
+              -25.7,
+              -0.1
+            ],
+            [
+              -51.7,
+              -33.7,
+              -0.1
+            ],
+            [
+              -88.7,
+              -15.9,
+              -7.7
+            ]
+          ]
+        },
+        {
+          "fromId": "compactor-press-right",
+          "toId": "compactor-press-left",
+          "label": "趁双“粉碎者”张开间隙横穿压机室",
+          "points": [
+            [
+              -88.7,
+              -15.9,
+              -7.7
+            ],
+            [
+              -88.7,
+              0,
+              -7.7
+            ],
+            [
+              -88.7,
+              15.9,
+              -7.7
+            ]
+          ]
+        },
+        {
+          "fromId": "compactor-press-left",
+          "toId": "carrier-coupler-core",
+          "label": "沿左翼上层三连开启舱门 (-68→-54→-28) 直入耦合器",
+          "points": [
+            [
+              -88.7,
+              15.9,
+              -7.7
+            ],
+            [
+              -67.8,
+              25.8,
+              7.7
+            ],
+            [
+              -54.1,
+              10.3,
+              10.5
+            ],
+            [
+              -27.9,
+              10.2,
+              10.5
+            ],
+            [
+              -11.8,
+              0,
+              -14.5
+            ]
+          ]
+        },
+        {
+          "fromId": "carrier-coupler-core",
+          "toId": "exit-door-left",
+          "label": "从左翼单向逃生门撤离",
+          "points": [
+            [
+              -11.8,
+              0,
+              -14.5
+            ],
+            [
+              -24.2,
+              21.5,
+              -42.8
+            ]
+          ]
+        }
+      ]
+    },
+    "route_2b": {
+      "color": "#ec4899",
+      "segments": [
+        {
+          "fromId": "front-entrance-door",
+          "toId": "signal-relay-quad",
+          "label": "前部主通道潜入",
+          "points": [
+            [
+              65.2,
+              0,
+              -58.9
+            ],
+            [
+              28.5,
+              0,
+              -59.1
+            ],
+            [
+              -32.6,
+              0,
+              -53.3
+            ]
+          ]
+        },
+        {
+          "fromId": "signal-relay-quad",
+          "toId": "sorting-matrix-weakpoints",
+          "label": "全图仅中央中下层门 (-45.7,0,-29.4) 开启 → 下入矩阵",
+          "points": [
+            [
+              -32.6,
+              0,
+              -53.3
+            ],
+            [
+              -36.2,
+              0,
+              -32.3
+            ],
+            [
+              -45.7,
+              0.1,
+              -29.4
+            ],
+            [
+              -78.1,
+              0,
+              -44.3
+            ]
+          ]
+        },
+        {
+          "fromId": "sorting-matrix-weakpoints",
+          "toId": "compactor-press-left",
+          "label": "击破35处矩阵弱点 → 穿冷却塔抵左“粉碎者”",
+          "points": [
+            [
+              -78.1,
+              0,
+              -44.3
+            ],
+            [
+              -81,
+              0,
+              -32.7
+            ],
+            [
+              -81.5,
+              0,
+              -19.5
+            ],
+            [
+              -88.7,
+              15.9,
+              -7.7
+            ]
+          ]
+        },
+        {
+          "fromId": "compactor-press-left",
+          "toId": "payload-magazine-right",
+          "label": "击破左翼弱点 → 借2B专属旋转弹鼓 (-104,+20,+9) 攀爬",
+          "points": [
+            [
+              -88.7,
+              15.9,
+              -7.7
+            ],
+            [
+              -73.6,
+              21.3,
+              9.6
+            ],
+            [
+              -104,
+              19.9,
+              8.7
+            ],
+            [
+              -99.2,
+              7,
+              19.9
+            ],
+            [
+              -91,
+              -7,
+              27.1
+            ]
+          ]
+        },
+        {
+          "fromId": "payload-magazine-right",
+          "toId": "carrier-coupler-core",
+          "label": "从弹药舱下行经感应门 (-30,0,-13.4) 入耦合器核心",
+          "points": [
+            [
+              -91,
+              -7,
+              27.1
+            ],
+            [
+              -59,
+              0,
+              12
+            ],
+            [
+              -30,
+              0,
+              -13.4
+            ],
+            [
+              -11.8,
+              0,
+              -14.5
+            ]
+          ]
+        },
+        {
+          "fromId": "carrier-coupler-core",
+          "toId": "exit-door-right",
+          "label": "经右翼内侧单向门 (-36,-10,0) 撤离",
+          "points": [
+            [
+              -11.8,
+              0,
+              -14.5
+            ],
+            [
+              -36.2,
+              -10.4,
+              0
+            ],
+            [
+              -24.2,
+              -21.5,
+              -42.8
+            ]
+          ]
+        }
+      ]
+    },
+    "route_3a": {
+      "color": "#a855f7",
+      "segments": [
+        {
+          "fromId": "front-entrance-door",
+          "toId": "signal-relay-quad",
+          "label": "前部主通道潜入",
+          "points": [
+            [
+              65.2,
+              0,
+              -58.9
+            ],
+            [
+              28.5,
+              0,
+              -59.1
+            ],
+            [
+              -32.6,
+              0,
+              -53.3
+            ]
+          ]
+        },
+        {
+          "fromId": "signal-relay-quad",
+          "toId": "compactor-press-left",
+          "label": "经左底开启舱门 (-62,+15,-46) 穿矩阵抵左“粉碎者”",
+          "points": [
+            [
+              -32.6,
+              0,
+              -53.3
+            ],
+            [
+              -49.1,
+              -0.1,
+              -58.8
+            ],
+            [
+              -62,
+              15.4,
+              -46.1
+            ],
+            [
+              -81,
+              12,
+              -32.7
+            ],
+            [
+              -88.7,
+              15.9,
+              -7.7
+            ]
+          ]
+        },
+        {
+          "fromId": "compactor-press-left",
+          "toId": "motion-sensor-doors",
+          "label": "穿左翼上层后门 (-68,+26,+8) → 中央中上层门 (-52,0,-13.5) → 右翼双门",
+          "points": [
+            [
+              -88.7,
+              15.9,
+              -7.7
+            ],
+            [
+              -67.9,
+              25.8,
+              7.8
+            ],
+            [
+              -52,
+              0,
+              -13.5
+            ],
+            [
+              -62.4,
+              -25.7,
+              -0.1
+            ],
+            [
+              -51.8,
+              -33.7,
+              -0.1
+            ],
+            [
+              -30,
+              0,
+              -13.4
+            ]
+          ]
+        },
+        {
+          "fromId": "motion-sensor-doors",
+          "toId": "carrier-coupler-core",
+          "label": "穿耦合器通电感应门进入核心金库",
+          "points": [
+            [
+              -30,
+              0,
+              -13.4
+            ],
+            [
+              -11.8,
+              0,
+              -14.5
+            ]
+          ]
+        },
+        {
+          "fromId": "carrier-coupler-core",
+          "toId": "exit-door-left",
+          "label": "经底层左翼逃生门 (-24,+23,-43) 撤离",
+          "points": [
+            [
+              -11.8,
+              0,
+              -14.5
+            ],
+            [
+              -24.2,
+              21.5,
+              -42.8
+            ]
+          ]
+        }
+      ]
+    },
+    "route_3b": {
+      "color": "#38bdf8",
+      "segments": [
+        {
+          "fromId": "front-entrance-door",
+          "toId": "signal-relay-quad",
+          "label": "前部主通道潜入",
+          "points": [
+            [
+              65.2,
+              0,
+              -58.9
+            ],
+            [
+              28.5,
+              0,
+              -59.1
+            ],
+            [
+              -32.6,
+              0,
+              -53.3
+            ]
+          ]
+        },
+        {
+          "fromId": "signal-relay-quad",
+          "toId": "compactor-press-right",
+          "label": "经右底开启舱门 (-62,-15,-46) 穿矩阵抵右“粉碎者”",
+          "points": [
+            [
+              -32.6,
+              0,
+              -53.3
+            ],
+            [
+              -49.1,
+              -0.1,
+              -58.8
+            ],
+            [
+              -62,
+              -15.3,
+              -46.1
+            ],
+            [
+              -81,
+              -12,
+              -32.7
+            ],
+            [
+              -88.7,
+              -15.9,
+              -7.7
+            ]
+          ]
+        },
+        {
+          "fromId": "compactor-press-right",
+          "toId": "payload-magazine-left",
+          "label": "经中央中上层门 (-52,0,-13.4) 攀升至左翼旋转弹药舱",
+          "points": [
+            [
+              -88.7,
+              -15.9,
+              -7.7
+            ],
+            [
+              -52,
+              0,
+              -13.4
+            ],
+            [
+              -99.2,
+              7,
+              19.9
+            ]
+          ]
+        },
+        {
+          "fromId": "payload-magazine-left",
+          "toId": "laser-emitter-front",
+          "label": "经顶层弹药门 (-95,+18,+32) 与激光门 (-70,-44,+45) 穿激光室",
+          "points": [
+            [
+              -99.2,
+              7,
+              19.9
+            ],
+            [
+              -95,
+              17.7,
+              31.6
+            ],
+            [
+              -70.2,
+              -43.6,
+              45.1
+            ],
+            [
+              -61.5,
+              -69.5,
+              42.5
+            ],
+            [
+              -26.8,
+              -70.1,
+              46.5
+            ]
+          ]
+        },
+        {
+          "fromId": "laser-emitter-front",
+          "toId": "carrier-coupler-core",
+          "label": "从激光室前端下行切入耦合器核心金库",
+          "points": [
+            [
+              -26.8,
+              -70.1,
+              46.5
+            ],
+            [
+              -30,
+              0,
+              -13.4
+            ],
+            [
+              -11.8,
+              0,
+              -14.5
+            ]
+          ]
+        },
+        {
+          "fromId": "carrier-coupler-core",
+          "toId": "exit-door-right",
+          "label": "经右翼内侧捷径门 (-36,-10,-0.1) 撤离",
+          "points": [
+            [
+              -11.8,
+              0,
+              -14.5
+            ],
+            [
+              -36.2,
+              -10.4,
+              -0.1
+            ],
+            [
+              -24.2,
+              -21.5,
+              -42.8
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "floors": [
+    {
+      "id": "all",
+      "label": "完整帝王 (+60m)",
+      "clipZ": 60,
+      "desc": "完整展示坠落帝王外装甲壳体、上层激光室与全部 4 层核心舱室"
+    },
+    {
+      "id": "laser-payload",
+      "label": "上层：高能激光室 (+48m)",
+      "clipZ": 48,
+      "desc": "切开顶部装甲，直视右翼上层紫外辐照/冷却高能激光隧道 (+46.5m) 与弹药转盘"
+    },
+    {
+      "id": "payload-wing",
+      "label": "中上层：弹药转盘 (+26m)",
+      "clipZ": 26,
+      "desc": "聚焦后部 7 座载荷架与左/右双弹药旋转弹鼓 (+20m ~ +27m)"
+    },
+    {
+      "id": "coupler-press",
+      "label": "中层：耦合器与“粉碎者” (-8m)",
+      "clipZ": -8,
+      "desc": "切开耦合器顶盖，直视中央挂载耦合器 16 座战利品舱 (-17.5m)、38 座冷却塔与定时开合巨型粉碎压机"
+    },
+    {
+      "id": "matrix-cooling",
+      "label": "中下层：分拣矩阵迷宫 (-27m)",
+      "clipZ": -27,
+      "desc": "切开冷却塔隔板，直视下方分拣矩阵动态迷宫墙 (-32.7m) 与 35 处矩阵信号弱点 (-44.3m)"
+    },
+    {
+      "id": "bottom-core",
+      "label": "底层：入口与信号中继 (-51m)",
+      "clipZ": -51,
+      "desc": "切开底层天花板，直视前部主入口隧道 (-59m)、四路信号中继器 (-53.3m)、虹膜大门与电磁场核心 (-66.8m)"
+    }
+  ],
+  "walkthrough": [],
+  "nodes": [
+    {
+      "id": "front-entrance-door",
+      "code": "E1",
+      "title": "帝王前部主入口大门",
+      "subtitle": "BP_InteractiveDoor_Walker_02_C · Entrance_01_A",
+      "category": "entry",
+      "circuit": "E",
+      "floor": "底层主通道 (-58.9m)",
+      "x": 65.2,
+      "y": 0,
+      "z": -58.9,
+      "yaw": 0,
+      "recommendedClipZ": -51,
+      "requirement": "可交互开启 · 潜入坠落帝王起点",
+      "description": "位于坠落帝王最前端 (X=+65.2m) 的巨型主入口闸门。开启后沿长达 70 米的前部传输走廊 (Transmission Annex) 直达底层处理中心。",
+      "connectsTo": []
+    },
+    {
+      "id": "room-transmission-annex",
+      "code": "R0",
+      "title": "前部传输主通道",
+      "subtitle": "SM_FZT_WalkerInterior_TransmissionAnnex_01_A",
+      "category": "room",
+      "circuit": "E",
+      "floor": "底层主通道 (-59.1m)",
+      "x": 28.5,
+      "y": 0,
+      "z": -59.1,
+      "yaw": 0,
+      "recommendedClipZ": -51,
+      "requirement": "连接 E1 主入口与底层处理中心",
+      "description": "由 4 道隔断环 (Divider_01~04) 与高压线缆构成的帝王前部咽喉走廊，全长约 80 米。",
+      "box": {
+        "min": [
+          -12,
+          -8.5,
+          -65
+        ],
+        "max": [
+          68,
+          8.5,
+          -52
+        ]
+      },
+      "connectsTo": []
+    },
+    {
+      "id": "signal-relay-quad",
+      "code": "A1",
+      "title": "底层双联四路信号中继器",
+      "subtitle": "BP_SignalRelay_Quad_C × 2",
+      "category": "power",
+      "circuit": "A",
+      "floor": "底层处理中心 (-53.3m)",
+      "x": -32.6,
+      "y": 0,
+      "z": -53.3,
+      "yaw": 0,
+      "recommendedClipZ": -51,
+      "requirement": "需击破周围 8 处信号弱点靶 (A2) 激活",
+      "description": "位于底层处理中心中央上方的两座四路信号中继器 (-32.7, -0.4, -53.3 与 -32.4, +0.4, -53.3)。每座连接 4 个信号弱点靶，全部触发后解锁后方虹膜大门与升降机。",
+      "connectsTo": []
+    },
+    {
+      "id": "signal-weakpoints-bottom",
+      "code": "A2",
+      "title": "底层处理中心信号弱点群 (×8)",
+      "subtitle": "BP_SignalWeakPoint_C × 8",
+      "category": "power",
+      "circuit": "A",
+      "floor": "底层处理中心 (-54.8m)",
+      "x": -41.5,
+      "y": -9.8,
+      "z": -54.8,
+      "yaw": 0,
+      "recommendedClipZ": -51,
+      "requirement": "射击破坏 8 个信号节点向 A1 中继器供能",
+      "description": "环绕底层处理中心左、右、后侧壁布置的 8 处信号弱点靶（分布在 X=-33.4m~-49.7m，Y=±2.7m~±15.8m，Z=-54.1m~-55.7m）。",
+      "connectsTo": []
+    },
+    {
+      "id": "iris-coupler-gate",
+      "code": "A3",
+      "title": "底层虹膜机械大门",
+      "subtitle": "BP_CarrierCoupler_Gate_C · IrisDoor_01_A/B",
+      "category": "puzzle-door",
+      "circuit": "A",
+      "floor": "底层处理中心 (-58.8m)",
+      "x": -49.1,
+      "y": -0.1,
+      "z": -58.8,
+      "yaw": 0,
+      "recommendedClipZ": -51,
+      "requirement": "由底层信号中继/机关解锁开启",
+      "description": "隔绝底层处理中心 (X=-36m) 与后部分拣矩阵舱 (X=-81m) 的巨型双扇虹膜机械门。",
+      "connectsTo": []
+    },
+    {
+      "id": "bottom-electrofield",
+      "code": "A4",
+      "title": "底层高压电磁场核心",
+      "subtitle": "BP_Collector_Electrofield_01_C · ElectroMagnet_02",
+      "category": "power",
+      "circuit": "A",
+      "floor": "底层基座 (-66.8m)",
+      "x": -36.2,
+      "y": 0,
+      "z": -66.8,
+      "yaw": 0,
+      "recommendedClipZ": -51,
+      "requirement": "周期性高压放电危险区 · 需规避通过",
+      "description": "位于底层处理中心正下方的巨型电磁场发生器 (Z=-66.8m)，伴随脉冲放电与体力/护盾灼烧效果。",
+      "connectsTo": []
+    },
+    {
+      "id": "room-processing-center",
+      "code": "R1",
+      "title": "底层处理中心与中央竖井",
+      "subtitle": "SM_FZT_WalkerInterior_ProcessingCenter_01 & 02",
+      "category": "room",
+      "circuit": "A",
+      "floor": "底层至中层 (-66.8m ~ +19m)",
+      "x": -34,
+      "y": 0,
+      "z": -56,
+      "yaw": 0,
+      "recommendedClipZ": -51,
+      "requirement": "阶段一核心解谜舱室",
+      "description": "底部包含电磁场核心与双联四路信号中继器，中央贯通高达 70 米的活塞升降井直通中上层。",
+      "box": {
+        "min": [
+          -51,
+          -16.5,
+          -67
+        ],
+        "max": [
+          -14,
+          16.5,
+          -45
+        ]
+      },
+      "connectsTo": []
+    },
+    {
+      "id": "central-piston-elevator",
+      "code": "E2",
+      "title": "中央活塞升降机",
+      "subtitle": "BP_MovablePlatform_Collector_Elevator_C · Piston_01_A",
+      "category": "entry",
+      "circuit": "E",
+      "floor": "中央竖井 (-32.3m)",
+      "x": -36.2,
+      "y": 0,
+      "z": -32.3,
+      "yaw": 0,
+      "recommendedClipZ": -27,
+      "requirement": "垂直机动主干道 · 在路线 2A/2B 中直接连通中层开启舱门",
+      "description": "位于 (-36.2, 0.0, -32.3) 的大型活塞升降平台（垂直跨度近 50 米），是路线 2A / 2B 中直接切入中央中下层舱门 (-45.7, 0.1, -29.4) 的关键纵向枢纽。",
+      "connectsTo": []
+    },
+    {
+      "id": "sorting-matrix-maze",
+      "code": "B1",
+      "title": "分拣矩阵动态迷宫 (Maze 01/02/03)",
+      "subtitle": "LI_Walker_Maze_01~03 · SortingMatrix_Wall",
+      "category": "puzzle-door",
+      "circuit": "B",
+      "floor": "中下层分拣舱 (-32.7m)",
+      "x": -81,
+      "y": 0,
+      "z": -32.7,
+      "yaw": 0,
+      "recommendedClipZ": -27,
+      "requirement": "每局随机加载 Maze 1 / 2 / 3 隔断布局",
+      "description": "跨度达 68m × 43m 的分拣矩阵迷宫层。可在左侧面板一键切换【迷宫 1 / 2 / 3】实时预览三种高墙隔断走势。",
+      "box": {
+        "min": [
+          -115.6,
+          -22.7,
+          -45
+        ],
+        "max": [
+          -47.6,
+          20.3,
+          -24
+        ]
+      },
+      "connectsTo": []
+    },
+    {
+      "id": "sorting-matrix-weakpoints",
+      "code": "B2",
+      "title": "分拣矩阵平台与 35 处信号弱点",
+      "subtitle": "BP_SortingMatrixPlatform_01 + 35 × BP_SignalWeakPoint_C",
+      "category": "power",
+      "circuit": "B",
+      "floor": "分拣舱底板 (-44.3m)",
+      "x": -78.1,
+      "y": 0,
+      "z": -44.3,
+      "yaw": 0,
+      "recommendedClipZ": -27,
+      "requirement": "仅在路线 1A / 2B 中激活 · 需破坏弱点",
+      "description": "分布在分拣矩阵底部平台 (X=-109.9m ~ -53.6m, Y=-16.8m ~ +16.9m, Z=-44.3m) 的 35 个信号弱点节点，仅在路线 1A 与路线 2B 中刷新。",
+      "connectsTo": []
+    },
+    {
+      "id": "cooling-tower-array",
+      "code": "B3",
+      "title": "38 座冷却塔阵列与体力腐蚀区",
+      "subtitle": "38 × SM_FZT_WalkerInterior_CoolingTower_01_A",
+      "category": "power",
+      "circuit": "B",
+      "floor": "中层冷却阵列 (-19.5m)",
+      "x": -81.5,
+      "y": 0,
+      "z": -19.5,
+      "yaw": 0,
+      "recommendedClipZ": -27,
+      "requirement": "覆盖 5 列 × 8 排冷却塔与 Debuff 毒雾体积",
+      "description": "立于分拣迷宫上方的 38 座高耸冷却塔阵列 (Y=-15m, -8m, 0m, +8m, +15m)，伴随两层 GameplayEffect 腐蚀区域 (Z=-17.8m 与 -7.4m)。",
+      "connectsTo": []
+    },
+    {
+      "id": "compactor-press-left",
+      "code": "B4-L",
+      "title": "左翼巨型粉碎压机（定时往复开合）",
+      "subtitle": "BP_MovablePlatform_CollectorCompactor_C · 行程 9.45m",
+      "category": "puzzle-door",
+      "circuit": "B",
+      "floor": "中层压机层 (-7.7m)",
+      "x": -88.7,
+      "y": 15.9,
+      "z": -7.7,
+      "yaw": 0,
+      "recommendedClipZ": -8,
+      "requirement": "与游戏一致定时往复冲压 · 把握张开窗口通过或攀爬",
+      "description": "位于后部左翼 (-88.7, +15.9, -7.7) 的巨型机械粉碎压机（尺寸 16.8m × 62m × 24.8m），受曲线 C_Collector_Compactor_01 驱动沿 -Y 方向定时猛烈合拢 9.45m 后缓慢回退。",
+      "connectsTo": []
+    },
+    {
+      "id": "compactor-press-right",
+      "code": "B4-R",
+      "title": "右翼巨型粉碎压机（定时往复开合）",
+      "subtitle": "BP_Collector_Compactor_02_C · 行程 9.45m",
+      "category": "puzzle-door",
+      "circuit": "B",
+      "floor": "中层压机层 (-7.7m)",
+      "x": -88.7,
+      "y": -15.9,
+      "z": -7.7,
+      "yaw": 0,
+      "recommendedClipZ": -8,
+      "requirement": "与游戏一致定时往复冲压 · 把握张开窗口通过或攀爬",
+      "description": "位于后部右翼 (-88.7, -15.9, -7.7) 的巨型镜像粉碎压机，与左翼压机同步沿 +Y 方向相向合拢 9.45m（闭合时中央仅余 2.1m 齿缝），上方连通弹药转盘层与隔舱门。",
+      "connectsTo": []
+    },
+    {
+      "id": "payload-magazine-left",
+      "code": "D1",
+      "title": "左翼旋转弹药转盘 #1",
+      "subtitle": "BP_Collector_PayloadMagazine_01_C",
+      "category": "power",
+      "circuit": "D",
+      "floor": "中上层载荷舱 (+19.9m)",
+      "x": -99.2,
+      "y": 7,
+      "z": 19.9,
+      "yaw": 0,
+      "recommendedClipZ": 26,
+      "requirement": "旋转挂架平台 · 搭载 19 枚 Arc 载荷弹体",
+      "description": "位于后部上层左侧 (-99.2, +7.0, +19.9) 的大型旋转弹药挂架，周围环绕 7 座固定载荷存储架 (PayloadStorage_01_A)。",
+      "connectsTo": []
+    },
+    {
+      "id": "payload-magazine-right",
+      "code": "D2",
+      "title": "右翼旋转弹药转盘 #2",
+      "subtitle": "BP_Collector_PayloadMagazine_01_C",
+      "category": "power",
+      "circuit": "D",
+      "floor": "中上层载荷舱 (+27.1m)",
+      "x": -91,
+      "y": -7,
+      "z": 27.1,
+      "yaw": 0,
+      "recommendedClipZ": 26,
+      "requirement": "旋转挂架平台 · 通往顶层高能激光隧道",
+      "description": "位于 (-91.0, -7.0, +27.1) 的高层旋转弹药转盘，在路线 1A / 3B 中经顶层激光门 (-70.2, -43.6, +45.1) 通往紫外辐照激光隧道。",
+      "connectsTo": []
+    },
+    {
+      "id": "laser-emitter-front",
+      "code": "D3-F",
+      "title": "上层前部高能激光发生器",
+      "subtitle": "SM_FZT_WalkerInterior_CoolingLightBeam_01_A",
+      "category": "power",
+      "circuit": "D",
+      "floor": "顶层激光室 (+46.5m)",
+      "x": -26.8,
+      "y": -70.1,
+      "z": 46.5,
+      "yaw": 0,
+      "recommendedClipZ": 48,
+      "requirement": "发射贯穿式高能激光束 · 需利用挡板掩护",
+      "description": "位于右翼顶层紫外辐照隧道前端 (-26.8, -70.1, +46.5) 的巨型激光发射器，向后发射 13 道移动/固定高能激光 (BP_MovablePlatform_Collector_Laser_01/02)。",
+      "connectsTo": []
+    },
+    {
+      "id": "laser-emitter-rear",
+      "code": "D3-R",
+      "title": "上层后部高能激光发生器",
+      "subtitle": "SM_FZT_WalkerInterior_CoolingLightBeam_01_A",
+      "category": "power",
+      "circuit": "D",
+      "floor": "顶层激光室 (+46.5m)",
+      "x": -96.1,
+      "y": -70.1,
+      "z": 46.5,
+      "yaw": 0,
+      "recommendedClipZ": 48,
+      "requirement": "与前部发生器对射 · 贯穿 70 米激光走廊",
+      "description": "位于紫外辐照隧道后端 (-96.1, -70.1, +46.5) 的高能激光终端。",
+      "connectsTo": []
+    },
+    {
+      "id": "laser-blockers-tunnel",
+      "code": "D4",
+      "title": "紫外辐照激光隧道与动态挡板群",
+      "subtitle": "SM_FZT_WalkerInterior_UvIrradiation_01_A · 20+ × BP_LaserBlocker_C",
+      "category": "room",
+      "circuit": "D",
+      "floor": "顶层激光室 (+38.2m ~ +54.5m)",
+      "x": -61.5,
+      "y": -69.5,
+      "z": 42.5,
+      "yaw": 0,
+      "recommendedClipZ": 48,
+      "requirement": "路线 1A / 3B 开启顶层激光门 (-70.2,-43.6,+45.1) 进入",
+      "description": "全长约 75 米的顶层高能激光隧道。切换左侧【动态路线 1A ~ 3B】即可查看每条路线下激光护盾挡板的精确刷点与进出动线。",
+      "box": {
+        "min": [
+          -98,
+          -78,
+          37.5
+        ],
+        "max": [
+          -24,
+          -60,
+          54.5
+        ]
+      },
+      "connectsTo": []
+    },
+    {
+      "id": "motion-sensor-doors",
+      "code": "C1",
+      "title": "耦合器室通电感应门 (×3)",
+      "subtitle": "BP_MontionSensorDoor_PowerEnabled_C × 3",
+      "category": "puzzle-door",
+      "circuit": "C",
+      "floor": "中层耦合器舱 (-13.4m ~ -17.8m)",
+      "x": -30,
+      "y": 0,
+      "z": -13.4,
+      "yaw": 0,
+      "recommendedClipZ": -8,
+      "requirement": "通电后自动感应开启 · 守卫耦合器核心室",
+      "description": "守卫中层挂载耦合器舱的 3 扇通电感应门：主门位于 (-30.0, 0.0, -13.4)，左右侧门位于 (-24.2, ±13.6, -17.8)。",
+      "connectsTo": []
+    },
+    {
+      "id": "coupler-weakpoints-left",
+      "code": "C2",
+      "title": "耦合器左翼弱点舱盖组 (×3)",
+      "subtitle": "BP_WalkerWeakpointHatch_C + BP_SignalWeakPoint_CarrierCoupler_C",
+      "category": "power",
+      "circuit": "C",
+      "floor": "中层耦合器舱 (-10.4m)",
+      "x": -11.3,
+      "y": 14.9,
+      "z": -10.4,
+      "yaw": 0,
+      "recommendedClipZ": -8,
+      "requirement": "打开舱盖并击毁内部耦合器信号弱点",
+      "description": "沿耦合器室左翼外廊 (Y=+14.9m, Z=-10.4m) 等距排列的 3 座弱点舱盖（X = -24.1m, -11.3m, +2.0m）。",
+      "connectsTo": []
+    },
+    {
+      "id": "coupler-weakpoints-right",
+      "code": "C3",
+      "title": "耦合器右翼弱点舱盖组 (×3)",
+      "subtitle": "BP_WalkerWeakpointHatch_C + BP_SignalWeakPoint_CarrierCoupler_C",
+      "category": "power",
+      "circuit": "C",
+      "floor": "中层耦合器舱 (-10.4m)",
+      "x": -11.3,
+      "y": -14.9,
+      "z": -10.4,
+      "yaw": 0,
+      "recommendedClipZ": -8,
+      "requirement": "打开舱盖并击毁内部耦合器信号弱点",
+      "description": "沿耦合器室右翼外廊 (Y=-14.9m, Z=-10.4m) 等距排列的 3 座弱点舱盖（X = -24.0m, -11.3m, +1.9m）。",
+      "connectsTo": []
+    },
+    {
+      "id": "carrier-coupler-core",
+      "code": "C4",
+      "title": "挂载耦合器核心总控与 16 座战利品舱",
+      "subtitle": "BP_CarrierCoupler_C + 16 × BP_CarrierLootHatch_C",
+      "category": "room",
+      "circuit": "C",
+      "floor": "中层核心金库 (-17.5m ~ -0.8m)",
+      "x": -11.8,
+      "y": 0,
+      "z": -14.5,
+      "yaw": 0,
+      "recommendedClipZ": -8,
+      "requirement": "击破 6 处耦合器弱点后解锁全部 16 座战利品舱",
+      "description": "坠落帝王的终极战利品核心室！当左/右共 6 处耦合器弱点被击破后，下方 Y=±10.1m、Z=-17.5m 两侧对称排列的 16 座高价值帝王战利品舱盖 (BP_CarrierLootHatch_C) 将全部弹开。",
+      "box": {
+        "min": [
+          -26,
+          -16.5,
+          -19
+        ],
+        "max": [
+          3.5,
+          16.5,
+          2
+        ]
+      },
+      "connectsTo": []
+    },
+    {
+      "id": "exit-door-left",
+      "code": "E3",
+      "title": "中下层左翼单向逃生门",
+      "subtitle": "BP_InteractiveDoor_Walker_01_C (bIsExitDoor=True)",
+      "category": "entry",
+      "circuit": "E",
+      "floor": "逃生门大厅 (-42.8m)",
+      "x": -24.2,
+      "y": 21.5,
+      "z": -42.8,
+      "yaw": 90,
+      "recommendedClipZ": -27,
+      "requirement": "仅可从帝王内部开启 · 快速撤离出口",
+      "description": "位于逃生门大厅左翼 (-24.2, +21.5, -42.8) 的单向装甲撤离门，配置 bIsExitDoor=True，供夺取核心物资后快速脱离。",
+      "connectsTo": []
+    },
+    {
+      "id": "exit-door-right",
+      "code": "E4",
+      "title": "中下层右翼单向逃生门",
+      "subtitle": "BP_InteractiveDoor_Walker_01_C (bIsExitDoor=True)",
+      "category": "entry",
+      "circuit": "E",
+      "floor": "逃生门大厅 (-42.8m)",
+      "x": -24.2,
+      "y": -21.5,
+      "z": -42.8,
+      "yaw": -90,
+      "recommendedClipZ": -27,
+      "requirement": "仅可从帝王内部开启 · 快速撤离出口",
+      "description": "位于逃生门大厅右翼 (-24.2, -21.5, -42.8) 的单向装甲撤离门。",
+      "connectsTo": []
+    }
+  ]
+}

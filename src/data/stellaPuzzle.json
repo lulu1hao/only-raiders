@@ -1,0 +1,666 @@
+{
+  "id": "stella-montis-full",
+  "title": "星辰山 · 全图立体建筑群",
+  "subtitle": "Stella Montis Full 3D Facility Navigation",
+  "modelUrl": "/maps/stella.glb",
+  "center": [
+    -35,
+    -35,
+    30
+  ],
+  "bounds": {
+    "min": [
+      -242,
+      2,
+      -170
+    ],
+    "max": [
+      164,
+      88,
+      104
+    ]
+  },
+  "floors": [
+    {
+      "id": "all",
+      "label": "完整建筑群 (+85m)",
+      "clipZ": 85,
+      "desc": "显示星辰山完整多层室内设施、顶层天桥与高空吊机"
+    },
+    {
+      "id": "upper",
+      "label": "上层行政与科研区 (+47.5m)",
+      "clipZ": 47.5,
+      "desc": "削去顶层封盖，直视医疗研究部、中央走廊、通信中心、上层中庭、商务中心与安检天桥"
+    },
+    {
+      "id": "mid",
+      "label": "中层车间与沙盒层 (+35.5m)",
+      "clipZ": 35.5,
+      "desc": "切开上层楼板，直视装配车间主层、机械沙盒、文化档案馆、大厅主层与 4 处钥匙卡密室"
+    },
+    {
+      "id": "lower",
+      "label": "底层隧道与金库层 (+23.5m)",
+      "clipZ": 23.5,
+      "desc": "切开中层楼板，直视装卸湾货运层、种子金库、通风井撤离点及东西两侧地下联络隧道"
+    },
+    {
+      "id": "metro",
+      "label": "深层地铁站台基座 (+16.5m)",
+      "clipZ": 16.5,
+      "desc": "聚焦最底层装卸湾地铁站 (+6m)、大厅地铁站 (+15m) 与地下环线铁轨"
+    }
+  ],
+  "walkthrough": [],
+  "nodes": [
+    {
+      "id": "wing-assembly",
+      "code": "A1",
+      "title": "装配车间 (Assembly Workshops)",
+      "subtitle": "西北核心工业翼区 · 双层重工装配大厅",
+      "category": "room",
+      "circuit": "A",
+      "floor": "中层车间 (+29m ~ +41m)",
+      "x": -168.4,
+      "y": -46.8,
+      "z": 33.8,
+      "yaw": 0,
+      "box": [
+        82,
+        16,
+        78
+      ],
+      "recommendedClipZ": 36.5,
+      "requirement": "主战区核心资源点 · 高产机械与工业部件",
+      "description": "星辰山西北角最大的双层重工业车间，分为北侧推进器装配线、中央龙门吊平台与西侧控制室。中央地面设有奇袭者撤离舱门，最西端二层为装配主管室钥匙房，东南角可通过西部隧道直通装卸湾底层。",
+      "connectsTo": [
+        "keycard-assembly-admin",
+        "extract-assembly-hatch",
+        "power-assembly",
+        "hub-western-tunnel"
+      ]
+    },
+    {
+      "id": "wing-loading-bay",
+      "code": "A2",
+      "title": "装卸湾 (Loading Bay)",
+      "subtitle": "西南垂直货运枢纽 · 跨四层立体天井",
+      "category": "room",
+      "circuit": "A",
+      "floor": "底层至上层 (+14m ~ +46m)",
+      "x": -76.8,
+      "y": 5.4,
+      "z": 18,
+      "yaw": 0,
+      "box": [
+        44,
+        28,
+        68
+      ],
+      "recommendedClipZ": 35.5,
+      "requirement": "高低差最大的立体交通枢纽",
+      "description": "连接西翼与中枢的巨型多层货运天井：最底层南端直通装卸湾地铁站 (+6m)，货台层 (+18m) 衔接西部隧道，中上层栈桥 (+36.5m) 通过三联垂直索道井与中央走廊、机械沙盒相连。",
+      "connectsTo": [
+        "hub-loading-zipline",
+        "extract-loading-metro",
+        "hub-central-corridor"
+      ]
+    },
+    {
+      "id": "wing-medical",
+      "code": "A3",
+      "title": "医疗研究部 (Medical Research)",
+      "subtitle": "北翼双层无菌实验室 · 环形天桥结构",
+      "category": "room",
+      "circuit": "A",
+      "floor": "上层科研区 (+34m ~ +46m)",
+      "x": -6.3,
+      "y": -95.4,
+      "z": 40.5,
+      "yaw": 0,
+      "box": [
+        86,
+        15,
+        56
+      ],
+      "recommendedClipZ": 47.5,
+      "requirement": "高价值医疗与实验器材核心产区",
+      "description": "位于北翼的环形双层科研综合体，包含多间无菌手术室、培养舱与分析实验室。东侧夹层设有医疗储藏室钥匙房，南侧下层通道直通机械沙盒与安检桥。",
+      "connectsTo": [
+        "keycard-medical-storage",
+        "wing-sandbox",
+        "keycard-security"
+      ]
+    },
+    {
+      "id": "wing-sandbox",
+      "code": "A4",
+      "title": "机械沙盒 (Robotic Sandbox)",
+      "subtitle": "中央中层机甲测试场 · 四向连通核心",
+      "category": "room",
+      "circuit": "A",
+      "floor": "中层核心 (+26.8m ~ +38m)",
+      "x": -28.7,
+      "y": -48.3,
+      "z": 33,
+      "yaw": 0,
+      "box": [
+        62,
+        14,
+        44
+      ],
+      "recommendedClipZ": 35.5,
+      "requirement": "连接北翼医疗部、西翼装卸湾与中央走廊",
+      "description": "星辰山中央的室内机甲测试沙盘大厅，四周环绕二层观察廊。北侧设有双联配电箱与沙盒奇袭者撤离舱门，南侧上行即达中央走廊。",
+      "connectsTo": [
+        "power-sandbox",
+        "extract-sandbox-hatch",
+        "hub-central-corridor",
+        "hub-loading-zipline"
+      ]
+    },
+    {
+      "id": "wing-lobby-atrium",
+      "code": "A5",
+      "title": "大厅与中庭 (Lobby & Atrium)",
+      "subtitle": "东翼三层挑高主厅 · 行政与安检中枢",
+      "category": "room",
+      "circuit": "A",
+      "floor": "中上层 (+29m ~ +48m)",
+      "x": 38,
+      "y": -54,
+      "z": 38,
+      "yaw": 0,
+      "box": [
+        64,
+        20,
+        72
+      ],
+      "recommendedClipZ": 47.5,
+      "requirement": "东西向与上下层转换主干枢纽",
+      "description": "由北侧三层挑高接待大厅 (Lobby)、西侧安检天桥 (Security Bridge) 与南侧采光中庭 (Atrium) 组成。从大厅北侧楼梯或索道竖井下行可直达大厅地铁站 (+15m)，向东连接商务中心与文化档案馆。",
+      "connectsTo": [
+        "hub-lobby-zipline",
+        "extract-lobby-metro",
+        "wing-archives",
+        "hub-sandbox-vault-shaft"
+      ]
+    },
+    {
+      "id": "wing-seed-vault",
+      "code": "A6",
+      "title": "种子金库 (Seed Vault)",
+      "subtitle": "东南底层恒温生态基因库 · 双撤离点交汇",
+      "category": "room",
+      "circuit": "A",
+      "floor": "底层金库区 (+14m ~ +24m)",
+      "x": 38.3,
+      "y": 41.3,
+      "z": 19.8,
+      "yaw": 0,
+      "box": [
+        70,
+        14,
+        50
+      ],
+      "recommendedClipZ": 23.5,
+      "requirement": "底层高价值低温储藏区 · 毗邻两处撤离点",
+      "description": "位于东南翼地底的低温植物种子与基因样本金库。内部南侧设有双联配电箱，西北出口紧邻种子金库通风井撤离点，东北出口衔接东部隧道奇袭者舱门。",
+      "connectsTo": [
+        "power-seed-vault",
+        "extract-seed-airshaft",
+        "extract-eastern-hatch",
+        "hub-eastern-tunnel"
+      ]
+    },
+    {
+      "id": "wing-archives",
+      "code": "A7",
+      "title": "文化档案馆 (Cultural Archives)",
+      "subtitle": "东翼文物仓储大厅 · 密集画架与封存箱",
+      "category": "room",
+      "circuit": "A",
+      "floor": "中层东翼 (+28m ~ +38m)",
+      "x": 81.8,
+      "y": -13.9,
+      "z": 32.8,
+      "yaw": 0,
+      "box": [
+        66,
+        14,
+        56
+      ],
+      "recommendedClipZ": 35.5,
+      "requirement": "东翼密集物资区 · 含档案金库钥匙房",
+      "description": "存放旧世界画作、雕塑与历史档案的大型多层仓储区。最东端走道深处设有文化档案金库钥匙房，西侧与中庭、商务中心及底层东部隧道相连。",
+      "connectsTo": [
+        "keycard-archives-vault",
+        "hub-eastern-tunnel",
+        "wing-lobby-atrium"
+      ]
+    },
+    {
+      "id": "keycard-security",
+      "code": "K1",
+      "title": "安检站钥匙房 (Security Checkpoint)",
+      "subtitle": "大厅安检桥西侧上锁密室",
+      "category": "keycard-door",
+      "circuit": "B",
+      "floor": "中上层 (+35.9m)",
+      "x": -97.8,
+      "y": -89.6,
+      "z": 35.9,
+      "yaw": 0,
+      "box": [
+        14,
+        5.5,
+        12
+      ],
+      "recommendedClipZ": 38.5,
+      "requirement": "需【星辰山安检站钥匙】刷卡开启",
+      "description": "位于大厅安检天桥西端与北侧走廊交界处的安保武器库，刷卡开启防爆门后可搜刮高阶武器箱与战术补给。",
+      "connectsTo": [
+        "wing-lobby-atrium"
+      ]
+    },
+    {
+      "id": "keycard-medical-storage",
+      "code": "K2",
+      "title": "医疗储藏室钥匙房 (Medical Storage)",
+      "subtitle": "医疗研究部东侧封锁药房",
+      "category": "keycard-door",
+      "circuit": "B",
+      "floor": "中上层 (+37.0m)",
+      "x": 33.9,
+      "y": -88.8,
+      "z": 37,
+      "yaw": 0,
+      "box": [
+        14,
+        6,
+        12
+      ],
+      "recommendedClipZ": 41.5,
+      "requirement": "需【星辰山医疗储藏室钥匙】刷卡开启",
+      "description": "位于医疗研究部东端与大厅西侧交界处的受控医药储备室，上下两层走道均可接近，内含高价值医疗箱与科研样本。",
+      "connectsTo": [
+        "wing-medical"
+      ]
+    },
+    {
+      "id": "keycard-assembly-admin",
+      "code": "K3",
+      "title": "装配主管室钥匙房 (Assembly Admin)",
+      "subtitle": "装配车间最西端控制密室",
+      "category": "keycard-door",
+      "circuit": "B",
+      "floor": "中层车间 (+29.9m)",
+      "x": -208.6,
+      "y": -40.6,
+      "z": 29.9,
+      "yaw": 0,
+      "box": [
+        14,
+        5.5,
+        12
+      ],
+      "recommendedClipZ": 34.5,
+      "requirement": "需【星辰山装配车间钥匙】刷卡开启",
+      "description": "位于装配车间最西侧内廊的车间主管办公室，远离中央交火区，刷卡开门后可安全获取工业图纸与高阶配件。",
+      "connectsTo": [
+        "wing-assembly"
+      ]
+    },
+    {
+      "id": "keycard-archives-vault",
+      "code": "K4",
+      "title": "文化档案金库钥匙房 (Archives Vault)",
+      "subtitle": "文化档案馆最东端恒温金库",
+      "category": "keycard-door",
+      "circuit": "B",
+      "floor": "中层东翼 (+31.3m)",
+      "x": 142.9,
+      "y": -53.6,
+      "z": 31.3,
+      "yaw": 0,
+      "box": [
+        16,
+        6,
+        14
+      ],
+      "recommendedClipZ": 35.5,
+      "requirement": "需【星辰山档案金库钥匙】刷卡开启",
+      "description": "位于全图最东端的文化档案馆深处密室，专门存放最高价值的旧世界珍贵藏品与加密存储介质。",
+      "connectsTo": [
+        "wing-archives"
+      ]
+    },
+    {
+      "id": "extract-lobby-metro",
+      "code": "X1",
+      "title": "大厅地铁站撤离点 (Lobby Metro)",
+      "subtitle": "东翼底层公共地铁撤离站台",
+      "category": "entry",
+      "circuit": "C",
+      "floor": "底层地铁 (+15.1m)",
+      "x": 55.2,
+      "y": -62.1,
+      "z": 15.1,
+      "yaw": -90,
+      "recommendedClipZ": 21,
+      "requirement": "公共列车撤离点 · 呼叫地铁进站后登车",
+      "description": "东翼最常用的主撤离点。可从大厅北侧楼梯、大厅垂直索道井 (+12m) 或东部环线隧道进入站台，呼叫列车后需防守至车门开启。",
+      "connectsTo": [
+        "hub-lobby-zipline",
+        "hub-eastern-tunnel"
+      ]
+    },
+    {
+      "id": "extract-loading-metro",
+      "code": "X2",
+      "title": "装卸湾地铁站撤离点 (Loading Bay Metro)",
+      "subtitle": "西南深层地铁撤离站台 (全图最低点)",
+      "category": "entry",
+      "circuit": "C",
+      "floor": "深层地铁 (+6.0m)",
+      "x": -58.8,
+      "y": 46.8,
+      "z": 6,
+      "yaw": 90,
+      "recommendedClipZ": 16.5,
+      "requirement": "公共列车撤离点 · 位于装卸湾最底端",
+      "description": "位于西南角海拔 +6m 的深层地下站台。从装卸湾底层南侧斜坡或西部隧道均可快速抵达，适合满载西翼物资后撤离。",
+      "connectsTo": [
+        "wing-loading-bay",
+        "hub-western-tunnel"
+      ]
+    },
+    {
+      "id": "extract-seed-airshaft",
+      "code": "X3",
+      "title": "种子金库通风井撤离点 (Seed Vault Airshaft)",
+      "subtitle": "东南底层大型水平排风井撤离点",
+      "category": "entry",
+      "circuit": "C",
+      "floor": "底层金库区 (+19.6m)",
+      "x": 23.3,
+      "y": 35.1,
+      "z": 19.6,
+      "yaw": 180,
+      "recommendedClipZ": 24,
+      "requirement": "公共通风井撤离点 · 呼叫停转排风扇开启气闸",
+      "description": "紧邻种子金库西北出口的大型水平排风通道，也可从上层中庭沿跨层斜井索道直接下达，是南翼最便捷的无钥匙撤离口。",
+      "connectsTo": [
+        "wing-seed-vault",
+        "hub-sandbox-vault-shaft"
+      ]
+    },
+    {
+      "id": "extract-assembly-hatch",
+      "code": "X4",
+      "title": "装配车间奇袭者舱门 (Assembly Hatch)",
+      "subtitle": "西北装配车间主层专属撤离井",
+      "category": "entry",
+      "circuit": "C",
+      "floor": "中层车间 (+33.8m)",
+      "x": -165.4,
+      "y": -55.2,
+      "z": 33.8,
+      "yaw": 0,
+      "recommendedClipZ": 36.5,
+      "requirement": "需消耗 1 把【奇袭者舱门钥匙】开启",
+      "description": "位于装配车间中央平台双联配电箱旁的地面舱门，搜刮完装配车间或主管钥匙房后可原地瞬时撤离。",
+      "connectsTo": [
+        "wing-assembly"
+      ]
+    },
+    {
+      "id": "extract-sandbox-hatch",
+      "code": "X5",
+      "title": "机械沙盒奇袭者舱门 (Sandbox Hatch)",
+      "subtitle": "中央沙盒北侧下层专属撤离井",
+      "category": "entry",
+      "circuit": "C",
+      "floor": "中下层 (+26.8m)",
+      "x": -31.7,
+      "y": -69.5,
+      "z": 26.8,
+      "yaw": 0,
+      "recommendedClipZ": 32,
+      "requirement": "需消耗 1 把【奇袭者舱门钥匙】开启",
+      "description": "位于机械沙盒与医疗研究部交界处的下层走道 (+26.8m)，非常适合搜刮完医疗储藏室与中央沙盒后快速撤离。",
+      "connectsTo": [
+        "wing-sandbox",
+        "wing-medical"
+      ]
+    },
+    {
+      "id": "extract-eastern-hatch",
+      "code": "X6",
+      "title": "东部隧道奇袭者舱门 (Eastern Tunnel Hatch)",
+      "subtitle": "种子金库东北侧隧道专属撤离井",
+      "category": "entry",
+      "circuit": "C",
+      "floor": "底层隧道 (+13.3m)",
+      "x": 66.5,
+      "y": 24.4,
+      "z": 13.3,
+      "yaw": 0,
+      "recommendedClipZ": 21,
+      "requirement": "需消耗 1 把【奇袭者舱门钥匙】开启",
+      "description": "位于东部环线列车隧道南端与种子金库东北口交汇处 (+13.3m)，是从文化档案馆金库与种子金库静默撤离的绝佳通道。",
+      "connectsTo": [
+        "wing-seed-vault",
+        "hub-eastern-tunnel"
+      ]
+    },
+    {
+      "id": "hub-loading-zipline",
+      "code": "V1",
+      "title": "装卸湾三联垂直索道井",
+      "subtitle": "装卸湾核心跨层升降竖井 (+17m ↔ +36.5m)",
+      "category": "puzzle-door",
+      "circuit": "D",
+      "floor": "跨层竖井 (+17.0m ~ +36.5m)",
+      "x": -70.9,
+      "y": 16.1,
+      "z": 17,
+      "yaw": 0,
+      "recommendedClipZ": 36.5,
+      "requirement": "双向垂直高速索道 · 瞬间跨越 20 米高差",
+      "description": "装卸湾内并列布置的 3 条垂直索道，底部位于货台层 (+17m)，顶部直达上层货运走廊 (+36.5m)，是从装卸湾底层进入中央走廊与沙盒的最快捷径。",
+      "connectsTo": [
+        "wing-loading-bay",
+        "hub-central-corridor",
+        "wing-sandbox"
+      ]
+    },
+    {
+      "id": "hub-central-corridor",
+      "code": "V2",
+      "title": "中央走廊与通信中心枢纽",
+      "subtitle": "上层全图十字咽喉要道 (+40.5m)",
+      "category": "puzzle-door",
+      "circuit": "D",
+      "floor": "上层中枢 (+40.5m)",
+      "x": -22.1,
+      "y": -13.1,
+      "z": 40.5,
+      "yaw": 0,
+      "recommendedClipZ": 47.5,
+      "requirement": "贯通东西南北四翼的上层主干道",
+      "description": "星辰山上层最核心的十字交通枢纽：向西接装卸湾上层连廊与安检天桥，向北下通机械沙盒与医疗部，向东直达通信中心、中庭与大厅。",
+      "connectsTo": [
+        "wing-lobby-atrium",
+        "wing-sandbox",
+        "wing-loading-bay",
+        "power-comms"
+      ]
+    },
+    {
+      "id": "hub-lobby-zipline",
+      "code": "V3",
+      "title": "大厅地铁垂直索道井",
+      "subtitle": "大厅北侧直降地铁站台竖井 (+34.5m ↔ +12m)",
+      "category": "puzzle-door",
+      "circuit": "D",
+      "floor": "底层至中层 (+12.0m ~ +34.5m)",
+      "x": 56.9,
+      "y": -92,
+      "z": 12,
+      "yaw": 0,
+      "recommendedClipZ": 35.5,
+      "requirement": "垂直索道 · 避开大厅主楼梯交火区",
+      "description": "连接大厅北侧上层走廊与底层地铁隧道的垂直索道竖井，无需绕行大厅多层主楼梯即可直降 `+12m` 抵达大厅地铁站台后方。",
+      "connectsTo": [
+        "wing-lobby-atrium",
+        "extract-lobby-metro"
+      ]
+    },
+    {
+      "id": "hub-sandbox-vault-shaft",
+      "code": "V4",
+      "title": "中庭—种子金库跨层索道井",
+      "subtitle": "连接中上层中庭与底层通风井 (+40.5m ↔ +22.5m)",
+      "category": "puzzle-door",
+      "circuit": "D",
+      "floor": "跨层竖井 (+22.5m ~ +40.5m)",
+      "x": 29.5,
+      "y": 9.6,
+      "z": 22.5,
+      "yaw": 0,
+      "recommendedClipZ": 35.5,
+      "requirement": "跨层索道与阶梯井 · 快速往返上层中庭与底层金库",
+      "description": "位于中庭南侧与种子金库北侧之间的垂直连接井，配有多段索道与折返楼梯，可从上层 (+40.5m) 快速下潜至种子金库通风井撤离点 (+19.6m)。",
+      "connectsTo": [
+        "wing-lobby-atrium",
+        "extract-seed-airshaft",
+        "wing-seed-vault"
+      ]
+    },
+    {
+      "id": "hub-western-tunnel",
+      "code": "V5",
+      "title": "西部隧道 (Western Tunnel)",
+      "subtitle": "连接装配车间与装卸湾的地下货运隧道",
+      "category": "puzzle-door",
+      "circuit": "D",
+      "floor": "底层隧道 (+13.5m ~ +18.0m)",
+      "x": -121.4,
+      "y": -18.5,
+      "z": 18,
+      "yaw": 0,
+      "recommendedClipZ": 23.5,
+      "requirement": "西翼地下暗道 · 避开上层开阔走廊",
+      "description": "横贯西翼地底的货运隧道，西起装配车间底层东南口 (`-157m`)，东至装卸湾底层货台 (`-77m`)，并设有索道通往装卸湾地铁站。",
+      "connectsTo": [
+        "wing-assembly",
+        "wing-loading-bay",
+        "extract-loading-metro"
+      ]
+    },
+    {
+      "id": "hub-eastern-tunnel",
+      "code": "V6",
+      "title": "东部环线列车隧道 (Eastern Tunnel)",
+      "subtitle": "连接大厅地铁站、档案馆下层与种子金库的铁轨隧道",
+      "category": "puzzle-door",
+      "circuit": "D",
+      "floor": "底层隧道 (+13.0m ~ +15.0m)",
+      "x": 68.6,
+      "y": -24.1,
+      "z": 14,
+      "yaw": 0,
+      "recommendedClipZ": 23.5,
+      "requirement": "东翼地下铁轨动脉 · 串联三大撤离点",
+      "description": "沿东翼地下铺设的双轨列车隧道，北接大厅地铁站 (+15.1m)，中段上方为文化档案馆，南端直达东部隧道奇袭者舱门 (+13.3m) 与种子金库。",
+      "connectsTo": [
+        "extract-lobby-metro",
+        "wing-archives",
+        "extract-eastern-hatch",
+        "wing-seed-vault"
+      ]
+    },
+    {
+      "id": "power-assembly",
+      "code": "P1",
+      "title": "装配车间双联配电箱",
+      "subtitle": "车间主平台双供电插座",
+      "category": "power",
+      "circuit": "E",
+      "floor": "中层车间 (+33.5m)",
+      "x": -168,
+      "y": -53,
+      "z": 33.5,
+      "yaw": 0,
+      "recommendedClipZ": 36.5,
+      "requirement": "投入电池 / 合闸供电",
+      "description": "位于装配车间中央奇袭者舱门旁的两座并列配电箱，用于控制车间内侧隔离门与高架照明。",
+      "connectsTo": [
+        "wing-assembly",
+        "extract-assembly-hatch"
+      ]
+    },
+    {
+      "id": "power-sandbox",
+      "code": "P2",
+      "title": "机械沙盒双联配电箱",
+      "subtitle": "沙盒北侧实验控制室双配电箱",
+      "category": "power",
+      "circuit": "E",
+      "floor": "中层核心 (+33.0m)",
+      "x": -25.5,
+      "y": -81.5,
+      "z": 33,
+      "yaw": 0,
+      "recommendedClipZ": 35.5,
+      "requirement": "投入电池 / 合闸供电",
+      "description": "位于机械沙盒北侧与医疗研究部过渡走廊的双联配电箱，下方 (+18.2m) 另有一座多联配电总站。",
+      "connectsTo": [
+        "wing-sandbox",
+        "extract-sandbox-hatch"
+      ]
+    },
+    {
+      "id": "power-comms",
+      "code": "P3",
+      "title": "通信中心与中央走廊配电箱",
+      "subtitle": "上层中枢供电控制点",
+      "category": "power",
+      "circuit": "E",
+      "floor": "上层中枢 (+40.5m)",
+      "x": -13.5,
+      "y": -31.2,
+      "z": 40.5,
+      "yaw": 0,
+      "recommendedClipZ": 47.5,
+      "requirement": "投入电池 / 合闸供电",
+      "description": "位于中央走廊东侧通信中心内，控制中枢走廊与中庭上层之间的电控隔断门。",
+      "connectsTo": [
+        "hub-central-corridor",
+        "wing-lobby-atrium"
+      ]
+    },
+    {
+      "id": "power-seed-vault",
+      "code": "P4",
+      "title": "种子金库双联配电箱",
+      "subtitle": "金库南侧低温培养舱双配电箱",
+      "category": "power",
+      "circuit": "E",
+      "floor": "底层金库区 (+19.8m)",
+      "x": 48.8,
+      "y": 54.8,
+      "z": 19.8,
+      "yaw": 0,
+      "recommendedClipZ": 23.5,
+      "requirement": "投入电池 / 合闸供电",
+      "description": "位于种子金库南侧恒温培养舱通道内的两座并列配电箱，通电后可开启金库深处封锁的样本储藏室。",
+      "connectsTo": [
+        "wing-seed-vault",
+        "extract-seed-airshaft"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+/* =====================================================================
+   ARC Raiders In-Game UI Design System
+   Extracted from PioneerGame/Content/Pioneer/UI/Configuration:
+   - DA_UIColorConfiguration.uasset (EUIColorState + EUIOpacityState)
+   - DA_UIStyles.uasset (EEmbarkUITextType: Prompt, Urbanist, Barlow, JetBrainsMono)
+   - DA_UIStyleBundle_* & WBP_MainMenuQuestListEntry / WBP_RoundedBox
+   ===================================================================== */
+
+@font-face {
+  font-family: 'Prompt';
+  src: url('../assets/fonts/Prompt-700.woff2') format('woff2');
+  font-weight: 600 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Prompt';
+  src: url('../assets/fonts/Prompt-800.woff2') format('woff2');
+  font-weight: 800 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Urbanist';
+  src: url('../assets/fonts/Urbanist-500.woff2') format('woff2');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('../assets/fonts/Barlow-500.woff2') format('woff2');
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('../assets/fonts/Barlow-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('../assets/fonts/Barlow-700.woff2') format('woff2');
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  src: url('../assets/fonts/BarlowSemiCondensed-700.woff2') format('woff2');
+  font-weight: 500 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('../assets/fonts/JetBrainsMono-700.woff2') format('woff2');
+  font-weight: 500 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ============ EUIColorState (DA_UIColorConfiguration) ============ */
+  --ui-primary: #f9eedf;          /* Primary */
+  --ui-secondary: #090c19;        /* Secondary */
+  --ui-tertiary: #2e3240;         /* Tertiary */
+  --ui-secondary-dark: #606576;   /* SecondaryDark */
+  --ui-secondary-mid: #a4a5aa;    /* SecondaryMid */
+  --ui-secondary-light: #cec1b0;  /* SecondaryLight */
+  --ui-secondary-pale: #ebdecb;   /* SecondaryPale */
+  --ui-complementary: #ffbc13;    /* Complementary */
+  --ui-highlight: #fd4b10;        /* Highlight */
+  --ui-positive: #3f92ac;         /* Positive */
+  --ui-negative: #ff3026;         /* Negative */
+  --ui-negative-dark: #ba1a1a;    /* NegativeDark */
+
+  /* Semantic aliases used across views */
+  --plum: #090c19;
+  --cream: #f9eedf;
+  --cream-2: #ebdecb;
+  --cream-3: #cec1b0;
+  --ink: #090c19;
+  --ink-2: rgba(9, 12, 25, 0.72);
+  --ink-3: rgba(9, 12, 25, 0.48);
+  --amber: #ffbc13;
+  --gold: #ffc600;
+
+  /* ============ PioneerBrand1..4 (DA_UIColorConfiguration) ============ */
+  --rb-red: #f60010;
+  --rb-orange: #fd4b10;
+  --rb-yellow: #ffd205;
+  --rb-green: #1fff76;
+  --rb-cyan: #66ffff;
+  --rb-blue: #00a9f2;
+  --rainbow: linear-gradient(
+    90deg,
+    var(--rb-red) 0 20%,
+    var(--rb-orange) 0 40%,
+    var(--rb-yellow) 0 60%,
+    var(--rb-green) 0 80%,
+    var(--rb-cyan) 0 100%
+  );
+
+  /* ============ Surface hierarchy (Secondary #090C19 -> Tertiary #2E3240) ============ */
+  --bg-0: #090c19;
+  --bg-1: #0e1222;
+  --bg-2: #151a2b;
+  --bg-3: #1f2537;
+  --bg-panel: #121625;
+  --bg-card: #171c2d;
+  --bg-hover: rgba(249, 238, 223, 0.08);
+
+  /* ============ Borders & dividers (SecondaryDark #606576 based) ============ */
+  --line: rgba(164, 165, 170, 0.14);
+  --line-strong: rgba(206, 193, 176, 0.24);
+  --line-subtle: rgba(164, 165, 170, 0.07);
+
+  /* ============ Typography colours (Primary / SecondaryLight / SecondaryMid) ============ */
+  --tx-1: #f9eedf;
+  --tx-2: #cec1b0;
+  --tx-3: #a4a5aa;
+
+  /* ============ Brand & module accents ============ */
+  --brand: var(--ui-complementary);
+  --brand-2: var(--ui-highlight);
+  --c-weapons: #fd4b10;
+  --c-quests: #26bf57;
+  --c-maps: #3f92ac;
+  --c-raider: #5fffff;
+
+  /* ============ Rarity (EUIColorState::Rarity*) ============ */
+  --r-common: #a4a5aa;
+  --r-uncommon: #26bf57;
+  --r-rare: #00a9f2;
+  --r-epic: #cc3099;
+  --r-legendary: #ffc600;
+  --r-mythic: #e88629;
+
+  /* ============ Status (Positive / Complementary / Negative) ============ */
+  --st-ok: #26bf57;
+  --st-warn: #ffbc13;
+  --st-danger: #ff3026;
+  --st-info: #3f92ac;
+
+  /* ============ Font families (DA_UIStyles) ============ */
+  --font-title: 'Prompt', 'Urbanist', 'Microsoft YaHei UI', 'PingFang SC', sans-serif;
+  --font-display: 'Urbanist', 'Barlow Semi Condensed', 'Barlow', 'Microsoft YaHei UI', 'PingFang SC', sans-serif;
+  --font-body: 'Barlow', 'Microsoft YaHei UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Barlow', monospace;
+
+  /* ============ Geometry & motion (WBP_RoundedBox / WBP_MainMenuQuestListEntry) ============ */
+  --topbar-h: 56px;
+  --radius: 8px;
+  --radius-sm: 4px;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+}

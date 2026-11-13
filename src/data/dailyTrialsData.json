@@ -1,0 +1,149 @@
+[
+  {
+    "id": "trial-01",
+    "type": "周常试炼 · 机械猎杀",
+    "title": "净空协议：无人机群猎杀",
+    "target": "在单局战区行动中击毁 12 台黄蜂 (Wasp) 或“马蜂” (Hornet) 无人机并成功撤离",
+    "recommendedMap": "大坝战场 / 蓝门",
+    "doubleModifier": "夜间奇袭 (Night Raid) 积分 ×2",
+    "tiers": [
+      {
+        "rank": "I 阶 (1,000 分)",
+        "reward": "3× 护盾充能器 · 2,000 硬币"
+      },
+      {
+        "rank": "II 阶 (2,500 分)",
+        "reward": "1× 中型扩容弹匣 II · 1× 铁砧 II"
+      },
+      {
+        "rank": "III 阶 (4,000 分)",
+        "reward": "随机稀有武器蓝图 ×1 · 试炼黄金段位晋升积分"
+      }
+    ],
+    "recommendedMapIds": [
+      "dam-battlegrounds",
+      "spaceport",
+      "blue-gate"
+    ],
+    "recommendedEventId": "night-raid"
+  },
+  {
+    "id": "trial-02",
+    "type": "周常试炼 · 重型攻坚",
+    "title": "断足行动：跳跃者与堡垒",
+    "target": "对「跳跃者 (Leaper)」或「堡垒 (Bastion)」造成累计 3,500 点护甲与核心伤害",
+    "recommendedMap": "太空港 / 星山",
+    "doubleModifier": "电磁风暴 (EM Storm) 积分 ×2",
+    "tiers": [
+      {
+        "rank": "I 阶 (1,000 分)",
+        "reward": "3× 重型引信手雷 · 3,000 硬币"
+      },
+      {
+        "rank": "II 阶 (2,500 分)",
+        "reward": "1× 狼群集群导弹 · 2× 高级机械元件"
+      },
+      {
+        "rank": "III 阶 (4,000 分)",
+        "reward": "1× 裂甲者 (Hullcracker) I · 试炼黄金段位晋升积分"
+      }
+    ],
+    "recommendedMapIds": [
+      "spaceport",
+      "dam-battlegrounds",
+      "blue-gate"
+    ],
+    "recommendedEventId": "electromagnetic-storm"
+  },
+  {
+    "id": "trial-03",
+    "type": "周常试炼 · 侦察截获",
+    "title": "盲眼行动：告密者与“勘测师”",
+    "target": "在未触发全局增援警报的前提下，击毁 5 台告密者 (Snitch) 或“勘测师” (Surveyor)",
+    "recommendedMap": "掩埋废城 / 大坝战场",
+    "doubleModifier": "隐藏掩体开启期 积分 ×2",
+    "tiers": [
+      {
+        "rank": "I 阶 (1,000 分)",
+        "reward": "2× 消音器 I · 2,000 硬币"
+      },
+      {
+        "rank": "II 阶 (2,500 分)",
+        "reward": "1× 消音器 II · 3× 传感器"
+      },
+      {
+        "rank": "III 阶 (4,000 分)",
+        "reward": "1× 光电斗篷 · 试炼黄金段位晋升积分"
+      }
+    ],
+    "recommendedMapIds": [
+      "spaceport"
+    ],
+    "recommendedEventId": "hidden-bunker"
+  },
+  {
+    "id": "trial-04",
+    "type": "日常契约 · 战区搜刮",
+    "title": "深红速递：高危密码房搜刮",
+    "target": "使用任意战区钥匙卡开启 2 处上锁房间，并带出至少 35,000 币估值的战利品",
+    "recommendedMap": "任意战区 (推荐大坝控制塔 / 市政厅)",
+    "doubleModifier": "单人奇袭撤离 额外 +500 分",
+    "tiers": [
+      {
+        "rank": "达标奖励",
+        "reward": "1× 奇袭者暗门钥匙 · 5,000 硬币 · 1,500 经验"
+      }
+    ],
+    "recommendedMapIds": [
+      "dam-battlegrounds",
+      "buried-city"
+    ],
+    "recommendedEventId": "standard-patrol"
+  },
+  {
+    "id": "trial-05",
+    "type": "日常契约 · 植物采集",
+    "title": "地下农学：水培样本回收",
+    "target": "在战区采集并带出 6 份__KEEP__大毛蕊花__、3 颗柠檬或杏子、以及 10 份混合种子",
+    "recommendedMap": "大坝战场 (水培穹顶) / 蓝门 (橄榄园)",
+    "doubleModifier": "丰收季节事件 产量 ×2",
+    "tiers": [
+      {
+        "rank": "达标奖励",
+        "reward": "3× 生命针剂 · 3× 消毒绷带 · 3,000 硬币"
+      }
+    ],
+    "recommendedMapIds": [
+      "dam-battlegrounds",
+      "blue-gate",
+      "buried-city"
+    ],
+    "recommendedEventId": "lush-blooms"
+  },
+  {
+    "id": "trial-06",
+    "type": "周常试炼 · 巨兽讨伐",
+    "title": "弑神阵列：“女王”与坠落帝王",
+    "target": "参与击破「“女王” (Queen)」或「坠落帝王 (Emperor)」的外部反应堆装甲并成功撤离",
+    "recommendedMap": "星山 (冰封雪道) / 大坝战场",
+    "doubleModifier": "小队全员存活撤离 积分 ×2",
+    "tiers": [
+      {
+        "rank": "I 阶 (1,500 分)",
+        "reward": "2× 爆能护盾充能器 · 5,000 硬币"
+      },
+      {
+        "rank": "II 阶 (3,500 分)",
+        "reward": "1× 离巢模块 · 2× 磁力加速器"
+      },
+      {
+        "rank": "III 阶 (6,000 分)",
+        "reward": "1× “女王”反应堆核心 · 传奇增幅研究材料箱"
+      }
+    ],
+    "recommendedMapIds": [
+      "pendola-pass"
+    ],
+    "recommendedEventId": "fallen-emperor"
+  }
+]

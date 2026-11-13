@@ -1,0 +1,364 @@
+{
+  "id": "blue-gate-ancient-fort",
+  "title": "蓝门 · 古代要塞",
+  "subtitle": "11处电池刷新点 · 3座配电箱 · 地下室地窖门",
+  "map": "TheBlueGate_01 · Ancient Fort",
+  "modelUrl": "/maps/fort.glb",
+  "center": [
+    48,
+    386,
+    -245
+  ],
+  "bounds": {
+    "min": [
+      -36,
+      296,
+      -264
+    ],
+    "max": [
+      112,
+      446,
+      -220
+    ]
+  },
+  "floors": [
+    {
+      "id": "all",
+      "label": "全景",
+      "clipZ": -220,
+      "desc": "完整显示要塞地形、主堡与全区域11个电池刷新点"
+    },
+    {
+      "id": "battlement",
+      "label": "二层内堡 (-238m)",
+      "clipZ": -238,
+      "desc": "切开塔楼顶，查看二层配电箱 #1 与南墙配电箱 #3"
+    },
+    {
+      "id": "courtyard",
+      "label": "一层庭院 (-246m)",
+      "clipZ": -246,
+      "desc": "查看北瓮城配电箱 #2、地窖铁门与三联中继器"
+    },
+    {
+      "id": "cellar",
+      "label": "地下室地窖 (-251.5m)",
+      "clipZ": -251.5,
+      "desc": "直视要塞地下室地窖密室"
+    }
+  ],
+  "walkthrough": [],
+  "nodes": [
+    {
+      "id": "fort-cellar-door",
+      "code": "门",
+      "title": "地窖铁门",
+      "subtitle": "BP_InteractiveDoor_RootCellar_Carry_01_C",
+      "category": "puzzle-door",
+      "circuit": "CORE",
+      "floor": "一层 (-249.2m)",
+      "x": 59.71,
+      "y": 390.24,
+      "z": -249.22,
+      "yaw": 75,
+      "recommendedClipZ": -245.5,
+      "requirement": "3 座配电箱全部装入电池后开启",
+      "description": "古代要塞东侧外墙根部地下室入口。",
+      "connectsTo": [
+        "fort-cellar-vault"
+      ]
+    },
+    {
+      "id": "fort-triple-relay",
+      "code": "中继",
+      "title": "三联指示灯中继器",
+      "subtitle": "BP_PuzzleRelay_Triple_C",
+      "category": "puzzle-door",
+      "circuit": "CORE",
+      "floor": "一层 (-247.8m)",
+      "x": 57.1,
+      "y": 390.54,
+      "z": -247.81,
+      "yaw": -104.1,
+      "recommendedClipZ": -245.5,
+      "requirement": "显示 3 座配电箱通电状态",
+      "description": "位于地窖铁门旁石墙上。",
+      "connectsTo": [
+        "fort-cellar-door"
+      ]
+    },
+    {
+      "id": "fort-cellar-vault",
+      "code": "地窖",
+      "title": "地下室金库",
+      "subtitle": "Ancient Fort Underground Cellar",
+      "category": "loot-room",
+      "circuit": "CORE",
+      "floor": "地下室 (-255.2m)",
+      "x": 52,
+      "y": 394.2,
+      "z": -255.2,
+      "yaw": 0,
+      "box": {
+        "min": [
+          45.5,
+          389,
+          -257
+        ],
+        "max": [
+          58.5,
+          399.5,
+          -252
+        ]
+      },
+      "recommendedClipZ": -251.5,
+      "requirement": "开启地窖铁门后进入",
+      "description": "要塞地下室密室物资区。",
+      "connectsTo": []
+    },
+    {
+      "id": "fort-fusebox-1",
+      "code": "电箱1",
+      "title": "配电箱 #1 · 内堡二层",
+      "subtitle": "BP_PowerStation_C",
+      "category": "puzzle-door",
+      "circuit": "CORE",
+      "floor": "二层 (-240.5m)",
+      "x": 47.89,
+      "y": 392.18,
+      "z": -240.45,
+      "yaw": -18.1,
+      "recommendedClipZ": -238,
+      "requirement": "搬运 1 块电池装入",
+      "description": "要塞中央主堡二层平台。",
+      "connectsTo": [
+        "fort-triple-relay"
+      ]
+    },
+    {
+      "id": "fort-fusebox-2",
+      "code": "电箱2",
+      "title": "配电箱 #2 · 北瓮城一层",
+      "subtitle": "BP_PowerStation_C",
+      "category": "puzzle-door",
+      "circuit": "CORE",
+      "floor": "一层 (-248.5m)",
+      "x": 53.01,
+      "y": 412.96,
+      "z": -248.51,
+      "yaw": 70.2,
+      "recommendedClipZ": -245.5,
+      "requirement": "搬运 1 块电池装入",
+      "description": "要塞北侧瓮城内院墙面。",
+      "connectsTo": [
+        "fort-triple-relay"
+      ]
+    },
+    {
+      "id": "fort-fusebox-3",
+      "code": "电箱3",
+      "title": "配电箱 #3 · 南城墙中层",
+      "subtitle": "BP_PowerStation_C",
+      "category": "puzzle-door",
+      "circuit": "CORE",
+      "floor": "中层 (-242.5m)",
+      "x": 44.72,
+      "y": 383.35,
+      "z": -242.49,
+      "yaw": 162.3,
+      "recommendedClipZ": -239.5,
+      "requirement": "搬运 1 块电池装入",
+      "description": "要塞南侧石阶上方城墙夹层。",
+      "connectsTo": [
+        "fort-triple-relay"
+      ]
+    },
+    {
+      "id": "bat-01",
+      "code": "电池01",
+      "title": "电池 #01 · 北侧内院",
+      "subtitle": "BP_Carry_FuelCell_Generic_C",
+      "category": "power",
+      "circuit": "BAT",
+      "floor": "一层 (-246.3m)",
+      "x": 45.51,
+      "y": 413.37,
+      "z": -246.28,
+      "yaw": 148.1,
+      "recommendedClipZ": -243.5,
+      "requirement": "候选刷新点 (11选3)",
+      "description": "北瓮城内院配电箱 #2 附近木箱。",
+      "connectsTo": []
+    },
+    {
+      "id": "bat-02",
+      "code": "电池02",
+      "title": "电池 #02 · 正北城门外",
+      "subtitle": "BP_Carry_FuelCell_Generic_C",
+      "category": "power",
+      "circuit": "BAT",
+      "floor": "外围 (-245.4m)",
+      "x": 47.76,
+      "y": 436.89,
+      "z": -245.36,
+      "yaw": 40.1,
+      "recommendedClipZ": -220,
+      "requirement": "候选刷新点 (11选3)",
+      "description": "要塞正北侧断墙废墟外。",
+      "connectsTo": []
+    },
+    {
+      "id": "bat-03",
+      "code": "电池03",
+      "title": "电池 #03 · 东北外墙",
+      "subtitle": "BP_Carry_FuelCell_Generic_C",
+      "category": "power",
+      "circuit": "BAT",
+      "floor": "外围 (-246.0m)",
+      "x": 67.65,
+      "y": 434.75,
+      "z": -245.99,
+      "yaw": -170.4,
+      "recommendedClipZ": -220,
+      "requirement": "候选刷新点 (11选3)",
+      "description": "要塞东北方向外围巨石旁。",
+      "connectsTo": []
+    },
+    {
+      "id": "bat-04",
+      "code": "电池04",
+      "title": "电池 #04 · 主塔楼顶层",
+      "subtitle": "BP_Carry_FuelCell_Generic_C",
+      "category": "power",
+      "circuit": "BAT",
+      "floor": "塔顶 (-227.3m)",
+      "x": 46.72,
+      "y": 387.7,
+      "z": -227.32,
+      "yaw": -11.6,
+      "recommendedClipZ": -220,
+      "requirement": "候选刷新点 (11选3)",
+      "description": "中央主塔楼最高层露台。",
+      "connectsTo": []
+    },
+    {
+      "id": "bat-05",
+      "code": "电池05",
+      "title": "电池 #05 · 东南石阶旁",
+      "subtitle": "BP_Carry_FuelCell_Generic_C",
+      "category": "power",
+      "circuit": "BAT",
+      "floor": "一层 (-243.6m)",
+      "x": 62.97,
+      "y": 369.52,
+      "z": -243.58,
+      "yaw": -22.1,
+      "recommendedClipZ": -240,
+      "requirement": "候选刷新点 (11选3)",
+      "description": "要塞东南角外围石阶坡道旁。",
+      "connectsTo": []
+    },
+    {
+      "id": "bat-06",
+      "code": "电池06",
+      "title": "电池 #06 · 西南山坡入口",
+      "subtitle": "BP_Carry_FuelCell_Generic_C",
+      "category": "power",
+      "circuit": "BAT",
+      "floor": "西坡 (-247.9m)",
+      "x": 14.58,
+      "y": 379.21,
+      "z": -247.86,
+      "yaw": -86.2,
+      "recommendedClipZ": -220,
+      "requirement": "候选刷新点 (11选3)",
+      "description": "要塞西南侧上山石阶小径旁。",
+      "connectsTo": []
+    },
+    {
+      "id": "bat-07",
+      "code": "电池07",
+      "title": "电池 #07 · 正东外围废墟",
+      "subtitle": "BP_Carry_FuelCell_Generic_C",
+      "category": "power",
+      "circuit": "BAT",
+      "floor": "东坡 (-243.5m)",
+      "x": 95.39,
+      "y": 400.57,
+      "z": -243.45,
+      "yaw": -80.2,
+      "recommendedClipZ": -220,
+      "requirement": "候选刷新点 (11选3)",
+      "description": "要塞正东方向约38米处外围废墟残墙旁。",
+      "connectsTo": []
+    },
+    {
+      "id": "bat-08",
+      "code": "电池08",
+      "title": "电池 #08 · 东南高地废墟",
+      "subtitle": "BP_Carry_FuelCell_Generic_C",
+      "category": "power",
+      "circuit": "BAT",
+      "floor": "东南坡 (-242.8m)",
+      "x": 103.93,
+      "y": 335.11,
+      "z": -242.77,
+      "yaw": -73.6,
+      "recommendedClipZ": -220,
+      "requirement": "候选刷新点 (11选3)",
+      "description": "要塞东南方向远端高地石墙废墟。",
+      "connectsTo": []
+    },
+    {
+      "id": "bat-09",
+      "code": "电池09",
+      "title": "电池 #09 · 南坡道路东侧",
+      "subtitle": "BP_Carry_FuelCell_Generic_C",
+      "category": "power",
+      "circuit": "BAT",
+      "floor": "南坡 (-252.0m)",
+      "x": 72.52,
+      "y": 326.87,
+      "z": -252.01,
+      "yaw": 80.7,
+      "recommendedClipZ": -220,
+      "requirement": "候选刷新点 (11选3)",
+      "description": "要塞南侧下山道路东侧营地旁。",
+      "connectsTo": []
+    },
+    {
+      "id": "bat-10",
+      "code": "电池10",
+      "title": "电池 #10 · 正南远端营地",
+      "subtitle": "BP_Carry_FuelCell_Generic_C",
+      "category": "power",
+      "circuit": "BAT",
+      "floor": "南坡 (-252.0m)",
+      "x": 47.16,
+      "y": 304.68,
+      "z": -251.95,
+      "yaw": 100.8,
+      "recommendedClipZ": -220,
+      "requirement": "候选刷新点 (11选3)",
+      "description": "要塞正南方向下坡远端哨所残骸。",
+      "connectsTo": []
+    },
+    {
+      "id": "bat-11",
+      "code": "电池11",
+      "title": "电池 #11 · 正西山坡哨卡",
+      "subtitle": "BP_Carry_FuelCell_Generic_C",
+      "category": "power",
+      "circuit": "BAT",
+      "floor": "西坡 (-247.6m)",
+      "x": -27.45,
+      "y": 393.73,
+      "z": -247.6,
+      "yaw": 127.7,
+      "recommendedClipZ": -220,
+      "requirement": "候选刷新点 (11选3)",
+      "description": "要塞正西方向远端山坡掩体旁。",
+      "connectsTo": []
+    }
+  ]
+}

@@ -1,0 +1,3678 @@
+{
+  "meta": {
+    "baseSkillPoints": 76,
+    "pointsPerExpedition": 5,
+    "maxExpeditions": 3,
+    "maxTotalSkillPoints": 91,
+    "resetCoinCostPerPoint": 2000
+  },
+  "branches": [
+    {
+      "id": "conditioning",
+      "name": "强化",
+      "color": "#1fff76"
+    },
+    {
+      "id": "mobility",
+      "name": "机动性",
+      "color": "#ffd205"
+    },
+    {
+      "id": "survival",
+      "name": "生存",
+      "color": "#f60010"
+    }
+  ],
+  "tree": {
+    "nodes": [
+      {
+        "nodeId": 1000,
+        "slotKey": "conditioning-1000",
+        "branch": "conditioning",
+        "kind": "normal",
+        "shape": "large-circle",
+        "tier": 0,
+        "x": -108,
+        "y": 272,
+        "skillId": "used-to-the-weight",
+        "parentNodeIds": [],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 1011,
+        "slotKey": "conditioning-1011",
+        "branch": "conditioning",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 1,
+        "x": -273,
+        "y": 272,
+        "skillId": "three-deep-breaths",
+        "parentNodeIds": [
+          1000
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 1010,
+        "slotKey": "conditioning-1010",
+        "branch": "conditioning",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 1,
+        "x": -198,
+        "y": 182,
+        "skillId": "stubborn-mule",
+        "parentNodeIds": [
+          1000
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 1021,
+        "slotKey": "conditioning-1021",
+        "branch": "conditioning",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 2,
+        "x": -378,
+        "y": 212,
+        "skillId": "vigorous-vaulter",
+        "parentNodeIds": [
+          1011
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 1020,
+        "slotKey": "conditioning-1020",
+        "branch": "conditioning",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 2,
+        "x": -303,
+        "y": 122,
+        "skillId": "vault-n-carry",
+        "parentNodeIds": [
+          1010
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 1042,
+        "slotKey": "conditioning-1042",
+        "branch": "conditioning",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 4,
+        "x": -648,
+        "y": 77,
+        "skillId": "downed-but-determined",
+        "parentNodeIds": [
+          1030
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 1041,
+        "slotKey": "conditioning-1041",
+        "branch": "conditioning",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 4,
+        "x": -528,
+        "y": 32,
+        "skillId": "broad-shoulders",
+        "parentNodeIds": [
+          1030
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 1040,
+        "slotKey": "conditioning-1040",
+        "branch": "conditioning",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 4,
+        "x": -498,
+        "y": -73,
+        "skillId": "loaded-arms",
+        "parentNodeIds": [
+          1030
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 1052,
+        "slotKey": "conditioning-1052",
+        "branch": "conditioning",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 5,
+        "x": -723,
+        "y": -13,
+        "skillId": "crawl-before-you-walk",
+        "parentNodeIds": [
+          1042
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 1051,
+        "slotKey": "conditioning-1051",
+        "branch": "conditioning",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 5,
+        "x": -618,
+        "y": -58,
+        "skillId": "speedy-mule",
+        "parentNodeIds": [
+          1041
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 1050,
+        "slotKey": "conditioning-1050",
+        "branch": "conditioning",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 5,
+        "x": -633,
+        "y": -178,
+        "skillId": "proficient-pryer",
+        "parentNodeIds": [
+          1040
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 1030,
+        "slotKey": "conditioning-choice",
+        "branch": "conditioning",
+        "kind": "choice",
+        "shape": "diamond",
+        "tier": 3,
+        "x": -438,
+        "y": 122,
+        "groupId": "conditioning-gate-10",
+        "maxSelectable": 1,
+        "slotIndex": 0,
+        "earlyPoolOnly": true,
+        "candidateIds": [
+          "back-on-your-feet",
+          "mules-gallop"
+        ],
+        "parentNodeIds": [
+          1021,
+          1020
+        ],
+        "minBranchPoints": 10
+      },
+      {
+        "nodeId": 1060,
+        "slotKey": "conditioning-capstone-30",
+        "branch": "conditioning",
+        "kind": "capstone",
+        "shape": "diamond",
+        "tier": 6,
+        "x": -828,
+        "y": -268,
+        "groupId": "conditioning-gate-cap",
+        "maxSelectable": 2,
+        "slotIndex": 0,
+        "earlyPoolOnly": false,
+        "candidateIds": [
+          "security-breach",
+          "weapon-bash",
+          "bull-rush"
+        ],
+        "parentNodeIds": [
+          1052,
+          1051,
+          1050
+        ],
+        "minBranchPoints": 30
+      },
+      {
+        "nodeId": 1061,
+        "slotKey": "conditioning-capstone-40",
+        "branch": "conditioning",
+        "kind": "capstone",
+        "shape": "diamond",
+        "tier": 6,
+        "x": -828,
+        "y": -103,
+        "groupId": "conditioning-gate-cap",
+        "maxSelectable": 2,
+        "slotIndex": 1,
+        "earlyPoolOnly": false,
+        "candidateIds": [
+          "security-breach",
+          "weapon-bash",
+          "bull-rush"
+        ],
+        "parentNodeIds": [
+          1052,
+          1051,
+          1050
+        ],
+        "minBranchPoints": 40
+      },
+      {
+        "nodeId": 2000,
+        "slotKey": "mobility-2000",
+        "branch": "mobility",
+        "kind": "normal",
+        "shape": "large-circle",
+        "tier": 0,
+        "x": 0,
+        "y": 220,
+        "skillId": "youthful-lungs",
+        "parentNodeIds": [],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 2010,
+        "slotKey": "mobility-2010",
+        "branch": "mobility",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 1,
+        "x": -128,
+        "y": 92,
+        "skillId": "sure-footed-scrambler",
+        "parentNodeIds": [
+          2000
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 2011,
+        "slotKey": "mobility-2011",
+        "branch": "mobility",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 1,
+        "x": 128,
+        "y": 92,
+        "skillId": "nimble-climber",
+        "parentNodeIds": [
+          2000
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 2020,
+        "slotKey": "mobility-2020",
+        "branch": "mobility",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 2,
+        "x": -128,
+        "y": 12,
+        "skillId": "ready-to-roll",
+        "parentNodeIds": [
+          2010
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 2021,
+        "slotKey": "mobility-2021",
+        "branch": "mobility",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 2,
+        "x": 128,
+        "y": 4,
+        "skillId": "fight-or-flight",
+        "parentNodeIds": [
+          2011
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 2040,
+        "slotKey": "mobility-2040",
+        "branch": "mobility",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 4,
+        "x": -128,
+        "y": -140,
+        "skillId": "effortless-roll",
+        "parentNodeIds": [
+          2030
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 2041,
+        "slotKey": "mobility-2041",
+        "branch": "mobility",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 4,
+        "x": 0,
+        "y": -164,
+        "skillId": "right-back-at-it",
+        "parentNodeIds": [
+          2030
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 2042,
+        "slotKey": "mobility-2042",
+        "branch": "mobility",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 4,
+        "x": 128,
+        "y": -140,
+        "skillId": "marathon-runner",
+        "parentNodeIds": [
+          2030
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 2050,
+        "slotKey": "mobility-2050",
+        "branch": "mobility",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 5,
+        "x": -128,
+        "y": -252,
+        "skillId": "slip-and-slide",
+        "parentNodeIds": [
+          2040
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 2051,
+        "slotKey": "mobility-2051",
+        "branch": "mobility",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 5,
+        "x": 0,
+        "y": -268,
+        "skillId": "off-the-wall",
+        "parentNodeIds": [
+          2041
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 2052,
+        "slotKey": "mobility-2052",
+        "branch": "mobility",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 5,
+        "x": 128,
+        "y": -252,
+        "skillId": "swift-start",
+        "parentNodeIds": [
+          2042
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 2030,
+        "slotKey": "mobility-choice",
+        "branch": "mobility",
+        "kind": "choice",
+        "shape": "diamond",
+        "tier": 3,
+        "x": 0,
+        "y": -44,
+        "groupId": "mobility-gate-10",
+        "maxSelectable": 1,
+        "slotIndex": 0,
+        "earlyPoolOnly": true,
+        "candidateIds": [
+          "vault-spring",
+          "vaults-on-vaults-on-vaults"
+        ],
+        "parentNodeIds": [
+          2020,
+          2021
+        ],
+        "minBranchPoints": 10
+      },
+      {
+        "nodeId": 2060,
+        "slotKey": "mobility-capstone-30",
+        "branch": "mobility",
+        "kind": "capstone",
+        "shape": "diamond",
+        "tier": 6,
+        "x": -64,
+        "y": -420,
+        "groupId": "mobility-gate-cap",
+        "maxSelectable": 2,
+        "slotIndex": 0,
+        "earlyPoolOnly": false,
+        "candidateIds": [
+          "sprinting-on-fumes",
+          "wall-run",
+          "in-the-flow"
+        ],
+        "parentNodeIds": [
+          2050,
+          2051,
+          2052
+        ],
+        "minBranchPoints": 30
+      },
+      {
+        "nodeId": 2061,
+        "slotKey": "mobility-capstone-40",
+        "branch": "mobility",
+        "kind": "capstone",
+        "shape": "diamond",
+        "tier": 6,
+        "x": 64,
+        "y": -420,
+        "groupId": "mobility-gate-cap",
+        "maxSelectable": 2,
+        "slotIndex": 1,
+        "earlyPoolOnly": false,
+        "candidateIds": [
+          "sprinting-on-fumes",
+          "wall-run",
+          "in-the-flow"
+        ],
+        "parentNodeIds": [
+          2050,
+          2051,
+          2052
+        ],
+        "minBranchPoints": 40
+      },
+      {
+        "nodeId": 3000,
+        "slotKey": "survival-3000",
+        "branch": "survival",
+        "kind": "normal",
+        "shape": "large-circle",
+        "tier": 0,
+        "x": 122,
+        "y": 262,
+        "skillId": "in-round-crafting",
+        "parentNodeIds": [],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 3010,
+        "slotKey": "survival-3010",
+        "branch": "survival",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 1,
+        "x": 212,
+        "y": 172,
+        "skillId": "looters-instincts",
+        "parentNodeIds": [
+          3000
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 3011,
+        "slotKey": "survival-3011",
+        "branch": "survival",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 1,
+        "x": 287,
+        "y": 262,
+        "skillId": "sturdy-ankles",
+        "parentNodeIds": [
+          3000
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 3020,
+        "slotKey": "survival-3020",
+        "branch": "survival",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 2,
+        "x": 317,
+        "y": 112,
+        "skillId": "silent-scavenger",
+        "parentNodeIds": [
+          3010
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 3021,
+        "slotKey": "survival-3021",
+        "branch": "survival",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 2,
+        "x": 392,
+        "y": 202,
+        "skillId": "agile-croucher",
+        "parentNodeIds": [
+          3011
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 3042,
+        "slotKey": "survival-3042",
+        "branch": "survival",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 4,
+        "x": 662,
+        "y": 67,
+        "skillId": "stylish-landing",
+        "parentNodeIds": [
+          3030
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 3041,
+        "slotKey": "survival-3041",
+        "branch": "survival",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 4,
+        "x": 542,
+        "y": 22,
+        "skillId": "traveling-tinkerer",
+        "parentNodeIds": [
+          3030
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 3040,
+        "slotKey": "survival-3040",
+        "branch": "survival",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 4,
+        "x": 512,
+        "y": -83,
+        "skillId": "gentle-pressure",
+        "parentNodeIds": [
+          3030
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 3052,
+        "slotKey": "survival-3052",
+        "branch": "survival",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 5,
+        "x": 737,
+        "y": -23,
+        "skillId": "turtle-crawl",
+        "parentNodeIds": [
+          3042
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 3051,
+        "slotKey": "survival-3051",
+        "branch": "survival",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 5,
+        "x": 632,
+        "y": -68,
+        "skillId": "looters-luck",
+        "parentNodeIds": [
+          3041
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 3050,
+        "slotKey": "survival-3050",
+        "branch": "survival",
+        "kind": "normal",
+        "shape": "circle",
+        "tier": 5,
+        "x": 647,
+        "y": -188,
+        "skillId": "a-little-extra",
+        "parentNodeIds": [
+          3040
+        ],
+        "minBranchPoints": 0
+      },
+      {
+        "nodeId": 3030,
+        "slotKey": "survival-choice",
+        "branch": "survival",
+        "kind": "choice",
+        "shape": "diamond",
+        "tier": 3,
+        "x": 452,
+        "y": 112,
+        "groupId": "survival-gate-10",
+        "maxSelectable": 1,
+        "slotIndex": 0,
+        "earlyPoolOnly": true,
+        "candidateIds": [
+          "quick-roll",
+          "minesweeper"
+        ],
+        "parentNodeIds": [
+          3020,
+          3021
+        ],
+        "minBranchPoints": 10
+      },
+      {
+        "nodeId": 3060,
+        "slotKey": "survival-capstone-30",
+        "branch": "survival",
+        "kind": "capstone",
+        "shape": "diamond",
+        "tier": 6,
+        "x": 842,
+        "y": -278,
+        "groupId": "survival-gate-cap",
+        "maxSelectable": 2,
+        "slotIndex": 0,
+        "earlyPoolOnly": false,
+        "candidateIds": [
+          "road-warrior",
+          "nomadic-crafting",
+          "field-repair"
+        ],
+        "parentNodeIds": [
+          3052,
+          3051,
+          3050
+        ],
+        "minBranchPoints": 30
+      },
+      {
+        "nodeId": 3061,
+        "slotKey": "survival-capstone-40",
+        "branch": "survival",
+        "kind": "capstone",
+        "shape": "diamond",
+        "tier": 6,
+        "x": 842,
+        "y": -113,
+        "groupId": "survival-gate-cap",
+        "maxSelectable": 2,
+        "slotIndex": 1,
+        "earlyPoolOnly": false,
+        "candidateIds": [
+          "road-warrior",
+          "nomadic-crafting",
+          "field-repair"
+        ],
+        "parentNodeIds": [
+          3052,
+          3051,
+          3050
+        ],
+        "minBranchPoints": 40
+      }
+    ],
+    "skills": {
+      "used-to-the-weight": {
+        "id": "used-to-the-weight",
+        "name": "负重如常",
+        "icon": "/icons/skills/T_UI_CharProg_UsedToTheWeight.png",
+        "maxPoints": 1,
+        "statLabel": "护盾移速惩罚减免",
+        "statCategory": "encumbrance",
+        "badge": "-50% 盾牌减速",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "-50%",
+            "note": "中盾 2.5% · 重盾 7.5%"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "conditioning",
+        "nodeType": "normal"
+      },
+      "three-deep-breaths": {
+        "id": "three-deep-breaths",
+        "name": "三息回神",
+        "icon": "/icons/skills/T_UI_CharProg_ThreeDeepBreath.png",
+        "maxPoints": 5,
+        "statLabel": "脱离力竭耐力阈值",
+        "statCategory": "stamina",
+        "badge": "10点脱力竭",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "18 点耐力",
+            "note": "默认 20 · 提前 10%"
+          },
+          {
+            "lv": 2,
+            "display": "16 点耐力",
+            "note": "默认 20 · 提前 20%"
+          },
+          {
+            "lv": 3,
+            "display": "14 点耐力",
+            "note": "默认 20 · 提前 30%"
+          },
+          {
+            "lv": 4,
+            "display": "12 点耐力",
+            "note": "默认 20 · 提前 40%"
+          },
+          {
+            "lv": 5,
+            "display": "10 点耐力",
+            "note": "默认 20 · 提前 50%"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "conditioning",
+        "nodeType": "normal"
+      },
+      "stubborn-mule": {
+        "id": "stubborn-mule",
+        "name": "吃苦耐劳",
+        "icon": "/icons/skills/T_UI_CharProg_StubbornMule.png",
+        "maxPoints": 5,
+        "statLabel": "超重回耐负重缓冲",
+        "statCategory": "encumbrance",
+        "badge": "+30kg 缓冲",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "+10 kg",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "+15 kg",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "+20 kg",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "+25 kg",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "+30 kg",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "conditioning",
+        "nodeType": "normal"
+      },
+      "vigorous-vaulter": {
+        "id": "vigorous-vaulter",
+        "name": "纵跃无阻",
+        "icon": "/icons/skills/T_UI_CharProg_VigorousVaulter.png",
+        "maxPoints": 1,
+        "statLabel": "力竭翻越速度",
+        "statCategory": "traversal",
+        "badge": "免力竭减速",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "100% 原速",
+            "note": "移除力竭慢翻惩罚"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "conditioning",
+        "nodeType": "normal"
+      },
+      "vault-n-carry": {
+        "id": "vault-n-carry",
+        "name": "携物翻越",
+        "icon": "/icons/skills/T_UI_CharProg_CarryableVaulting.png",
+        "maxPoints": 1,
+        "statLabel": "搬运重物翻越",
+        "statCategory": "traversal",
+        "badge": "搬运物可翻越",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "机制解锁",
+            "note": "持电池/箱子可翻越"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "conditioning",
+        "nodeType": "normal"
+      },
+      "downed-but-determined": {
+        "id": "downed-but-determined",
+        "name": "人倒志不倒",
+        "icon": "/icons/skills/T_UI_CharProg_DownButDetermined.png",
+        "maxPoints": 5,
+        "statLabel": "倒地流血速率",
+        "statCategory": "survivability",
+        "badge": "-25% (133.3s)",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "-5%",
+            "note": "存活 105.3s"
+          },
+          {
+            "lv": 2,
+            "display": "-10%",
+            "note": "存活 111.1s"
+          },
+          {
+            "lv": 3,
+            "display": "-15%",
+            "note": "存活 117.6s"
+          },
+          {
+            "lv": 4,
+            "display": "-20%",
+            "note": "存活 125s"
+          },
+          {
+            "lv": 5,
+            "display": "-25%",
+            "note": "存活 133.3s"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "conditioning",
+        "nodeType": "normal"
+      },
+      "broad-shoulders": {
+        "id": "broad-shoulders",
+        "name": "阔肩载物",
+        "icon": "/icons/skills/T_UI_CharProg_BroadShoulders.png",
+        "maxPoints": 5,
+        "statLabel": "最大负重上限",
+        "statCategory": "encumbrance",
+        "badge": "+10 kg",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "+2 kg",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "+4 kg",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "+6 kg",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "+8 kg",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "+10 kg",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "conditioning",
+        "nodeType": "normal"
+      },
+      "loaded-arms": {
+        "id": "loaded-arms",
+        "name": "武器减负",
+        "icon": "/icons/skills/T_UI_CharProg_LoadedArms.png",
+        "maxPoints": 1,
+        "statLabel": "已装备武器重量",
+        "statCategory": "encumbrance",
+        "badge": "-50% 枪重",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "-50%",
+            "note": "仅主副槽已装备枪械"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "conditioning",
+        "nodeType": "normal"
+      },
+      "crawl-before-you-walk": {
+        "id": "crawl-before-you-walk",
+        "name": "伏地速行",
+        "icon": "/icons/skills/T_UI_EoR_DBNO.png",
+        "maxPoints": 5,
+        "statLabel": "倒地爬行移速",
+        "statCategory": "survivability",
+        "badge": "+50% 爬行速",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "+10%",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "+20%",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "+30%",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "+40%",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "+50%",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "conditioning",
+        "nodeType": "normal"
+      },
+      "speedy-mule": {
+        "id": "speedy-mule",
+        "name": "疾行驮兽",
+        "icon": "/icons/skills/T_UI_CharProg_ReducedMovementSpeed.png",
+        "maxPoints": 5,
+        "statLabel": "严重超重移速",
+        "statCategory": "encumbrance",
+        "badge": "+40% 超重移速",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "+10%",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "+17.5%",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "+25%",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "+32.5%",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "+40%",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "conditioning",
+        "nodeType": "normal"
+      },
+      "proficient-pryer": {
+        "id": "proficient-pryer",
+        "name": "撬锁大师",
+        "icon": "/icons/skills/T_UI_CharProg_ProficientPryer.png",
+        "maxPoints": 5,
+        "statLabel": "破门撬锁耗时",
+        "statCategory": "looting",
+        "badge": "-30% 撬锁耗时",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "-5%",
+            "note": "10s → 9.5s"
+          },
+          {
+            "lv": 2,
+            "display": "-10%",
+            "note": "10s → 9s"
+          },
+          {
+            "lv": 3,
+            "display": "-15%",
+            "note": "10s → 8.5s"
+          },
+          {
+            "lv": 4,
+            "display": "-20%",
+            "note": "10s → 8s"
+          },
+          {
+            "lv": 5,
+            "display": "-30%",
+            "note": "10s → 7s"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "conditioning",
+        "nodeType": "normal"
+      },
+      "back-on-your-feet": {
+        "id": "back-on-your-feet",
+        "name": "不屈意志",
+        "icon": "/icons/skills/T_UI_CharProg_BackOnYourFeet.png",
+        "maxPoints": 1,
+        "statLabel": "重伤脱战自动回血",
+        "statCategory": "survivability",
+        "badge": "回至 30 HP",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "回至 30 HP",
+            "note": "受击打断"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "conditioning",
+        "nodeType": "choice",
+        "groupId": "conditioning-gate-10"
+      },
+      "mules-gallop": {
+        "id": "mules-gallop",
+        "name": "驮兽疾奔",
+        "icon": "/icons/skills/T_UI_CharProg_EncumberedSprint.png",
+        "maxPoints": 1,
+        "statLabel": "超重强行冲刺",
+        "statCategory": "encumbrance",
+        "badge": "52.5% 冲刺速",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "52.5% 冲刺速",
+            "note": "解除超重禁跑"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "conditioning",
+        "nodeType": "choice",
+        "groupId": "conditioning-gate-10"
+      },
+      "security-breach": {
+        "id": "security-breach",
+        "name": "安防突破",
+        "icon": "/icons/skills/T_UI_CharProg_SecurityBreach.png",
+        "maxPoints": 1,
+        "statLabel": "安防保险柜撬锁",
+        "statCategory": "looting",
+        "badge": "可撬保险柜",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "二级破拆解锁",
+            "note": "可撬安防保险柜"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "conditioning",
+        "nodeType": "capstone",
+        "groupId": "conditioning-gate-cap"
+      },
+      "weapon-bash": {
+        "id": "weapon-bash",
+        "name": "武器重击",
+        "icon": "/icons/skills/T_UI_CharProg_WeaponBash.png",
+        "maxPoints": 1,
+        "statLabel": "持枪快速近战",
+        "statCategory": "combat",
+        "badge": "持枪近战重击",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "枪托重击",
+            "note": "免切近战武器硬直"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "conditioning",
+        "nodeType": "capstone",
+        "groupId": "conditioning-gate-cap"
+      },
+      "bull-rush": {
+        "id": "bull-rush",
+        "name": "野蛮冲撞",
+        "icon": "/icons/skills/T_UI_CharProg_Juggernaut.png",
+        "maxPoints": 1,
+        "statLabel": "收枪冲刺撞击",
+        "statCategory": "combat",
+        "badge": "≥3.25m/s 撞飞",
+        "warningText": "仅收枪时可用",
+        "levels": [
+          {
+            "lv": 1,
+            "display": "≥3.25 m/s 触发",
+            "note": "冲刺撞退敌人/小型ARC"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "conditioning",
+        "nodeType": "capstone",
+        "groupId": "conditioning-gate-cap"
+      },
+      "youthful-lungs": {
+        "id": "youthful-lungs",
+        "name": "活力肺能",
+        "icon": "/icons/skills/T_UI_CharProg_Lungs.png",
+        "maxPoints": 1,
+        "statLabel": "最大耐力上限",
+        "statCategory": "stamina",
+        "badge": "+25% 耐力上限",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "+25%",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "mobility",
+        "nodeType": "normal"
+      },
+      "sure-footed-scrambler": {
+        "id": "sure-footed-scrambler",
+        "name": "稳健攀爬者",
+        "icon": "/icons/skills/T_UI_CharProg_IncreaseScrambleDuration.png",
+        "maxPoints": 5,
+        "statLabel": "陡坡冲刺攀爬时长",
+        "statCategory": "traversal",
+        "badge": "+2s 陡坡攀爬",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "+0.5 s",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "+0.8 s",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "+1.2 s",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "+1.6 s",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "+2 s",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "mobility",
+        "nodeType": "normal"
+      },
+      "nimble-climber": {
+        "id": "nimble-climber",
+        "name": "灵活攀跃",
+        "icon": "/icons/skills/T_UI_CharProg_Climb.png",
+        "maxPoints": 5,
+        "statLabel": "攀爬与翻越速度",
+        "statCategory": "traversal",
+        "badge": "+15% 攀爬速",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "+3%",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "+6%",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "+9%",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "+12%",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "+15%",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "mobility",
+        "nodeType": "normal"
+      },
+      "ready-to-roll": {
+        "id": "ready-to-roll",
+        "name": "借势翻滚",
+        "icon": "/icons/skills/T_UI_CharProg_ReadytoRoll.png",
+        "maxPoints": 5,
+        "statLabel": "坠落受身判定窗口",
+        "statCategory": "traversal",
+        "badge": "+50% 受身窗口",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "+10%",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "+20%",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "+30%",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "+40%",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "+50%",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "mobility",
+        "nodeType": "normal"
+      },
+      "fight-or-flight": {
+        "id": "fight-or-flight",
+        "name": "要么战，要么跑",
+        "icon": "/icons/skills/T_UI_CharProg_FightOrFlight.png",
+        "maxPoints": 5,
+        "statLabel": "受击瞬间回复耐力",
+        "statCategory": "stamina",
+        "badge": "受击 +25 耐力",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "+5 点",
+            "note": "含内置冷却"
+          },
+          {
+            "lv": 2,
+            "display": "+10 点",
+            "note": "含内置冷却"
+          },
+          {
+            "lv": 3,
+            "display": "+15 点",
+            "note": "含内置冷却"
+          },
+          {
+            "lv": 4,
+            "display": "+20 点",
+            "note": "含内置冷却"
+          },
+          {
+            "lv": 5,
+            "display": "+25 点",
+            "note": "含内置冷却"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "mobility",
+        "nodeType": "normal"
+      },
+      "effortless-roll": {
+        "id": "effortless-roll",
+        "name": "轻巧翻滚",
+        "icon": "/icons/skills/T_UI_CharProg_EffortlessRoll.png",
+        "maxPoints": 5,
+        "statLabel": "翻滚耐力消耗",
+        "statCategory": "stamina",
+        "badge": "-34% 翻滚耗耐",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "-7%",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "-14%",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "-21%",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "-27%",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "-34%",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "mobility",
+        "nodeType": "normal"
+      },
+      "right-back-at-it": {
+        "id": "right-back-at-it",
+        "name": "即刻重整",
+        "icon": "/icons/skills/T_UI_CharProg_ReduceRecoveryTimefromaFall.png",
+        "maxPoints": 1,
+        "statLabel": "重着陆起身速度",
+        "statCategory": "traversal",
+        "badge": "+25% 起身速",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "+25% (1.25x)",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "mobility",
+        "nodeType": "normal"
+      },
+      "marathon-runner": {
+        "id": "marathon-runner",
+        "name": "马拉松跑者",
+        "icon": "/icons/skills/T_UI_CharProg_Marathon.png",
+        "maxPoints": 5,
+        "statLabel": "移动与冲刺耐力消耗",
+        "statCategory": "stamina",
+        "badge": "-15% 移动耗耐",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "-3%",
+            "note": "续航 +3.1%"
+          },
+          {
+            "lv": 2,
+            "display": "-6%",
+            "note": "续航 +6.4%"
+          },
+          {
+            "lv": 3,
+            "display": "-9%",
+            "note": "续航 +9.9%"
+          },
+          {
+            "lv": 4,
+            "display": "-12%",
+            "note": "续航 +13.6%"
+          },
+          {
+            "lv": 5,
+            "display": "-15%",
+            "note": "续航 +17.6%"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "mobility",
+        "nodeType": "normal"
+      },
+      "slip-and-slide": {
+        "id": "slip-and-slide",
+        "name": "纵跃丝滑",
+        "icon": "/icons/skills/T_UI_CharProg_Slide.png",
+        "maxPoints": 5,
+        "statLabel": "滑铲地面摩擦阻力",
+        "statCategory": "traversal",
+        "badge": "-25% 摩擦",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "-5%",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "-10%",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "-15%",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "-20%",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "-25%",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "mobility",
+        "nodeType": "normal"
+      },
+      "off-the-wall": {
+        "id": "off-the-wall",
+        "name": "飞檐走壁",
+        "icon": "/icons/skills/T_UI_CharProg_OffTheWall.png",
+        "maxPoints": 5,
+        "statLabel": "蹬墙反弹跳跃初速",
+        "statCategory": "traversal",
+        "badge": "+50% 蹬墙跳",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "+10%",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "+20%",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "+30%",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "+40%",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "+50%",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "mobility",
+        "nodeType": "normal"
+      },
+      "swift-start": {
+        "id": "swift-start",
+        "name": "迅捷启动",
+        "icon": "/icons/skills/T_UI_CharProg_IncreaseSprintBoost.png",
+        "maxPoints": 5,
+        "statLabel": "起跑爆发加速时长",
+        "statCategory": "traversal",
+        "badge": "+10s 起跑爆发",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "+2.5 s",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "+4 s",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "+6 s",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "+7.5 s",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "+10 s",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "mobility",
+        "nodeType": "normal"
+      },
+      "vault-spring": {
+        "id": "vault-spring",
+        "name": "跳跃弹簧",
+        "icon": "/icons/skills/T_UI_CharProg_VaultSpring.png",
+        "maxPoints": 1,
+        "statLabel": "翻越末端弹跳",
+        "statCategory": "traversal",
+        "badge": "翻越末端起跳",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "二段弹跳",
+            "note": "翻越结束按跳跃触发"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "mobility",
+        "nodeType": "choice",
+        "groupId": "mobility-gate-10"
+      },
+      "vaults-on-vaults-on-vaults": {
+        "id": "vaults-on-vaults-on-vaults",
+        "name": "身轻如燕",
+        "icon": "/icons/skills/T_UI_CharProg_VaultOnVault.png",
+        "maxPoints": 1,
+        "statLabel": "翻越耐力消耗",
+        "statCategory": "stamina",
+        "badge": "-100% 翻越耗耐",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "-100% (0耗耐)",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "mobility",
+        "nodeType": "choice",
+        "groupId": "mobility-gate-10"
+      },
+      "sprinting-on-fumes": {
+        "id": "sprinting-on-fumes",
+        "name": "疲态冲刺",
+        "icon": "/icons/skills/T_UI_CharProg_SprintingOnFumes.png",
+        "maxPoints": 1,
+        "statLabel": "濒空耐力无限冲刺",
+        "statCategory": "stamina",
+        "badge": "<2.2 耐力锁底",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "<2.2 耐力锁底",
+            "note": "36s停耐5s · 72s停耐14s"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "mobility",
+        "nodeType": "capstone",
+        "groupId": "mobility-gate-cap"
+      },
+      "wall-run": {
+        "id": "wall-run",
+        "name": "蹬墙跑",
+        "icon": "/icons/skills/T_UI_CharProg_WallClimb.png",
+        "maxPoints": 1,
+        "statLabel": "垂直墙面向上奔跑",
+        "statCategory": "traversal",
+        "badge": "≥4.0m/s 蹬墙跑",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "≥4.0 m/s 触发",
+            "note": "冲刺上墙抓高处边缘"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "mobility",
+        "nodeType": "capstone",
+        "groupId": "mobility-gate-cap"
+      },
+      "in-the-flow": {
+        "id": "in-the-flow",
+        "name": "行云流水",
+        "icon": "/icons/skills/T_UI_CharProg_FlowState.png",
+        "maxPoints": 1,
+        "statLabel": "连续跑酷心流满层加成",
+        "statCategory": "traversal",
+        "badge": "-65%耗耐/+25%翻越",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "-65% 耗耐",
+            "note": "+25% 翻越速度"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "mobility",
+        "nodeType": "capstone",
+        "groupId": "mobility-gate-cap"
+      },
+      "in-round-crafting": {
+        "id": "in-round-crafting",
+        "name": "局内制作",
+        "icon": "/icons/skills/T_UI_CharProg_InroundCraft.png",
+        "maxPoints": 1,
+        "statLabel": "局内基础现场制作",
+        "statCategory": "crafting",
+        "badge": "解锁 9 种配方",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "解锁 9 种配方",
+            "note": ""
+          }
+        ],
+        "unlockedItems": [
+          {
+            "name": "绷带",
+            "icon": "/items/T_UI_Icon_HealingHoT_Small.png"
+          },
+          {
+            "name": "护盾充能器",
+            "icon": "/items/T_UI_Icon_Consumable_ShieldOverTimePack.png"
+          },
+          {
+            "name": "肾上腺素针剂",
+            "icon": "/items/T_UI_Icon_AdrenalinShot.png"
+          },
+          {
+            "name": "轻型冲击手雷",
+            "icon": "/items/T_UI_Icon_Throwable_ImpactGrenade_Small.png"
+          },
+          {
+            "name": "小型烟雾手雷",
+            "icon": "/items/T_UI_Icon_Throwable_SmokeGrenade_Small.png"
+          },
+          {
+            "name": "火焰喷涂",
+            "icon": "/items/T_UI_Icon_SprayCan_Fire.png"
+          },
+          {
+            "name": "水果拼盘",
+            "icon": "/items/T_UI_Icon_Consumable_FruitMix.png"
+          },
+          {
+            "name": "粗制炸药",
+            "icon": "/items/T_UI_Icon_Salvage_ExplosiveMixture.png"
+          },
+          {
+            "name": "龙舌兰汁",
+            "icon": "/items/T_UI_Icon_Consumable_AgaveJuice.png"
+          }
+        ],
+        "branch": "survival",
+        "nodeType": "normal"
+      },
+      "looters-instincts": {
+        "id": "looters-instincts",
+        "name": "搜刮者本能",
+        "icon": "/icons/skills/T_UI_CharProg_LootersInstinct.png",
+        "maxPoints": 5,
+        "statLabel": "容器搜索揭示耗时",
+        "statCategory": "looting",
+        "badge": "-25% 搜索耗时",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "-5%",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "-10%",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "-15%",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "-20%",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "-25%",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "survival",
+        "nodeType": "normal"
+      },
+      "sturdy-ankles": {
+        "id": "sturdy-ankles",
+        "name": "坚韧脚踝",
+        "icon": "/icons/skills/T_UI_CharProg_FallDamage.png",
+        "maxPoints": 5,
+        "statLabel": "非致命高处摔落伤害",
+        "statCategory": "survivability",
+        "badge": "-15% 摔落伤",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "-3%",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "-6%",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "-9%",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "-12%",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "-15%",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "survival",
+        "nodeType": "normal"
+      },
+      "silent-scavenger": {
+        "id": "silent-scavenger",
+        "name": "无声拾荒者",
+        "icon": "/icons/skills/T_UI_CharProg_SilentScavenger.png",
+        "maxPoints": 5,
+        "statLabel": "搜刮战利品噪音",
+        "statCategory": "stealth",
+        "badge": "-50% 搜刮噪音",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "-10%",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "-20%",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "-30%",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "-40%",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "-50%",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "survival",
+        "nodeType": "normal"
+      },
+      "agile-croucher": {
+        "id": "agile-croucher",
+        "name": "快速蹲伏",
+        "icon": "/icons/skills/T_UI_CharProg_Crouch.png",
+        "maxPoints": 5,
+        "statLabel": "蹲伏移动速度",
+        "statCategory": "stealth",
+        "badge": "+15% 蹲行速",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "+3%",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "+6%",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "+9%",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "+12%",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "+15%",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "survival",
+        "nodeType": "normal"
+      },
+      "stylish-landing": {
+        "id": "stylish-landing",
+        "name": "华丽着陆",
+        "icon": "/icons/skills/T_UI_CharProg_StylishLanding.png",
+        "maxPoints": 5,
+        "statLabel": "受身翻滚最大允许落差",
+        "statCategory": "traversal",
+        "badge": "+1.5m 受身落差",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "+0.5 m",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "+0.8 m",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "+1 m",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "+1.3 m",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "+1.5 m",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "survival",
+        "nodeType": "normal"
+      },
+      "traveling-tinkerer": {
+        "id": "traveling-tinkerer",
+        "name": "旅行工匠",
+        "icon": "/icons/skills/T_UI_CharProg_InroundCraftMore.png",
+        "maxPoints": 1,
+        "statLabel": "进阶工具与暗门钥匙制作",
+        "statCategory": "crafting",
+        "badge": "新增 7 种配方",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "新增 7 种配方",
+            "note": "含奇袭者暗门钥匙"
+          }
+        ],
+        "unlockedItems": [
+          {
+            "name": "奇袭者暗门钥匙",
+            "icon": "/items/T_UI_Icon_KeyItem_RaiderHatchKey.png"
+          },
+          {
+            "name": "草药绷带",
+            "icon": "/items/T_UI_Icon_HealingHoT_Improvised.png"
+          },
+          {
+            "name": "发声器",
+            "icon": "/items/T_UI_Icon_Deployable_SoundTrap.png"
+          },
+          {
+            "name": "火焰手雷陷阱",
+            "icon": "/items/T_UI_Icon_LaserTrap_DoTGrenade_A.png"
+          },
+          {
+            "name": "激光陷阱：烟雾",
+            "icon": "/items/T_UI_Icon_LaserTrap_SmokeGrenade.png"
+          },
+          {
+            "name": "激光陷阱：毒气",
+            "icon": "/items/T_UI_Icon_LaserTrap_StaminaDoT.png"
+          },
+          {
+            "name": "激光陷阱：诱捕",
+            "icon": "/items/T_UI_Icon_LaserTrap_ThrowableDecoy.png"
+          }
+        ],
+        "branch": "survival",
+        "nodeType": "normal"
+      },
+      "gentle-pressure": {
+        "id": "gentle-pressure",
+        "name": "轻柔施压",
+        "icon": "/icons/skills/T_UI_CharProg_GentlePressure.png",
+        "maxPoints": 5,
+        "statLabel": "破门撬箱噪音强度",
+        "statCategory": "stealth",
+        "badge": "-50% 撬锁噪音",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "-10%",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "-20%",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "-30%",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "-40%",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "-50%",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "survival",
+        "nodeType": "normal"
+      },
+      "turtle-crawl": {
+        "id": "turtle-crawl",
+        "name": "伏地避弹",
+        "icon": "/icons/skills/T_UI_CharProg_TurtleCrawl.png",
+        "maxPoints": 5,
+        "statLabel": "倒地状态受击减伤",
+        "statCategory": "survivability",
+        "badge": "-33% 倒地减伤",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "-6.6%",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "-13.2%",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "-19.8%",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "-26.4%",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "-33%",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "survival",
+        "nodeType": "normal"
+      },
+      "looters-luck": {
+        "id": "looters-luck",
+        "name": "好运成双",
+        "icon": "/icons/skills/T_UI_CharProg_LootersLuck.png",
+        "maxPoints": 5,
+        "statLabel": "双格战利品同时揭示概率",
+        "statCategory": "looting",
+        "badge": "33% 双倍揭示",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "6.6%",
+            "note": ""
+          },
+          {
+            "lv": 2,
+            "display": "13.2%",
+            "note": ""
+          },
+          {
+            "lv": 3,
+            "display": "19.8%",
+            "note": ""
+          },
+          {
+            "lv": 4,
+            "display": "26.4%",
+            "note": ""
+          },
+          {
+            "lv": 5,
+            "display": "33%",
+            "note": ""
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "survival",
+        "nodeType": "normal"
+      },
+      "a-little-extra": {
+        "id": "a-little-extra",
+        "name": "破物生资",
+        "icon": "/icons/skills/T_UI_CharProg_ALittleExtra.png",
+        "maxPoints": 1,
+        "statLabel": "破拆物体额外产出",
+        "statCategory": "looting",
+        "badge": "+1~2 材料",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "+1~2 份材料",
+            "note": "撬门/箱直接掉落"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "survival",
+        "nodeType": "normal"
+      },
+      "quick-roll": {
+        "id": "quick-roll",
+        "name": "快速翻滚",
+        "icon": "/icons/skills/T_UI_CharProg_NinjaRoll.png",
+        "maxPoints": 1,
+        "statLabel": "战术快速短翻滚",
+        "statCategory": "traversal",
+        "badge": "快速低耗翻滚",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "快翻替换",
+            "note": "耗耐更低 · 收招更快"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "survival",
+        "nodeType": "choice",
+        "groupId": "survival-gate-10"
+      },
+      "minesweeper": {
+        "id": "minesweeper",
+        "name": "扫雷高手",
+        "icon": "/icons/skills/T_UI_Utility_Mine.png",
+        "maxPoints": 1,
+        "statLabel": "地雷与绊雷拆除",
+        "statCategory": "survivability",
+        "badge": "可拆地雷陷阱",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "排雷回收",
+            "note": "近距离交互拆除爆炸物"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "survival",
+        "nodeType": "choice",
+        "groupId": "survival-gate-10"
+      },
+      "road-warrior": {
+        "id": "road-warrior",
+        "name": "公路勇士",
+        "icon": "/icons/skills/T_UI_CharProg_ExpertScavenging.png",
+        "maxPoints": 1,
+        "statLabel": "局内拆解返还与ARC掉落",
+        "statCategory": "looting",
+        "badge": "100%拆解+ARC增产",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "100% 满额拆解",
+            "note": "ARC 弹药/电池增产"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "survival",
+        "nodeType": "capstone",
+        "groupId": "survival-gate-cap"
+      },
+      "nomadic-crafting": {
+        "id": "nomadic-crafting",
+        "name": "游牧工艺",
+        "icon": "/icons/skills/T_UI_CharProg_SuperFieldCrafting.png",
+        "maxPoints": 1,
+        "statLabel": "高阶弹药与战术道具制作",
+        "statCategory": "crafting",
+        "badge": "新增 7 种高阶配方",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "新增 7 种配方",
+            "note": "全弹药 · 复苏剂 · 滑索"
+          }
+        ],
+        "unlockedItems": [
+          {
+            "name": "轻型弹药",
+            "icon": "/items/T_UI_Icon_LightAmmo.png"
+          },
+          {
+            "name": "中型弹药",
+            "icon": "/items/T_UI_Icon_MediumAmmo.png"
+          },
+          {
+            "name": "重型弹药",
+            "icon": "/items/T_UI_Icon_HeavyAmmo.png"
+          },
+          {
+            "name": "霰弹枪弹药",
+            "icon": "/items/T_UI_Icon_ShotgunAmmo.png"
+          },
+          {
+            "name": "复苏剂",
+            "icon": "/items/T_UI_Icon_Defibrillator.png"
+          },
+          {
+            "name": "滑索",
+            "icon": "/items/T_UI_Icon_Zipline.png"
+          },
+          {
+            "name": "碎片手雷",
+            "icon": "/items/T_UI_Icon_Throwable_ShrapnelGrenade.png"
+          }
+        ],
+        "branch": "survival",
+        "nodeType": "capstone",
+        "groupId": "survival-gate-cap"
+      },
+      "field-repair": {
+        "id": "field-repair",
+        "name": "野外维修",
+        "icon": "/icons/skills/T_UI_CharProg_EquipmentRepair.png",
+        "maxPoints": 1,
+        "statLabel": "局内装备应急修复上限",
+        "statCategory": "crafting",
+        "badge": "修至 30% 耐久",
+        "warningText": null,
+        "levels": [
+          {
+            "lv": 1,
+            "display": "30% 最大耐久",
+            "note": "武器 · 护盾 · 道具"
+          }
+        ],
+        "unlockedItems": null,
+        "branch": "survival",
+        "nodeType": "capstone",
+        "groupId": "survival-gate-cap"
+      }
+    },
+    "connections": [
+      {
+        "id": "1000-1010",
+        "branch": "conditioning",
+        "fromNodeId": 1000,
+        "toNodeId": 1010,
+        "points": [
+          {
+            "x": -108,
+            "y": 272
+          },
+          {
+            "x": -198,
+            "y": 182
+          }
+        ]
+      },
+      {
+        "id": "1000-1011",
+        "branch": "conditioning",
+        "fromNodeId": 1000,
+        "toNodeId": 1011,
+        "points": [
+          {
+            "x": -108,
+            "y": 272
+          },
+          {
+            "x": -273,
+            "y": 272
+          }
+        ]
+      },
+      {
+        "id": "1010-1020",
+        "branch": "conditioning",
+        "fromNodeId": 1010,
+        "toNodeId": 1020,
+        "points": [
+          {
+            "x": -198,
+            "y": 182
+          },
+          {
+            "x": -303,
+            "y": 122
+          }
+        ]
+      },
+      {
+        "id": "1011-1021",
+        "branch": "conditioning",
+        "fromNodeId": 1011,
+        "toNodeId": 1021,
+        "points": [
+          {
+            "x": -273,
+            "y": 272
+          },
+          {
+            "x": -348,
+            "y": 272
+          },
+          {
+            "x": -378,
+            "y": 212
+          }
+        ]
+      },
+      {
+        "id": "1020-1030",
+        "branch": "conditioning",
+        "fromNodeId": 1020,
+        "toNodeId": 1030,
+        "points": [
+          {
+            "x": -303,
+            "y": 122
+          },
+          {
+            "x": -438,
+            "y": 122
+          }
+        ]
+      },
+      {
+        "id": "1021-1030",
+        "branch": "conditioning",
+        "fromNodeId": 1021,
+        "toNodeId": 1030,
+        "points": [
+          {
+            "x": -378,
+            "y": 212
+          },
+          {
+            "x": -378,
+            "y": 125
+          },
+          {
+            "x": -381,
+            "y": 122
+          },
+          {
+            "x": -438,
+            "y": 122
+          }
+        ]
+      },
+      {
+        "id": "1030-1040",
+        "branch": "conditioning",
+        "fromNodeId": 1030,
+        "toNodeId": 1040,
+        "points": [
+          {
+            "x": -438,
+            "y": 122
+          },
+          {
+            "x": -438,
+            "y": 2
+          },
+          {
+            "x": -498,
+            "y": -73
+          }
+        ]
+      },
+      {
+        "id": "1030-1041",
+        "branch": "conditioning",
+        "fromNodeId": 1030,
+        "toNodeId": 1041,
+        "points": [
+          {
+            "x": -438,
+            "y": 122
+          },
+          {
+            "x": -528,
+            "y": 32
+          }
+        ]
+      },
+      {
+        "id": "1030-1042",
+        "branch": "conditioning",
+        "fromNodeId": 1030,
+        "toNodeId": 1042,
+        "points": [
+          {
+            "x": -438,
+            "y": 122
+          },
+          {
+            "x": -573,
+            "y": 122
+          },
+          {
+            "x": -648,
+            "y": 77
+          }
+        ]
+      },
+      {
+        "id": "1040-1050",
+        "branch": "conditioning",
+        "fromNodeId": 1040,
+        "toNodeId": 1050,
+        "points": [
+          {
+            "x": -498,
+            "y": -73
+          },
+          {
+            "x": -565.5,
+            "y": -140.5
+          },
+          {
+            "x": -633,
+            "y": -178
+          }
+        ]
+      },
+      {
+        "id": "1041-1051",
+        "branch": "conditioning",
+        "fromNodeId": 1041,
+        "toNodeId": 1051,
+        "points": [
+          {
+            "x": -528,
+            "y": 32
+          },
+          {
+            "x": -618,
+            "y": -58
+          }
+        ]
+      },
+      {
+        "id": "1042-1052",
+        "branch": "conditioning",
+        "fromNodeId": 1042,
+        "toNodeId": 1052,
+        "points": [
+          {
+            "x": -648,
+            "y": 77
+          },
+          {
+            "x": -723,
+            "y": -13
+          }
+        ]
+      },
+      {
+        "id": "1050-1060",
+        "branch": "conditioning",
+        "fromNodeId": 1050,
+        "toNodeId": 1060,
+        "points": [
+          {
+            "x": -633,
+            "y": -178
+          },
+          {
+            "x": -828,
+            "y": -178
+          },
+          {
+            "x": -828,
+            "y": -268
+          }
+        ]
+      },
+      {
+        "id": "1050-1061",
+        "branch": "conditioning",
+        "fromNodeId": 1050,
+        "toNodeId": 1061,
+        "points": [
+          {
+            "x": -633,
+            "y": -178
+          },
+          {
+            "x": -828,
+            "y": -178
+          },
+          {
+            "x": -828,
+            "y": -103
+          }
+        ]
+      },
+      {
+        "id": "1051-1060",
+        "branch": "conditioning",
+        "fromNodeId": 1051,
+        "toNodeId": 1060,
+        "points": [
+          {
+            "x": -618,
+            "y": -58
+          },
+          {
+            "x": -721.5,
+            "y": -176.5
+          },
+          {
+            "x": -724.5,
+            "y": -178
+          },
+          {
+            "x": -828,
+            "y": -178
+          },
+          {
+            "x": -828,
+            "y": -268
+          }
+        ]
+      },
+      {
+        "id": "1051-1061",
+        "branch": "conditioning",
+        "fromNodeId": 1051,
+        "toNodeId": 1061,
+        "points": [
+          {
+            "x": -618,
+            "y": -58
+          },
+          {
+            "x": -721.5,
+            "y": -176.5
+          },
+          {
+            "x": -724.5,
+            "y": -178
+          },
+          {
+            "x": -828,
+            "y": -178
+          },
+          {
+            "x": -828,
+            "y": -103
+          }
+        ]
+      },
+      {
+        "id": "1052-1060",
+        "branch": "conditioning",
+        "fromNodeId": 1052,
+        "toNodeId": 1060,
+        "points": [
+          {
+            "x": -723,
+            "y": -13
+          },
+          {
+            "x": -723,
+            "y": -175
+          },
+          {
+            "x": -726,
+            "y": -178
+          },
+          {
+            "x": -828,
+            "y": -178
+          },
+          {
+            "x": -828,
+            "y": -268
+          }
+        ]
+      },
+      {
+        "id": "1052-1061",
+        "branch": "conditioning",
+        "fromNodeId": 1052,
+        "toNodeId": 1061,
+        "points": [
+          {
+            "x": -723,
+            "y": -13
+          },
+          {
+            "x": -723,
+            "y": -175
+          },
+          {
+            "x": -726,
+            "y": -178
+          },
+          {
+            "x": -828,
+            "y": -178
+          },
+          {
+            "x": -828,
+            "y": -103
+          }
+        ]
+      },
+      {
+        "id": "2000-2010",
+        "branch": "mobility",
+        "fromNodeId": 2000,
+        "toNodeId": 2010,
+        "points": [
+          {
+            "x": 0,
+            "y": 220
+          },
+          {
+            "x": -128,
+            "y": 92
+          }
+        ]
+      },
+      {
+        "id": "2000-2011",
+        "branch": "mobility",
+        "fromNodeId": 2000,
+        "toNodeId": 2011,
+        "points": [
+          {
+            "x": 0,
+            "y": 220
+          },
+          {
+            "x": 128,
+            "y": 92
+          }
+        ]
+      },
+      {
+        "id": "2010-2020",
+        "branch": "mobility",
+        "fromNodeId": 2010,
+        "toNodeId": 2020,
+        "points": [
+          {
+            "x": -128,
+            "y": 92
+          },
+          {
+            "x": -128,
+            "y": 12
+          }
+        ]
+      },
+      {
+        "id": "2011-2021",
+        "branch": "mobility",
+        "fromNodeId": 2011,
+        "toNodeId": 2021,
+        "points": [
+          {
+            "x": 128,
+            "y": 92
+          },
+          {
+            "x": 128,
+            "y": 4
+          }
+        ]
+      },
+      {
+        "id": "2020-2030",
+        "branch": "mobility",
+        "fromNodeId": 2020,
+        "toNodeId": 2030,
+        "points": [
+          {
+            "x": -128,
+            "y": 12
+          },
+          {
+            "x": -128,
+            "y": -20
+          },
+          {
+            "x": -104,
+            "y": -44
+          },
+          {
+            "x": 0,
+            "y": -44
+          }
+        ]
+      },
+      {
+        "id": "2021-2030",
+        "branch": "mobility",
+        "fromNodeId": 2021,
+        "toNodeId": 2030,
+        "points": [
+          {
+            "x": 128,
+            "y": 4
+          },
+          {
+            "x": 128,
+            "y": -20
+          },
+          {
+            "x": 104,
+            "y": -44
+          },
+          {
+            "x": 0,
+            "y": -44
+          }
+        ]
+      },
+      {
+        "id": "2030-2040",
+        "branch": "mobility",
+        "fromNodeId": 2030,
+        "toNodeId": 2040,
+        "points": [
+          {
+            "x": 0,
+            "y": -44
+          },
+          {
+            "x": -24,
+            "y": -68
+          },
+          {
+            "x": -48,
+            "y": -92
+          },
+          {
+            "x": -104,
+            "y": -92
+          },
+          {
+            "x": -128,
+            "y": -116
+          },
+          {
+            "x": -128,
+            "y": -140
+          }
+        ]
+      },
+      {
+        "id": "2030-2041",
+        "branch": "mobility",
+        "fromNodeId": 2030,
+        "toNodeId": 2041,
+        "points": [
+          {
+            "x": 0,
+            "y": -44
+          },
+          {
+            "x": 0,
+            "y": -164
+          }
+        ]
+      },
+      {
+        "id": "2030-2042",
+        "branch": "mobility",
+        "fromNodeId": 2030,
+        "toNodeId": 2042,
+        "points": [
+          {
+            "x": 0,
+            "y": -44
+          },
+          {
+            "x": 24,
+            "y": -68
+          },
+          {
+            "x": 48,
+            "y": -92
+          },
+          {
+            "x": 104,
+            "y": -92
+          },
+          {
+            "x": 128,
+            "y": -116
+          },
+          {
+            "x": 128,
+            "y": -140
+          }
+        ]
+      },
+      {
+        "id": "2040-2050",
+        "branch": "mobility",
+        "fromNodeId": 2040,
+        "toNodeId": 2050,
+        "points": [
+          {
+            "x": -128,
+            "y": -140
+          },
+          {
+            "x": -128,
+            "y": -252
+          }
+        ]
+      },
+      {
+        "id": "2041-2051",
+        "branch": "mobility",
+        "fromNodeId": 2041,
+        "toNodeId": 2051,
+        "points": [
+          {
+            "x": 0,
+            "y": -164
+          },
+          {
+            "x": 0,
+            "y": -268
+          }
+        ]
+      },
+      {
+        "id": "2042-2052",
+        "branch": "mobility",
+        "fromNodeId": 2042,
+        "toNodeId": 2052,
+        "points": [
+          {
+            "x": 128,
+            "y": -140
+          },
+          {
+            "x": 128,
+            "y": -252
+          }
+        ]
+      },
+      {
+        "id": "2050-2060",
+        "branch": "mobility",
+        "fromNodeId": 2050,
+        "toNodeId": 2060,
+        "points": [
+          {
+            "x": -128,
+            "y": -252
+          },
+          {
+            "x": -128,
+            "y": -308
+          },
+          {
+            "x": -104,
+            "y": -332
+          },
+          {
+            "x": -2,
+            "y": -332
+          },
+          {
+            "x": 0,
+            "y": -334
+          },
+          {
+            "x": 0,
+            "y": -420
+          },
+          {
+            "x": -64,
+            "y": -420
+          }
+        ]
+      },
+      {
+        "id": "2050-2061",
+        "branch": "mobility",
+        "fromNodeId": 2050,
+        "toNodeId": 2061,
+        "points": [
+          {
+            "x": -128,
+            "y": -252
+          },
+          {
+            "x": -128,
+            "y": -308.8
+          },
+          {
+            "x": -104,
+            "y": -332
+          },
+          {
+            "x": -2,
+            "y": -332
+          },
+          {
+            "x": 0,
+            "y": -334
+          },
+          {
+            "x": 0,
+            "y": -420
+          },
+          {
+            "x": 64,
+            "y": -420
+          }
+        ]
+      },
+      {
+        "id": "2051-2060",
+        "branch": "mobility",
+        "fromNodeId": 2051,
+        "toNodeId": 2060,
+        "points": [
+          {
+            "x": 0,
+            "y": -268
+          },
+          {
+            "x": 0,
+            "y": -420
+          },
+          {
+            "x": -64,
+            "y": -420
+          }
+        ]
+      },
+      {
+        "id": "2051-2061",
+        "branch": "mobility",
+        "fromNodeId": 2051,
+        "toNodeId": 2061,
+        "points": [
+          {
+            "x": 0,
+            "y": -268
+          },
+          {
+            "x": 0,
+            "y": -420
+          },
+          {
+            "x": 64,
+            "y": -420
+          }
+        ]
+      },
+      {
+        "id": "2052-2060",
+        "branch": "mobility",
+        "fromNodeId": 2052,
+        "toNodeId": 2060,
+        "points": [
+          {
+            "x": 128,
+            "y": -252
+          },
+          {
+            "x": 128,
+            "y": -308
+          },
+          {
+            "x": 104,
+            "y": -332
+          },
+          {
+            "x": 2,
+            "y": -332
+          },
+          {
+            "x": 0,
+            "y": -334
+          },
+          {
+            "x": 0,
+            "y": -420
+          },
+          {
+            "x": -64,
+            "y": -420
+          }
+        ]
+      },
+      {
+        "id": "2052-2061",
+        "branch": "mobility",
+        "fromNodeId": 2052,
+        "toNodeId": 2061,
+        "points": [
+          {
+            "x": 128,
+            "y": -252
+          },
+          {
+            "x": 128,
+            "y": -308.8
+          },
+          {
+            "x": 103.2,
+            "y": -332
+          },
+          {
+            "x": 2,
+            "y": -332
+          },
+          {
+            "x": 0,
+            "y": -334
+          },
+          {
+            "x": 0,
+            "y": -420
+          },
+          {
+            "x": 64,
+            "y": -420
+          }
+        ]
+      },
+      {
+        "id": "3000-3010",
+        "branch": "survival",
+        "fromNodeId": 3000,
+        "toNodeId": 3010,
+        "points": [
+          {
+            "x": 122,
+            "y": 262
+          },
+          {
+            "x": 212,
+            "y": 172
+          }
+        ]
+      },
+      {
+        "id": "3000-3011",
+        "branch": "survival",
+        "fromNodeId": 3000,
+        "toNodeId": 3011,
+        "points": [
+          {
+            "x": 122,
+            "y": 262
+          },
+          {
+            "x": 287,
+            "y": 262
+          }
+        ]
+      },
+      {
+        "id": "3010-3020",
+        "branch": "survival",
+        "fromNodeId": 3010,
+        "toNodeId": 3020,
+        "points": [
+          {
+            "x": 212,
+            "y": 172
+          },
+          {
+            "x": 317,
+            "y": 112
+          }
+        ]
+      },
+      {
+        "id": "3011-3021",
+        "branch": "survival",
+        "fromNodeId": 3011,
+        "toNodeId": 3021,
+        "points": [
+          {
+            "x": 287,
+            "y": 262
+          },
+          {
+            "x": 362,
+            "y": 262
+          },
+          {
+            "x": 392,
+            "y": 202
+          }
+        ]
+      },
+      {
+        "id": "3020-3030",
+        "branch": "survival",
+        "fromNodeId": 3020,
+        "toNodeId": 3030,
+        "points": [
+          {
+            "x": 317,
+            "y": 112
+          },
+          {
+            "x": 452,
+            "y": 112
+          }
+        ]
+      },
+      {
+        "id": "3021-3030",
+        "branch": "survival",
+        "fromNodeId": 3021,
+        "toNodeId": 3030,
+        "points": [
+          {
+            "x": 392,
+            "y": 202
+          },
+          {
+            "x": 392,
+            "y": 115
+          },
+          {
+            "x": 395,
+            "y": 112
+          },
+          {
+            "x": 452,
+            "y": 112
+          }
+        ]
+      },
+      {
+        "id": "3030-3040",
+        "branch": "survival",
+        "fromNodeId": 3030,
+        "toNodeId": 3040,
+        "points": [
+          {
+            "x": 452,
+            "y": 112
+          },
+          {
+            "x": 452,
+            "y": -8
+          },
+          {
+            "x": 512,
+            "y": -83
+          }
+        ]
+      },
+      {
+        "id": "3030-3041",
+        "branch": "survival",
+        "fromNodeId": 3030,
+        "toNodeId": 3041,
+        "points": [
+          {
+            "x": 452,
+            "y": 112
+          },
+          {
+            "x": 542,
+            "y": 22
+          }
+        ]
+      },
+      {
+        "id": "3030-3042",
+        "branch": "survival",
+        "fromNodeId": 3030,
+        "toNodeId": 3042,
+        "points": [
+          {
+            "x": 452,
+            "y": 112
+          },
+          {
+            "x": 587,
+            "y": 112
+          },
+          {
+            "x": 662,
+            "y": 67
+          }
+        ]
+      },
+      {
+        "id": "3040-3050",
+        "branch": "survival",
+        "fromNodeId": 3040,
+        "toNodeId": 3050,
+        "points": [
+          {
+            "x": 512,
+            "y": -83
+          },
+          {
+            "x": 579.5,
+            "y": -150.5
+          },
+          {
+            "x": 647,
+            "y": -188
+          }
+        ]
+      },
+      {
+        "id": "3041-3051",
+        "branch": "survival",
+        "fromNodeId": 3041,
+        "toNodeId": 3051,
+        "points": [
+          {
+            "x": 542,
+            "y": 22
+          },
+          {
+            "x": 632,
+            "y": -68
+          }
+        ]
+      },
+      {
+        "id": "3042-3052",
+        "branch": "survival",
+        "fromNodeId": 3042,
+        "toNodeId": 3052,
+        "points": [
+          {
+            "x": 662,
+            "y": 67
+          },
+          {
+            "x": 737,
+            "y": -23
+          }
+        ]
+      },
+      {
+        "id": "3050-3060",
+        "branch": "survival",
+        "fromNodeId": 3050,
+        "toNodeId": 3060,
+        "points": [
+          {
+            "x": 647,
+            "y": -188
+          },
+          {
+            "x": 842,
+            "y": -188
+          },
+          {
+            "x": 842,
+            "y": -278
+          }
+        ]
+      },
+      {
+        "id": "3050-3061",
+        "branch": "survival",
+        "fromNodeId": 3050,
+        "toNodeId": 3061,
+        "points": [
+          {
+            "x": 647,
+            "y": -188
+          },
+          {
+            "x": 842,
+            "y": -188
+          },
+          {
+            "x": 842,
+            "y": -113
+          }
+        ]
+      },
+      {
+        "id": "3051-3060",
+        "branch": "survival",
+        "fromNodeId": 3051,
+        "toNodeId": 3060,
+        "points": [
+          {
+            "x": 632,
+            "y": -68
+          },
+          {
+            "x": 735.5,
+            "y": -186.5
+          },
+          {
+            "x": 738.5,
+            "y": -188
+          },
+          {
+            "x": 842,
+            "y": -188
+          },
+          {
+            "x": 842,
+            "y": -278
+          }
+        ]
+      },
+      {
+        "id": "3051-3061",
+        "branch": "survival",
+        "fromNodeId": 3051,
+        "toNodeId": 3061,
+        "points": [
+          {
+            "x": 632,
+            "y": -68
+          },
+          {
+            "x": 735.5,
+            "y": -186.5
+          },
+          {
+            "x": 738.5,
+            "y": -188
+          },
+          {
+            "x": 842,
+            "y": -188
+          },
+          {
+            "x": 842,
+            "y": -113
+          }
+        ]
+      },
+      {
+        "id": "3052-3060",
+        "branch": "survival",
+        "fromNodeId": 3052,
+        "toNodeId": 3060,
+        "points": [
+          {
+            "x": 737,
+            "y": -23
+          },
+          {
+            "x": 737,
+            "y": -185
+          },
+          {
+            "x": 740,
+            "y": -188
+          },
+          {
+            "x": 842,
+            "y": -188
+          },
+          {
+            "x": 842,
+            "y": -278
+          }
+        ]
+      },
+      {
+        "id": "3052-3061",
+        "branch": "survival",
+        "fromNodeId": 3052,
+        "toNodeId": 3061,
+        "points": [
+          {
+            "x": 737,
+            "y": -23
+          },
+          {
+            "x": 737,
+            "y": -185
+          },
+          {
+            "x": 740,
+            "y": -188
+          },
+          {
+            "x": 842,
+            "y": -188
+          },
+          {
+            "x": 842,
+            "y": -113
+          }
+        ]
+      }
+    ],
+    "rootSplines": {
+      "conditioning": {
+        "thickness": 14,
+        "points": [
+          {
+            "x": -108,
+            "y": 272,
+            "dx": 250,
+            "dy": 250
+          },
+          {
+            "x": -27,
+            "y": 452,
+            "dx": -3.1,
+            "dy": 250
+          },
+          {
+            "x": -27,
+            "y": 620,
+            "dx": 0,
+            "dy": 250
+          }
+        ]
+      },
+      "mobility": {
+        "thickness": 14,
+        "points": [
+          {
+            "x": 0,
+            "y": 220,
+            "dx": 0,
+            "dy": 90
+          },
+          {
+            "x": 0,
+            "y": 620,
+            "dx": 0,
+            "dy": 90
+          }
+        ]
+      },
+      "survival": {
+        "thickness": 14,
+        "points": [
+          {
+            "x": 122,
+            "y": 262,
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "x": 72,
+            "y": 312,
+            "dx": -120,
+            "dy": 120
+          },
+          {
+            "x": 27,
+            "y": 462,
+            "dx": 0,
+            "dy": 250
+          },
+          {
+            "x": 27,
+            "y": 620,
+            "dx": 0,
+            "dy": 0
+          }
+        ]
+      }
+    }
+  },
+  "presets": [
+    {
+      "id": "all-round-76",
+      "name": "全能双核心 (76P)",
+      "tag": "76P 通用",
+      "maxPoints": 76,
+      "highlights": [
+        "强化 31P",
+        "机动 31P",
+        "生存 14P",
+        "安防突破",
+        "疲态冲刺",
+        "快速翻滚"
+      ],
+      "allocations": {
+        "used-to-the-weight": 1,
+        "three-deep-breaths": 5,
+        "stubborn-mule": 5,
+        "vigorous-vaulter": 1,
+        "back-on-your-feet": 1,
+        "downed-but-determined": 5,
+        "crawl-before-you-walk": 5,
+        "broad-shoulders": 5,
+        "loaded-arms": 1,
+        "proficient-pryer": 1,
+        "security-breach": 1,
+        "youthful-lungs": 1,
+        "nimble-climber": 5,
+        "fight-or-flight": 5,
+        "vaults-on-vaults-on-vaults": 1,
+        "effortless-roll": 5,
+        "right-back-at-it": 1,
+        "marathon-runner": 5,
+        "slip-and-slide": 2,
+        "swift-start": 5,
+        "sprinting-on-fumes": 1,
+        "in-round-crafting": 1,
+        "looters-instincts": 5,
+        "silent-scavenger": 4,
+        "quick-roll": 1,
+        "stylish-landing": 1,
+        "turtle-crawl": 2
+      },
+      "gateSelections": {
+        "conditioning-choice": "back-on-your-feet",
+        "conditioning-capstone-30": "security-breach",
+        "mobility-choice": "vaults-on-vaults-on-vaults",
+        "mobility-capstone-30": "sprinting-on-fumes",
+        "survival-choice": "quick-roll"
+      }
+    },
+    {
+      "id": "heavy-looter-76",
+      "name": "重装驮兽搜刮 (76P)",
+      "tag": "76P 摸金",
+      "maxPoints": 76,
+      "highlights": [
+        "强化 31P",
+        "机动 24P",
+        "生存 21P",
+        "安防突破",
+        "驮兽疾奔",
+        "暗门钥匙"
+      ],
+      "allocations": {
+        "used-to-the-weight": 1,
+        "three-deep-breaths": 5,
+        "vigorous-vaulter": 1,
+        "stubborn-mule": 4,
+        "vault-n-carry": 1,
+        "mules-gallop": 1,
+        "loaded-arms": 1,
+        "broad-shoulders": 5,
+        "speedy-mule": 5,
+        "proficient-pryer": 5,
+        "downed-but-determined": 1,
+        "security-breach": 1,
+        "youthful-lungs": 1,
+        "nimble-climber": 5,
+        "fight-or-flight": 4,
+        "vault-spring": 1,
+        "marathon-runner": 5,
+        "swift-start": 5,
+        "effortless-roll": 3,
+        "in-round-crafting": 1,
+        "looters-instincts": 5,
+        "silent-scavenger": 4,
+        "quick-roll": 1,
+        "traveling-tinkerer": 1,
+        "looters-luck": 5,
+        "gentle-pressure": 3,
+        "a-little-extra": 1
+      },
+      "gateSelections": {
+        "conditioning-choice": "mules-gallop",
+        "conditioning-capstone-30": "security-breach",
+        "mobility-choice": "vault-spring",
+        "survival-choice": "quick-roll"
+      }
+    },
+    {
+      "id": "pvp-hunter-91",
+      "name": "满远征机动猎手 (91P)",
+      "tag": "91P 满配",
+      "maxPoints": 91,
+      "highlights": [
+        "强化 42P",
+        "机动 42P",
+        "生存 7P",
+        "双终极×2",
+        "疲态冲刺",
+        "行云流水"
+      ],
+      "allocations": {
+        "used-to-the-weight": 1,
+        "three-deep-breaths": 5,
+        "stubborn-mule": 5,
+        "vigorous-vaulter": 1,
+        "vault-n-carry": 1,
+        "back-on-your-feet": 1,
+        "downed-but-determined": 5,
+        "crawl-before-you-walk": 5,
+        "broad-shoulders": 5,
+        "speedy-mule": 5,
+        "loaded-arms": 1,
+        "proficient-pryer": 5,
+        "security-breach": 1,
+        "bull-rush": 1,
+        "youthful-lungs": 1,
+        "sure-footed-scrambler": 2,
+        "nimble-climber": 5,
+        "fight-or-flight": 5,
+        "vaults-on-vaults-on-vaults": 1,
+        "effortless-roll": 5,
+        "slip-and-slide": 5,
+        "right-back-at-it": 1,
+        "off-the-wall": 5,
+        "marathon-runner": 5,
+        "swift-start": 5,
+        "sprinting-on-fumes": 1,
+        "in-the-flow": 1,
+        "in-round-crafting": 1,
+        "looters-instincts": 5,
+        "silent-scavenger": 1
+      },
+      "gateSelections": {
+        "conditioning-choice": "back-on-your-feet",
+        "conditioning-capstone-30": "security-breach",
+        "conditioning-capstone-40": "bull-rush",
+        "mobility-choice": "vaults-on-vaults-on-vaults",
+        "mobility-capstone-30": "sprinting-on-fumes",
+        "mobility-capstone-40": "in-the-flow"
+      }
+    }
+  ]
+}

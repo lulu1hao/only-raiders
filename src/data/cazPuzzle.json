@@ -1,0 +1,369 @@
+{
+  "id": "controlled-access-zone",
+  "title": "管制区 · 淹没厂房解谜",
+  "subtitle": "Controlled Access Zone / Flooded Powerhouse Puzzle (TheDam_02)",
+  "modelUrl": "/maps/caz.glb",
+  "center": [
+    4892,
+    5258,
+    -380
+  ],
+  "bounds": {
+    "min": [
+      4828,
+      -404,
+      5202
+    ],
+    "max": [
+      4952,
+      -348,
+      5308
+    ]
+  },
+  "floors": [
+    {
+      "id": "all",
+      "label": "完整建筑 (-355m)",
+      "clipZ": -355,
+      "desc": "显示完整厂房外壳、顶部涡轮井与外部栈桥"
+    },
+    {
+      "id": "upper",
+      "label": "上层平台剖面 (-375.5m)",
+      "clipZ": -375.5,
+      "desc": "削去厂房顶盖，直视上层 A1 配电箱与 R1 西侧双门密室"
+    },
+    {
+      "id": "mid",
+      "label": "中层夹层剖面 (-382.8m)",
+      "clipZ": -382.8,
+      "desc": "切开上层楼板，聚焦 K1 管制区钥匙卡门与 R4 中层密室"
+    },
+    {
+      "id": "lower",
+      "label": "底层金库剖面 (-386.8m)",
+      "clipZ": -386.8,
+      "desc": "切开底层天花板，直视 B2 修复电柜小室与 R3 东部核心金库"
+    },
+    {
+      "id": "deep",
+      "label": "底层地面基座 (-390.5m)",
+      "clipZ": -390.5,
+      "desc": "仅保留底层地板与涵洞水道基座"
+    }
+  ],
+  "walkthrough": [],
+  "nodes": [
+    {
+      "id": "power-station",
+      "code": "A1",
+      "title": "上层配电箱 (插电池机关)",
+      "subtitle": "BP_PowerStation_C · SM_FuseBox_01_A",
+      "category": "power",
+      "circuit": "A",
+      "floor": "上层平台 (-379m)",
+      "x": 4899.6,
+      "y": 5253.2,
+      "z": -378.6,
+      "yaw": 30,
+      "recommendedClipZ": -375.5,
+      "requirement": "投入能量电池 (DropzoneComponent)",
+      "description": "位于厂房上层平台中央走道。投入能量电池后触发 PowerOutSoftConnections，同时为上层西侧的 A2、A3 两扇解谜门供电，并点亮门前指示灯。",
+      "connectsTo": [
+        "door-upper-west",
+        "door-upper-south"
+      ]
+    },
+    {
+      "id": "door-upper-west",
+      "code": "A2",
+      "title": "上层西侧解谜门 #1",
+      "subtitle": "BP_InteractiveDoor_FloodedPowerhousePuzzle_01_C",
+      "category": "puzzle-door",
+      "circuit": "A",
+      "floor": "上层平台 (-376.5m)",
+      "x": 4863.3,
+      "y": 5254.5,
+      "z": -375.2,
+      "yaw": -60,
+      "recommendedClipZ": -375.5,
+      "requirement": "初始断电闭锁 · 需 A1 配电箱供电",
+      "description": "通往 R1 上层西侧封锁物资室的西门。断电状态下无法从外部开启，A1 投入电池后即可开门。",
+      "connectsTo": [
+        "room-upper-west"
+      ]
+    },
+    {
+      "id": "door-upper-south",
+      "code": "A3",
+      "title": "上层南侧解谜门 #2",
+      "subtitle": "BP_InteractiveDoor_FloodedPowerhousePuzzle_01_C",
+      "category": "puzzle-door",
+      "circuit": "A",
+      "floor": "上层平台 (-376.5m)",
+      "x": 4876,
+      "y": 5243.6,
+      "z": -375.2,
+      "yaw": -10,
+      "recommendedClipZ": -375.5,
+      "requirement": "初始断电闭锁 · 需 A1 配电箱供电",
+      "description": "通往 R1 上层西侧封锁物资室的南门。与 A2 门并联在 A1 配电箱的同一条供电回路上。",
+      "connectsTo": [
+        "room-upper-west"
+      ]
+    },
+    {
+      "id": "room-upper-west",
+      "code": "R1",
+      "title": "上层西侧封锁物资室",
+      "subtitle": "BP_LockedRoomExploitPreventionArea_C (16.0m × 9.7m)",
+      "category": "loot-room",
+      "circuit": "A",
+      "floor": "上层平台 (-374.8m)",
+      "x": 4873,
+      "y": 5253.8,
+      "z": -374.7,
+      "yaw": -105,
+      "box": [
+        16,
+        3.5,
+        9.7
+      ],
+      "recommendedClipZ": -375.5,
+      "requirement": "通过 A2 或 A3 通电门进入",
+      "description": "受防穿模区域保护的上层高价值物资室，覆盖西侧上层走廊内侧房间。",
+      "connectsTo": []
+    },
+    {
+      "id": "door-lower-central",
+      "code": "B1",
+      "title": "底层电控室安全门",
+      "subtitle": "BP_InteractiveDoor_FloodedPowerhousePuzzle_01_C",
+      "category": "puzzle-door",
+      "circuit": "B",
+      "floor": "底层厂房 (-389.2m)",
+      "x": 4898.8,
+      "y": 5262.7,
+      "z": -387.9,
+      "yaw": -60,
+      "recommendedClipZ": -386.8,
+      "requirement": "初始闭锁 · 开启后进入 R2 电控小室",
+      "description": "位于底层大厅中央，守卫着 R2 电控小室与内部的 B2 修复电柜开关。",
+      "connectsTo": [
+        "puzzle-button",
+        "room-lower-central"
+      ]
+    },
+    {
+      "id": "puzzle-button",
+      "code": "B2",
+      "title": "底层修复电柜开关 (双修复槽)",
+      "subtitle": "BP_PuzzleButton_FloodedPowerhousePuzzle_01_C · SM_Rsr_ElectricalCabinet_01_A",
+      "category": "power",
+      "circuit": "B",
+      "floor": "底层厂房 (-389.3m)",
+      "x": 4902.6,
+      "y": 5262,
+      "z": -388,
+      "yaw": 120,
+      "recommendedClipZ": -386.8,
+      "requirement": "修复 A/B 两个电子插槽后拉闸通电",
+      "description": "淹没厂房核心解谜机关！包含 RepairInteractionComponent_A 与 B 两个修复点，修复并启动后，通过 PowerOutSoftConnections 同时解锁底层主金库的西门 (B3) 与东门 (B4)。",
+      "connectsTo": [
+        "door-lower-vault-west",
+        "door-lower-vault-east"
+      ]
+    },
+    {
+      "id": "room-lower-central",
+      "code": "R2",
+      "title": "底层中央电控小室",
+      "subtitle": "BP_LockedRoomExploitPreventionArea_C (7.0m × 5.0m)",
+      "category": "loot-room",
+      "circuit": "B",
+      "floor": "底层厂房 (-388.4m)",
+      "x": 4902.1,
+      "y": 5264.8,
+      "z": -387.3,
+      "yaw": 0,
+      "box": [
+        7,
+        4,
+        5
+      ],
+      "recommendedClipZ": -386.8,
+      "requirement": "开启 B1 门进入",
+      "description": "底层中央的小型控制室，内设 B2 修复电柜及受 LootSocketBlocker 保护的物资点。",
+      "connectsTo": []
+    },
+    {
+      "id": "door-lower-vault-west",
+      "code": "B3",
+      "title": "底层主金库西侧门",
+      "subtitle": "BP_InteractiveDoor_Rsr_x350z300_01_C",
+      "category": "puzzle-door",
+      "circuit": "B",
+      "floor": "底层厂房 (-389.2m)",
+      "x": 4905.5,
+      "y": 5266.5,
+      "z": -387.9,
+      "yaw": -60,
+      "recommendedClipZ": -386.8,
+      "requirement": "初始断电闭锁 · 需修复 B2 电柜供电",
+      "description": "紧邻电控小室东侧，修复 B2 电柜后通电解锁，可直接进入 R3 底层东部核心金库。",
+      "connectsTo": [
+        "room-lower-east"
+      ]
+    },
+    {
+      "id": "door-lower-vault-east",
+      "code": "B4",
+      "title": "底层主金库东侧解谜门",
+      "subtitle": "BP_InteractiveDoor_FloodedPowerhousePuzzle_01_C",
+      "category": "puzzle-door",
+      "circuit": "B",
+      "floor": "底层厂房 (-385.5m)",
+      "x": 4931.7,
+      "y": 5261.2,
+      "z": -384.2,
+      "yaw": -150,
+      "recommendedClipZ": -384.5,
+      "requirement": "初始断电 · 需修复 B2 电柜远程供电",
+      "description": "位于厂房东端走廊的解谜门，与 B3 门并联受 B2 电柜控制，开启后从东侧进入或撤离 R3 核心金库。",
+      "connectsTo": [
+        "room-lower-east"
+      ]
+    },
+    {
+      "id": "room-lower-east",
+      "code": "R3",
+      "title": "底层东部核心金库区",
+      "subtitle": "BP_LockedRoomExploitPreventionArea_C (22.0m × 14.0m)",
+      "category": "loot-room",
+      "circuit": "B",
+      "floor": "底层厂房 (-386.0m)",
+      "x": 4918.3,
+      "y": 5268.6,
+      "z": -386,
+      "yaw": 0,
+      "box": [
+        22,
+        8,
+        14
+      ],
+      "recommendedClipZ": -386.8,
+      "requirement": "修复 B2 电柜后经 B3 或 B4 门进入",
+      "description": "淹没厂房最大的封锁战利品区域，跨底层与东侧半层平台，内含多个高价值容器与热水器藏匿点。",
+      "connectsTo": []
+    },
+    {
+      "id": "door-keycard",
+      "code": "K1",
+      "title": "大坝管制区钥匙卡门",
+      "subtitle": "BP_InteractiveDoor_Rsr_x350z300_01_C (需钥匙卡)",
+      "category": "keycard-door",
+      "circuit": "C",
+      "floor": "中层夹层 (-385.2m)",
+      "x": 4884.5,
+      "y": 5258.2,
+      "z": -383.9,
+      "yaw": 30,
+      "recommendedClipZ": -382.8,
+      "requirement": "消耗【大坝管制区钥匙 (DamControlledAccessZoneKey)】× 1",
+      "description": "带有读卡器的中层防爆门，交互时消耗 1 把大坝管制区钥匙直接解锁，无需连接外部电源。",
+      "connectsTo": [
+        "room-mid-keycard"
+      ]
+    },
+    {
+      "id": "room-mid-keycard",
+      "code": "R4",
+      "title": "中层钥匙卡专属密室",
+      "subtitle": "BP_LockedRoomExploitPreventionArea_C (11.0m × 9.5m)",
+      "category": "loot-room",
+      "circuit": "C",
+      "floor": "中层夹层 (-383.0m)",
+      "x": 4880.5,
+      "y": 5262.6,
+      "z": -383,
+      "yaw": 0,
+      "box": [
+        11,
+        3.8,
+        9.5
+      ],
+      "recommendedClipZ": -382.8,
+      "requirement": "刷卡开启 K1 门后进入",
+      "description": "位于厂房中层西侧的独立钥匙卡封锁室，与上层 R1 密室上下叠合。",
+      "connectsTo": []
+    },
+    {
+      "id": "entry-grates-north",
+      "code": "E1",
+      "title": "北侧涵洞铁栅门 (潜入入口)",
+      "subtitle": "SM_POI16_FloodedPowerhouse_A_GratesDoor × 2",
+      "category": "entry",
+      "circuit": "E",
+      "floor": "底层涵洞 (-388.0m)",
+      "x": 4896.5,
+      "y": 5288.5,
+      "z": -387,
+      "yaw": -175,
+      "recommendedClipZ": -386.8,
+      "requirement": "北侧水渠涵洞通道",
+      "description": "位于 (4899, 5290, -388) 与 (4894, 5287, -388) 的两扇涵洞铁栅门，连接外部溢洪道与厂房底层北侧。",
+      "connectsTo": []
+    },
+    {
+      "id": "ladder-central",
+      "code": "E2",
+      "title": "中央竖井爬梯",
+      "subtitle": "BP_Ladder_RoofEnd_01_C",
+      "category": "entry",
+      "circuit": "E",
+      "floor": "贯通上下层 (-377m)",
+      "x": 4883,
+      "y": 5269,
+      "z": -377,
+      "yaw": 30,
+      "recommendedClipZ": -375.5,
+      "requirement": "垂直机动通道",
+      "description": "连接底层/中层走道与上层平台的内部核心金属爬梯。",
+      "connectsTo": []
+    },
+    {
+      "id": "ladder-west",
+      "code": "E3",
+      "title": "西侧平台爬梯",
+      "subtitle": "BP_Ladder_RoofEnd_01_C",
+      "category": "entry",
+      "circuit": "E",
+      "floor": "上层西侧 (-377m)",
+      "x": 4862,
+      "y": 5246,
+      "z": -377,
+      "yaw": -60,
+      "recommendedClipZ": -375.5,
+      "requirement": "靠近 A2 解谜门的垂直爬梯",
+      "description": "紧邻上层西侧 A2 解谜门外侧的垂直爬梯，方便供电后快速登顶进入 R1 密室。",
+      "connectsTo": []
+    },
+    {
+      "id": "ladder-east",
+      "code": "E4",
+      "title": "东侧平台爬梯",
+      "subtitle": "BP_Ladder_RoofEnd_01_C",
+      "category": "entry",
+      "circuit": "E",
+      "floor": "东侧走道 (-380m)",
+      "x": 4909,
+      "y": 5244,
+      "z": -380,
+      "yaw": -60,
+      "recommendedClipZ": -375.5,
+      "requirement": "靠近 A1 配电箱的垂直爬梯",
+      "description": "位于 A1 配电箱东南侧走道的垂直爬梯，连接底层与上层供电平台。",
+      "connectsTo": []
+    }
+  ]
+}

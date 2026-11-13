@@ -1,0 +1,628 @@
+{
+  "id": "aerial-frigate-blockout",
+  "title": "ARC“护卫者” · 登舰解谜与货舱核心",
+  "subtitle": "Aerial Frigate Interior & Cargo Core (LI_FrigateBlockout_Packed)",
+  "modelUrl": "/maps/frigate.glb",
+  "center": [
+    60,
+    0,
+    -4
+  ],
+  "bounds": {
+    "min": [
+      -120,
+      -82,
+      -48
+    ],
+    "max": [
+      180,
+      82,
+      42
+    ]
+  },
+  "floors": [
+    {
+      "id": "all",
+      "label": "完整护卫舰 (+42m)",
+      "clipZ": 42,
+      "desc": "完整展示ARC“护卫者”外装甲壳体、顶部主推进器、脊部进度舱盖与全部多层舱室"
+    },
+    {
+      "id": "upper-wings",
+      "label": "上层：双翼核心与脊部中继 (+24m)",
+      "clipZ": 24,
+      "desc": "切开顶部推进器整流罩，直视上层左/右双翼 4 座动力核心 (+16.7m~+20.3m)、脊部三路中继器 (+21.9m) 与货舱顶部滑门 (+20.1m)"
+    },
+    {
+      "id": "main-cargo-deck",
+      "label": "主甲板：前货舱与酸液风扇室 (+11m)",
+      "clipZ": 11,
+      "desc": "切开中央顶盖，直视前部高价值货舱 (Z=-3.7m)、酸液毒雾排风扇室 (Z=-3.3m)、4 扇四弱点门与尾部高温喷淋室 (Z=+7.5m)"
+    },
+    {
+      "id": "mid-trench",
+      "label": "中下层：双舷战壕吊桥与攀爬阵 (-6m)",
+      "clipZ": -6,
+      "desc": "聚焦左/右双舷战壕伸缩吊桥 (Z=-11.5m)、8 块弱点翻转踏板 (Z=-13m~-18m) 与垂直攀爬平台阵列"
+    },
+    {
+      "id": "lower-core-docking",
+      "label": "底层：破译核心与腹部对接舱 (-16m)",
+      "clipZ": -16,
+      "desc": "直视前部底层动力核心 (Z=-17.9m)、中枢三台协同破译终端 (Z=-19.2m)、4 层旋转护盾破译核心 (Z=-26.9m) 与底部对接舱 (-32.2m)"
+    }
+  ],
+  "walkthrough": [],
+  "nodes": [
+    {
+      "id": "docking-bay-entry",
+      "code": "E1",
+      "title": "后腹部对接舱潜入入口",
+      "subtitle": "SM_Frigate_Docking_01_A · BP_Frigate_ProgressHatch_Bottom",
+      "category": "entry",
+      "circuit": "E",
+      "floor": "底层对接舱 (-32.2m)",
+      "x": -32,
+      "y": 0,
+      "z": -32.2,
+      "yaw": 0,
+      "recommendedClipZ": -16,
+      "requirement": "护卫舰腹部攀爬/索降入口 · 直通中枢破译核心井",
+      "description": "位于护卫舰后腹部 (X=-32.0m, Y=0.0m, Z=-32.2m) 的大型下部对接舱，紧邻中枢破译核心深井与左/右两侧各 6 扇底部核心进度舱盖 (Z=-42.0m)。",
+      "box": {
+        "min": [
+          -52,
+          -24,
+          -44
+        ],
+        "max": [
+          -10,
+          24,
+          -20
+        ]
+      },
+      "connectsTo": [
+        "central-trench-bridge",
+        "breachable-core-center"
+      ]
+    },
+    {
+      "id": "cargo-side-door-right",
+      "code": "E2",
+      "title": "前货舱右舷滑动登舰门",
+      "subtitle": "BP_Frigate_CargoSideDoor_01_C_0 · SM_Frigate_SlidingDoor_02_A",
+      "category": "entry",
+      "circuit": "E",
+      "floor": "前货舱下层 (-3.5m)",
+      "x": 137,
+      "y": -16.3,
+      "z": -3.5,
+      "yaw": -90,
+      "recommendedClipZ": 11,
+      "requirement": "外部破拆/解锁交互 (Z=-9.6m) · 右舷直接登舰口",
+      "description": "位于前部货舱右舷 (137.0, -16.3, -3.5) 的滑动登舰闸门，下部交互点位于 Z=-9.6m，可直接切入前部高价值货舱侧廊。",
+      "connectsTo": [
+        "door-weakpoint-front-right",
+        "door-weakpoint-mid-right",
+        "precious-cargo-ratchet"
+      ]
+    },
+    {
+      "id": "cargo-side-door-left",
+      "code": "E3",
+      "title": "前货舱左舷滑动登舰门",
+      "subtitle": "BP_Frigate_CargoSideDoor_01_C_1 · SM_Frigate_SlidingDoor_02_A",
+      "category": "entry",
+      "circuit": "E",
+      "floor": "前货舱下层 (-3.5m)",
+      "x": 137.3,
+      "y": 16.3,
+      "z": -3.5,
+      "yaw": 90,
+      "recommendedClipZ": 11,
+      "requirement": "外部破拆/解锁交互 (Z=-9.6m) · 左舷直接登舰口",
+      "description": "位于前部货舱左舷 (137.3, +16.3, -3.5) 的滑动登舰闸门，与右舷登舰门对称分布。",
+      "connectsTo": [
+        "door-weakpoint-front-left",
+        "door-weakpoint-mid-left",
+        "precious-cargo-ratchet"
+      ]
+    },
+    {
+      "id": "hull-gate-upper-roof",
+      "code": "E4",
+      "title": "前部货舱顶部巨型滑动舱门与 8 组锁扣",
+      "subtitle": "BP_FrigateHull_Gate_C_0 (17 × SlidingDoor & Big/Small Latch)",
+      "category": "entry",
+      "circuit": "E",
+      "floor": "上层货舱顶甲板 (+20.1m)",
+      "x": 126.6,
+      "y": 0,
+      "z": 20.1,
+      "yaw": 0,
+      "recommendedClipZ": 42,
+      "requirement": "货舱棘轮/中继解锁后滑开 · 顶部空降与吊装口",
+      "description": "覆盖前部货舱顶部的巨型多段式滑动装甲门 (X=+104m~+152.7m, Y=±21.7m, Z=+19.0m~+22.6m)，包含 9 块滑动门板、2 座大型锁扣 (BigLatch_01_L/R) 与 6 座小型锁扣 (SmallLatch_01_L/R_1~3)。",
+      "box": {
+        "min": [
+          102,
+          -24,
+          18
+        ],
+        "max": [
+          155,
+          24,
+          23.5
+        ]
+      },
+      "connectsTo": [
+        "triple-relay-spine",
+        "precious-cargo-ratchet"
+      ]
+    },
+    {
+      "id": "breakable-panels-right",
+      "code": "A1",
+      "title": "右舷战壕 4 块弱点翻转踏板",
+      "subtitle": "BP_FrigatePanel_Breakable_C_13/3/1/2 + WeakPoint_44/46/5/37",
+      "category": "power",
+      "circuit": "A",
+      "floor": "中下层右舷战壕 (-13.0m ~ -18.3m)",
+      "x": 33.2,
+      "y": -31.7,
+      "z": -14,
+      "yaw": -90,
+      "recommendedClipZ": -6,
+      "requirement": "射击上方对应的 4 处红色弱点靶 (#44, #46, #5, #37) 放下踏板",
+      "description": "沿右舷战壕 (Y=-29.2m~-33.1m) 分布的 4 块铰链翻转踏板，分别位于 X=+15.9m (配弱点 #44)、X=+24.5m (配弱点 #46)、X=+33.2m (配弱点 #5) 与 X=+80.9m (配弱点 #37)。击破弱点后踏板向下翻转形成跨沟通道。",
+      "connectsTo": [
+        "trench-bridge-right",
+        "climbable-array-right"
+      ]
+    },
+    {
+      "id": "breakable-panels-left",
+      "code": "A2",
+      "title": "左舷战壕 4 块弱点翻转踏板",
+      "subtitle": "BP_FrigatePanel_Breakable_C_14/0/15/12 + WeakPoint_42/36/40/34",
+      "category": "power",
+      "circuit": "A",
+      "floor": "中下层左舷战壕 (-13.0m ~ -18.3m)",
+      "x": 33.2,
+      "y": 31.7,
+      "z": -14,
+      "yaw": 90,
+      "recommendedClipZ": -6,
+      "requirement": "射击上方对应的 4 处红色弱点靶 (#42, #36, #40, #34) 放下踏板",
+      "description": "沿左舷战壕 (Y=+29.3m~+33.0m) 对称分布的 4 块铰链翻转踏板，分别位于 X=+15.9m (配弱点 #42)、X=+24.5m (配弱点 #36)、X=+33.2m (配弱点 #40) 与 X=+81.0m (配弱点 #34)。",
+      "connectsTo": [
+        "trench-bridge-left",
+        "climbable-array-left"
+      ]
+    },
+    {
+      "id": "trench-bridge-right",
+      "code": "A3",
+      "title": "右舷战壕双控伸缩吊桥",
+      "subtitle": "BP_FrigatePlatform_Bridge_01_C_0 + Move(#14) & Lock(#1)",
+      "category": "puzzle-door",
+      "circuit": "A",
+      "floor": "中下层右舷战壕 (-11.5m)",
+      "x": 55.9,
+      "y": -35.4,
+      "z": -11.5,
+      "yaw": -90,
+      "recommendedClipZ": -6,
+      "requirement": "先按移动开关 (34.5, -33.1, -13.0)，再按锁止开关 (41.6, -33.0, -8.9)",
+      "description": "横跨右舷战壕中段 (55.9, -35.4, -11.5) 的 36 米大型伸缩吊桥。由后方的【移动交互台 BridgeInteraction_14】(34.5, -33.1, -13.0) 驱动伸出，再由上方的【锁止交互台 BridgeInteraction_1】(41.6, -33.0, -8.9, Kind=lock) 锁定桥面。",
+      "connectsTo": [
+        "climbable-array-right",
+        "door-weakpoint-mid-right"
+      ]
+    },
+    {
+      "id": "trench-bridge-left",
+      "code": "A4",
+      "title": "左舷战壕双控伸缩吊桥",
+      "subtitle": "BP_FrigatePlatform_Bridge_01_C_3 + Move(#6) & Lock(#3)",
+      "category": "puzzle-door",
+      "circuit": "A",
+      "floor": "中下层左舷战壕 (-11.5m)",
+      "x": 55.9,
+      "y": 35.3,
+      "z": -11.5,
+      "yaw": 90,
+      "recommendedClipZ": -6,
+      "requirement": "先按移动开关 (34.6, +33.2, -13.0)，再按锁止开关 (40.7, +33.0, -8.9)",
+      "description": "横跨左舷战壕中段 (55.9, +35.3, -11.5) 的大型伸缩吊桥。由【移动交互台 BridgeInteraction_6】(34.6, +33.2, -13.0) 与【锁止交互台 BridgeInteraction_3】(40.7, +33.0, -8.9, Kind=lock) 协同控制。",
+      "connectsTo": [
+        "climbable-array-left",
+        "door-weakpoint-mid-left"
+      ]
+    },
+    {
+      "id": "climbable-array-right",
+      "code": "A5",
+      "title": "右舷三阶垂直攀爬平台阵列",
+      "subtitle": "BP_Frigate_ClimbableArray_C_0 + MoveAndLock(#4)",
+      "category": "puzzle-door",
+      "circuit": "A",
+      "floor": "中层右舷战壕前端 (-8.1m ~ -0.6m)",
+      "x": 76.1,
+      "y": -33.1,
+      "z": -4.4,
+      "yaw": -90,
+      "recommendedClipZ": -6,
+      "requirement": "操作交互台 BridgeInteraction_4 (79.6, -33.9, -10.9) 展开并锁定",
+      "description": "位于右舷战壕前端 (X=+76.1m~+81.9m, Y=-33.1m) 的三层阶梯式攀爬平台阵列（高度分别为 Z=-8.1m、-4.4m、-0.6m）。操作旁侧的 MoveAndLock 开关 (79.6, -33.9, -10.9) 即可展开阶梯登上主甲板层。",
+      "connectsTo": [
+        "door-weakpoint-mid-right",
+        "acid-zone-fans"
+      ]
+    },
+    {
+      "id": "climbable-array-left",
+      "code": "A6",
+      "title": "左舷三阶垂直攀爬平台阵列",
+      "subtitle": "BP_Frigate_ClimbableArray_flipped_C_0 + MoveAndLock(#15)",
+      "category": "puzzle-door",
+      "circuit": "A",
+      "floor": "中层左舷战壕前端 (-8.2m ~ -0.6m)",
+      "x": 76.1,
+      "y": 33.1,
+      "z": -4.4,
+      "yaw": 90,
+      "recommendedClipZ": -6,
+      "requirement": "操作交互台 BridgeInteraction_15 (79.6, +33.9, -10.9) 展开并锁定",
+      "description": "位于左舷战壕前端 (X=+76.1m~+81.9m, Y=+33.1m) 的三层阶梯式攀爬平台阵列，由交互台 BridgeInteraction_15 (79.6, +33.9, -10.9, Kind=MoveAndLock) 控制展开。",
+      "connectsTo": [
+        "door-weakpoint-mid-left",
+        "acid-zone-fans"
+      ]
+    },
+    {
+      "id": "acid-zone-fans",
+      "code": "B1",
+      "title": "酸液毒雾隔离室与 4 座排风扇 (8 弱点)",
+      "subtitle": "BP_FrigatePlatformZone_C_0/1 (GE_Acid_C) + 4 × BP_FrigateVentingFan",
+      "category": "power",
+      "circuit": "B",
+      "floor": "前中段主甲板 (-3.3m)",
+      "x": 114.5,
+      "y": 0,
+      "z": -3.3,
+      "yaw": 0,
+      "recommendedClipZ": 11,
+      "requirement": "击毁每台风扇绑定的 2 处弱点（共 8 处）或长按中央终端 5 秒关停毒雾",
+      "description": "横亘在 X=+114.5m 的双联酸液毒雾区 (DamageEffect=GE_Acid_C)：\n• 右侧毒雾区 (Zone_0) 关联风扇 Fan_0 (Y=-7.9m，绑定弱点 #47, #33) 与 Fan_2 (Y=-21.3m，绑定弱点 #3, #1)；\n• 左侧毒雾区 (Zone_1) 关联风扇 Fan_3 (Y=+7.6m，绑定弱点 #38, #10) 与 Fan_1 (Y=+21.2m，绑定弱点 #4, #2)。\n击破对应弱点或在中轴终端 (114.3, ±0.3, -2.0) 长按 5 秒即可净化通道。",
+      "box": {
+        "min": [
+          107,
+          -26,
+          -7.5
+        ],
+        "max": [
+          121,
+          26,
+          3.5
+        ]
+      },
+      "connectsTo": [
+        "beam-cores-forward",
+        "cargo-latches-four",
+        "precious-cargo-ratchet"
+      ]
+    },
+    {
+      "id": "door-weakpoint-mid-right",
+      "code": "B2",
+      "title": "前中段右翼四弱点防爆门 (Door_7)",
+      "subtitle": "BP_InteractiveDoor_Walker_01_C_7 · 需击毁弱点 #43, #41, #12, #9",
+      "category": "puzzle-door",
+      "circuit": "B",
+      "floor": "前中段右舷外廊 (-4.0m)",
+      "x": 123.3,
+      "y": -29.5,
+      "z": -4,
+      "yaw": -90,
+      "recommendedClipZ": 11,
+      "requirement": "bRequireWeakPointsDestroyed=True · 击毁 4 处弱点 (#43, #41, #12, #9)",
+      "description": "守卫前货舱右翼外廊的防爆隔舱门 (123.3, -29.5, -4.0)。必须击毁周围 4 个专属信号弱点：WeakPoint_43 (131.9, -28.5, +2.0)、WeakPoint_41 (131.9, -31.3, +2.0)、WeakPoint_12 (125.3, -40.4, -2.4) 与 WeakPoint_9 (131.9, -42.3, -2.4) 方可解锁。",
+      "connectsTo": [
+        "acid-zone-fans",
+        "door-weakpoint-front-right"
+      ]
+    },
+    {
+      "id": "door-weakpoint-mid-left",
+      "code": "B3",
+      "title": "前中段左翼四弱点防爆门 (Door_6)",
+      "subtitle": "BP_InteractiveDoor_Walker_01_C_6 · 需击毁弱点 #15, #32, #6, #0",
+      "category": "puzzle-door",
+      "circuit": "B",
+      "floor": "前中段左舷外廊 (-3.9m)",
+      "x": 123.3,
+      "y": 29.5,
+      "z": -3.9,
+      "yaw": 90,
+      "recommendedClipZ": 11,
+      "requirement": "bRequireWeakPointsDestroyed=True · 击毁 4 处弱点 (#15, #32, #6, #0)",
+      "description": "守卫前货舱左翼外廊的防爆隔舱门 (123.3, +29.5, -3.9)。必须击毁周围 4 个专属信号弱点：WeakPoint_15 (131.9, +27.9, +2.0)、WeakPoint_32 (131.9, +30.6, +2.0)、WeakPoint_6 (125.3, +37.7, -2.4) 与 WeakPoint_0 (131.9, +42.2, -2.4) 方可解锁。",
+      "connectsTo": [
+        "acid-zone-fans",
+        "door-weakpoint-front-left"
+      ]
+    },
+    {
+      "id": "door-weakpoint-front-right",
+      "code": "B4",
+      "title": "舰艏右翼四弱点防爆门 (Door_0)",
+      "subtitle": "BP_InteractiveDoor_Walker_01_C_0 · 需击毁弱点 #11, #7, #14, #45",
+      "category": "puzzle-door",
+      "circuit": "B",
+      "floor": "舰艏上层右廊 (+5.4m)",
+      "x": 166.3,
+      "y": -13.9,
+      "z": 5.4,
+      "yaw": 0,
+      "recommendedClipZ": 11,
+      "requirement": "bRequireWeakPointsDestroyed=True · 击毁 4 处弱点 (#11, #7, #14, #45)",
+      "description": "位于舰艏右翼 (166.3, -13.9, +5.4) 的四弱点防爆门。绑定弱点：WeakPoint_11 (153.4, -22.8, +3.3)、WeakPoint_7 (153.1, -13.3, +3.3)、WeakPoint_14 (164.3, -21.8, +6.8) 与 WeakPoint_45 (160.3, -4.7, +10.2)。",
+      "connectsTo": [
+        "beam-cores-forward",
+        "cargo-latches-four"
+      ]
+    },
+    {
+      "id": "door-weakpoint-front-left",
+      "code": "B5",
+      "title": "舰艏左翼四弱点防爆门 (Door_10)",
+      "subtitle": "BP_InteractiveDoor_Walker_01_C_10 · 需击毁弱点 #8, #13, #35, #39",
+      "category": "puzzle-door",
+      "circuit": "B",
+      "floor": "舰艏上层左廊 (+5.4m)",
+      "x": 166.2,
+      "y": 13.9,
+      "z": 5.4,
+      "yaw": 0,
+      "recommendedClipZ": 11,
+      "requirement": "bRequireWeakPointsDestroyed=True · 击毁 4 处弱点 (#8, #13, #35, #39)",
+      "description": "位于舰艏左翼 (166.2, +13.9, +5.4) 的四弱点防爆门。绑定弱点：WeakPoint_8 (164.2, +22.1, +6.8)、WeakPoint_13 (153.4, +23.9, +3.3)、WeakPoint_35 (153.0, +13.3, +3.3) 与 WeakPoint_39 (160.3, +4.7, +10.2)。",
+      "connectsTo": [
+        "beam-cores-forward",
+        "cargo-latches-four"
+      ]
+    },
+    {
+      "id": "upper-wing-cores-left",
+      "code": "D1",
+      "title": "上层左翼内/外侧双动力核心 (5 层护盾)",
+      "subtitle": "BP_FrigatePowerCore_C_0 (+29.7m) & Core_1 (+68.7m)",
+      "category": "power",
+      "circuit": "D",
+      "floor": "上层左翼核心甲板 (+16.7m ~ +20.3m)",
+      "x": 18.8,
+      "y": 49.2,
+      "z": 18.5,
+      "yaw": 90,
+      "recommendedClipZ": 24,
+      "requirement": "解除旋转护盾环并摧毁/过载 2 座动力核心 · 弹出顶部进度舱盖",
+      "description": "位于上层左翼甲板的 2 座主动力核心：\n• 内侧核心 Core_0 (18.7, +29.7, +16.7)：由 2 座旋转护盾 (Shield_17, 42) 保护，关联顶部进度舱盖 ProgressHatch_C_4 (11.1, +34.3, +25.0)；\n• 外侧核心 Core_1 (18.9, +68.7, +20.3)：由 3 座旋转护盾 (Shield_14, 40, 43) 保护，旁侧有周期性高温排气管 Venting_1 (28.9, +60.6, +17.5)。",
+      "connectsTo": [
+        "triple-relay-spine",
+        "breachable-core-center"
+      ]
+    },
+    {
+      "id": "upper-wing-cores-right",
+      "code": "D2",
+      "title": "上层右翼内/外侧双动力核心 (5 层护盾)",
+      "subtitle": "BP_FrigatePowerCore_C_2 (-29.7m) & Core_6 (-68.7m)",
+      "category": "power",
+      "circuit": "D",
+      "floor": "上层右翼核心甲板 (+16.7m ~ +20.3m)",
+      "x": 18.8,
+      "y": -49.2,
+      "z": 18.5,
+      "yaw": -90,
+      "recommendedClipZ": 24,
+      "requirement": "解除旋转护盾环并摧毁/过载 2 座动力核心 · 弹出顶部进度舱盖",
+      "description": "位于上层右翼甲板的 2 座主动力核心：\n• 内侧核心 Core_2 (18.7, -29.7, +16.7)：由 2 座旋转护盾 (Shield_16, 4) 保护，关联顶部进度舱盖 ProgressHatch_C_2 (11.1, -34.3, +25.0)；\n• 外侧核心 Core_6 (18.9, -68.7, +20.3)：由 3 座旋转护盾 (Shield_2, 12, 49) 保护，旁侧有高温排气管 Venting_0 (28.9, -60.6, +17.5)。",
+      "connectsTo": [
+        "triple-relay-spine",
+        "breachable-core-center"
+      ]
+    },
+    {
+      "id": "aft-venting-rooms-core",
+      "code": "D3",
+      "title": "尾部高温蒸汽喷淋室与尾中轴核心",
+      "subtitle": "BP_FrigateVentingRoom_C_2/3 + BP_FrigatePlatform_Beams_02_C_2",
+      "category": "power",
+      "circuit": "D",
+      "floor": "尾部主甲板 (+7.5m ~ +8.8m)",
+      "x": -27,
+      "y": 0,
+      "z": 8.8,
+      "yaw": 180,
+      "recommendedClipZ": 11,
+      "requirement": "把握 10秒冷却 / 7秒预警周期穿过蒸汽室，破译尾部双护盾核心",
+      "description": "位于舰体尾部 (X=-22.1m~-36.8m, Y=±11.0m, Z=+7.5m) 的左/右双联高温蒸汽喷淋室 (IdleDuration=10s, VentingPrepDuration=7s)，由 4 扇隔舱门 (Door_1/3/4/8) 封锁，中央坐落尾部光束核心台 Beams_02_C_2 (-27.0, 0.0, +8.8，配双护盾 Shield_8, 48)。",
+      "box": {
+        "min": [
+          -38,
+          -13,
+          5
+        ],
+        "max": [
+          -20,
+          13,
+          12.5
+        ]
+      },
+      "connectsTo": [
+        "triple-relay-spine",
+        "breachable-core-center"
+      ]
+    },
+    {
+      "id": "beam-cores-forward",
+      "code": "D4",
+      "title": "前舱 4 座双护盾光束核心与底层前核心",
+      "subtitle": "BP_FrigatePlatform_Beams_02_C_0/1/3/4 + BP_FrigatePowerCore_C_7",
+      "category": "power",
+      "circuit": "D",
+      "floor": "前部货舱与底舱 (-17.9m ~ -2.8m)",
+      "x": 158.1,
+      "y": 0,
+      "z": -2.8,
+      "yaw": 0,
+      "recommendedClipZ": 11,
+      "requirement": "破译每座核心外的 2 层旋转护盾环 (Shield_3/18, 7/15, 11/13, 6/41, 5/19)",
+      "description": "拱卫前部货舱的 5 座护盾核心阵列：\n• 舰艏左/右光束核心 Beams_0 & Beams_3 (158.1, ±11.4, -2.8)；\n• 酸雾室左/右光束核心 Beams_4 & Beams_1 (114.5, ±14.5, -3.3)；\n• 前部底层主动力核心 PowerCore_7 (103.1, 0.0, -17.9，配隔舱门 Door_5)。",
+      "connectsTo": [
+        "triple-relay-spine",
+        "cargo-latches-four"
+      ]
+    },
+    {
+      "id": "triple-relay-spine",
+      "code": "D5",
+      "title": "脊部三路总控中继器与 12 扇进度舱盖",
+      "subtitle": "BP_PuzzleRelay_Triple_C_0 (6 × SM_Frigate_ProgressHatchPair)",
+      "category": "puzzle-door",
+      "circuit": "D",
+      "floor": "上层脊部甲板 (+18.5m ~ +21.9m)",
+      "x": 114.8,
+      "y": 0,
+      "z": 20.2,
+      "yaw": 0,
+      "recommendedClipZ": 24,
+      "requirement": "汇聚三路核心电力信号 · 依次弹开脊部 6 对共 12 扇进度舱盖",
+      "description": "沿护卫舰脊部中轴线 (X=+92.8m~+136.7m, Y=±8.0m, Z=+18.5m~+21.9m) 排列的 6 对共 12 扇进度指示舱盖 (SM_Frigate_ProgressHatch_01_A)，旁侧设有左/右火焰喷射危险区 (BP_FrigateFireHazardVolume_C_2/3, X=+119.5m, Y=±8.0m)。",
+      "connectsTo": [
+        "hull-gate-upper-roof",
+        "cargo-latches-four"
+      ]
+    },
+    {
+      "id": "central-trench-bridge",
+      "code": "C1",
+      "title": "中枢核心井三开关协同吊桥",
+      "subtitle": "BP_FrigatePlatform_Bridge_C_0 + Move(#2/#5) & Solo(#0)",
+      "category": "puzzle-door",
+      "circuit": "C",
+      "floor": "底层中枢深井 (-21.6m ~ -28.5m)",
+      "x": 24.2,
+      "y": 0,
+      "z": -21.6,
+      "yaw": 0,
+      "recommendedClipZ": -16,
+      "requirement": "底层左/右双开关 (26.0, ±11.4, -28.5) 或上层单人开关 (24.2, -0.1, -21.6)",
+      "description": "连接中枢深井与破译主核心的关键机动桥。支持两种触发方式：在 Z=-28.5m 操作左/右对称开关 (BridgeInteraction_2 & 5)，或在 Z=-21.6m 中层平台操作单人总控开关 (BridgeInteraction_0, Kind=Solo)。",
+      "connectsTo": [
+        "breachable-core-consoles",
+        "breachable-core-center"
+      ]
+    },
+    {
+      "id": "breachable-core-consoles",
+      "code": "C2",
+      "title": "破译主核心三台环绕协同交互终端",
+      "subtitle": "BP_Frigate_BreachableCore_C_0 · CoordinatedInteraction 0/1/2",
+      "category": "power",
+      "circuit": "C",
+      "floor": "中枢核心井上层环廊 (-19.2m)",
+      "x": -4.8,
+      "y": 0,
+      "z": -19.2,
+      "yaw": 0,
+      "recommendedClipZ": -16,
+      "requirement": "三方向环绕终端协同交互 · 解除下方主核心 4 层旋转护盾",
+      "description": "环绕在破译主核心正上方 (Z=-19.2m) 的 3 台协同交互终端：\n• 左翼终端 (-1.9, +8.9, -19.2)\n• 右翼终端 (-1.9, -8.9, -19.2)\n• 尾侧终端 (-10.7, -0.1, -19.2)\n激活后解除下方主核心的 4 层垂直护盾环。",
+      "connectsTo": [
+        "breachable-core-center"
+      ]
+    },
+    {
+      "id": "breachable-core-center",
+      "code": "C3",
+      "title": "护卫舰中枢 4 层护盾破译主核心",
+      "subtitle": "BP_Frigate_BreachableCore_C_0 + 4 × Shield (#0, #10, #1, #9)",
+      "category": "room",
+      "circuit": "C",
+      "floor": "底层中枢核心深井 (-22.9m ~ -36.2m)",
+      "x": -1.9,
+      "y": 0,
+      "z": -26.9,
+      "yaw": 0,
+      "recommendedClipZ": -16,
+      "requirement": "解除 Z=-22.9m / -25.8m / -28.3m / -30.8m 四层护盾环完成核心破译",
+      "description": "位于护卫舰正中央深井 (-1.9, 0.0, -26.9) 的巨型垂直主核心柱 (SM_Arc_Core_01_A)，由上至下套有 4 层旋转核心护盾 (Shield_0 @ -22.9m, Shield_10 @ -25.8m, Shield_1 @ -28.3m, Shield_9 @ -30.8m)。完成破译后联动开启底部 12 扇核心舱盖与前部货舱锁止系统。",
+      "box": {
+        "min": [
+          -12,
+          -11,
+          -37
+        ],
+        "max": [
+          8,
+          11,
+          -18
+        ]
+      },
+      "connectsTo": [
+        "cargo-latches-four",
+        "precious-cargo-ratchet"
+      ]
+    },
+    {
+      "id": "cargo-latches-four",
+      "code": "C4",
+      "title": "前部货舱 4 座双联挂钩锁扣与内部进度舱盖",
+      "subtitle": "4 × BP_Frigate_CargoLatch_C_0~3 + 4 × ProgressHatch_Interior",
+      "category": "puzzle-door",
+      "circuit": "C",
+      "floor": "前部货舱中层 (-1.3m ~ +0.8m)",
+      "x": 137,
+      "y": 6,
+      "z": -0.8,
+      "yaw": 0,
+      "recommendedClipZ": 11,
+      "requirement": "分别操作 4 座锁扣的 A/B 双交互开关释放货架挂钩",
+      "description": "对称分布在中央高价值货架四角 (X=+124.7m / +149.3m, Y=±6.0m, Z=-0.8m) 的 4 座重型货舱挂钩锁扣 (BP_Frigate_CargoLatch_C_0~3)，每座锁扣上方配有内部进度舱盖 (SM_Frigate_CoreHatch_02_A) 及 A/B 两个协同拉杆。",
+      "connectsTo": [
+        "precious-cargo-ratchet"
+      ]
+    },
+    {
+      "id": "precious-cargo-ratchet",
+      "code": "C5",
+      "title": "前部货舱 4 步棘轮机构与 24 联高价值战利品架",
+      "subtitle": "BP_Frigate_CargoRatchet_C_0 + BP_PreciousCargo_C_0 (24 Canisters)",
+      "category": "loot-room",
+      "circuit": "C",
+      "floor": "前部核心货舱 (-8.0m ~ -3.5m)",
+      "x": 137.2,
+      "y": 0,
+      "z": -3.7,
+      "yaw": 0,
+      "recommendedClipZ": 11,
+      "requirement": "操作前/后棘轮柱 (X=+143.1m / +128.0m, Z=-7.6m) 完成 4 步解锁序列",
+      "description": "ARC“护卫者”的终极战利品核心！位于 (137.2, 0.0, -3.7) 的中央重型货架挂载有左 12 联 (L_01~12) + 右 12 联 (R_01~12) 共 24 座高价值战利品罐。需在货架下方的【前棘轮柱 Interaction A】(143.1, 0.0, -7.6) 与【后棘轮柱 Interaction B】(128.0, 0.0, -7.6) 完成 First→Second→Third→Fourth 四步棘轮释放序列，并联动打开底部货舱门 (BP_FrigateHull_Gate_C_1 @ Z=-8.0m)。",
+      "box": {
+        "min": [
+          122,
+          -10,
+          -9.5
+        ],
+        "max": [
+          152,
+          10,
+          2.5
+        ]
+      },
+      "connectsTo": []
+    }
+  ]
+}

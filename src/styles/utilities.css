@@ -1,0 +1,229 @@
+/* =====================================================================
+   Shared primitives — ARC Raiders In-Game UI (DA_UIStyles + WBP_*)
+   ===================================================================== */
+
+/* ============ Viewport & Scroll Containers ============ */
+.page-viewport {
+  flex: 1;
+  min-height: 0;
+  height: calc(100vh - var(--topbar-h, 56px));
+}
+
+.page-scroll {
+  height: calc(100vh - var(--topbar-h, 56px));
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ============ PioneerBrand 5-color stripe ============ */
+.ar-stripe {
+  display: block;
+  height: 3px;
+  background: var(--rainbow);
+}
+
+/* ============ Typography (DA_UIStyles) ============ */
+/* Subheader2: Urbanist Medium/Bold, uppercase, tracked */
+.ar-label,
+.tactical-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent, var(--tx-3));
+}
+
+/* H1/H2/H3: Prompt Bold, uppercase, tight */
+.ar-title {
+  margin: 0;
+  font-family: var(--font-title);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--tx-1);
+}
+
+/* Tabular display numbers (Urbanist / Barlow Semi Condensed) */
+.ar-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+/* ============ Panels (WBP_RoundedBox) ============ */
+.ar-panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+/* Section header row: title left, meta right, 1px SecondaryDark rule below */
+.ar-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line-strong);
+}
+.ar-head > h2,
+.ar-head > h3 {
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--tx-1);
+}
+
+/* Primary/SecondaryPale cream surface with Secondary (#090C19) ink text */
+.ar-cream {
+  background: var(--cream);
+  color: var(--ink);
+}
+
+/* ============ Selectable rows (WBP_MainMenuQuestListEntry) ============ */
+.ar-row {
+  position: relative;
+  transition: background 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+.ar-row:hover {
+  background: var(--bg-hover);
+  box-shadow: inset 3px 0 0 var(--amber);
+}
+.ar-row.active,
+.ar-row[aria-selected='true'] {
+  background: rgba(249, 238, 223, 0.11);
+  box-shadow: inset 3px 0 0 var(--amber), inset 0 0 0 1px rgba(249, 238, 223, 0.22);
+}
+
+/* ============ Buttons (DA_UIStyleBundle_PrimaryButton + WBP_HoverBorder) ============ */
+.ar-btn,
+.btn-tactical-amber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 18px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--ui-complementary);
+  color: var(--ui-secondary);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: outline-color 0.15s, background 0.15s, color 0.15s;
+}
+.ar-btn:hover,
+.btn-tactical-amber:hover {
+  outline-color: var(--ui-primary);
+}
+.ar-btn--ghost {
+  background: rgba(9, 12, 25, 0.6);
+  color: var(--ui-primary);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+.ar-btn--ghost:hover {
+  outline-color: transparent;
+  background: rgba(249, 238, 223, 0.1);
+  box-shadow: inset 0 0 0 1px var(--ui-primary);
+}
+.ar-btn--sm {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+/* ============ Tabs (Primary backplate when active, SecondaryMid when idle) ============ */
+.ar-tabs {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.ar-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 14px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--tx-3);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.ar-tab:hover {
+  color: var(--tx-1);
+  background: var(--bg-hover);
+}
+.ar-tab.active {
+  background: var(--ui-primary);
+  color: var(--ui-secondary);
+}
+.ar-tab .ar-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  opacity: 0.65;
+}
+
+/* ============ Chips / tags ============ */
+.ar-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 20px;
+  padding: 0 7px;
+  border-radius: var(--radius-sm);
+  background: rgba(249, 238, 223, 0.08);
+  color: var(--tx-2);
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.ar-chip--accent {
+  background: color-mix(in srgb, var(--accent, var(--amber)) 18%, transparent);
+  color: var(--accent, var(--amber));
+}
+
+/* ============ Form controls ============ */
+.ar-input {
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg-1);
+  color: var(--tx-1);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.ar-input:focus {
+  border-color: var(--amber);
+}
+.ar-input::placeholder {
+  color: var(--tx-3);
+}
