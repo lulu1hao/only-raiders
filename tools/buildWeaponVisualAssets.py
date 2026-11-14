@@ -11,6 +11,9 @@ Output:
   public/weapons/small/<id>.png              base weapon small icon (stash tile capture framing), 192x192
   public/weapons/ascended/<id>.png           amplified ("增强型") weapon big icon (loadout slot framing), 384x192
   public/weapons/ascended/small/<id>.png     amplified weapon small icon, 192x192
+  public/weapons/ascended[/small]/<id>__<amps>.png
+                                             amplified weapon thumbnails of upgrade combinations that change the
+                                             model (DA_UIMetaData_*_<Upgrade>... permutations, e.g. Scoped / Carbine)
   public/weapons/ammo/<Type>.png             bottom-bar ammo category icons, 64x64
   public/weapons/amps/<Name>.png             amplification upgrade icons, 64x64
   src/data/weaponVisuals.json                mapping consumed by src/utils/raiderLoadoutRecognizer.js
@@ -150,6 +153,7 @@ def main():
         props = read_props(path)
         removes = [int(x) for x in re.findall(r"Type=EModSlotUpgradeModificationType::Remove, position=(\d+)", props.get("ModSlotModifications", ""))]
         upgrades_by_folder.setdefault(tag, []).append({
+            "tag": tag,
             "displayName": props.get("DisplayName", ""),
             "icon": asset_basename(props.get("Icon")),
             "isAscensionNode": props.get("bIsAscensionNode", "False") == "True",
@@ -163,6 +167,18 @@ def main():
         q = read_props(path).get("QualityLevel")
         if q and q.isdigit():
             asc_quality[tag] = int(q)
+
+    # 4b. Ascended permutation UI metadata: every chosen-upgrade combination of an amplified weapon
+    #     has its own DA_UIMetaData_<folder>_<Token>_<Token>... asset whose Icon / BigIcon point at the
+    #     thumbnail of that combination (e.g. *_Scoped_* adds a scope, *_Carbine_* adds a stock).
+    meta_dumps = {}
+    for path in sorted(glob.glob(os.path.join(DUMPS, "DA_UIMetaData_*.txt"))):
+        tag = os.path.basename(path)[len("DA_UIMetaData_"):-4]
+        props = read_props(path)
+        meta_dumps[tag] = {
+            "icon": asset_basename(props.get("Icon")),
+            "bigIcon": asset_basename(props.get("BigIcon")),
+        }
 
     missing = []
     for folder, wid in FOLDER_TO_ID.items():
@@ -201,17 +217,71 @@ def main():
             app_amps = {norm_name(a.get("name")): a["id"] for a in (w.get("amplifications") or [])}
             amps = {}
             ascension_icon = None
+            token_to_amp = {}
             for up in upgrades_by_folder.get(short, []) + [u for k, v in upgrades_by_folder.items() if k.startswith(short + "_") for u in v]:
+                token = up["tag"][len(short) + 1:] if up["tag"].startswith(short + "_") else up["tag"]
                 if up["isAscensionNode"]:
                     ascension_icon = up["icon"]
+                    token_to_amp[token] = None
                     continue
                 aid = app_amps.get(norm_name(up["displayName"]))
                 if not aid:
                     missing.append(f"{wid}: unmapped upgrade '{up['displayName']}'")
                     continue
+                token_to_amp[token] = aid
                 amps[aid] = {"icon": up["icon"], "removesSlotPositions": up["removesSlotPositions"]}
             asc["ascensionIcon"] = ascension_icon or "T_UI_Icon_Upgrade_Amplified"
             asc["amps"] = amps
+
+            # Visual permutations: group upgrade combinations by thumbnail; the default group shares the
+            # plain Ascended icon. For every other thumbnail derive the amp ids that switch to it.
+            combos = []
+            for tag, meta in meta_dumps.items():
+                if not tag.startswith(short + "_"):
+                    continue
+                tokens = tag[len(short) + 1:].split("_")
+                if any(t not in token_to_amp for t in tokens):
+                    continue
+                combos.append({
+                    "amps": frozenset(token_to_amp[t] for t in tokens if token_to_amp[t]),
+                    "icon": meta["icon"],
+                    "bigIcon": meta["bigIcon"],
+                })
+            default = meta_dumps.get(f"{short}_Ascended")
+            default_big = default["bigIcon"] if default else None
+            default_amp_union = set()
+            for c in combos:
+                if c["bigIcon"] == default_big:
+                    default_amp_union |= c["amps"]
+            groups = {}
+            for c in combos:
+                if not c["bigIcon"] or c["bigIcon"] == default_big:
+                    continue
+                groups.setdefault((c["bigIcon"], c["icon"]), []).append(c["amps"])
+            visuals = []
+            for (big_name, small_name), amp_sets in sorted(groups.items()):
+                common = frozenset.intersection(*amp_sets)
+                key_amps = sorted(common - default_amp_union) or sorted(common)
+                if not key_amps:
+                    continue
+                vkey = "-".join(key_amps)
+                vis = {"key": vkey, "ampIds": key_amps}
+                big_src = next(iter(sorted(glob.glob(os.path.join(fdir, "**", big_name + ".png"), recursive=True))), None)
+                small_src = next(iter(sorted(glob.glob(os.path.join(fdir, "**", small_name + ".png"), recursive=True))), None) if small_name else None
+                if big_src:
+                    rel = f"weapons/ascended/{wid}__{vkey}.png"
+                    save_fit(big_src, os.path.join(ROOT, "public", rel), (384, 192))
+                    vis["image"] = rel
+                if small_src:
+                    rel = f"weapons/ascended/small/{wid}__{vkey}.png"
+                    save_fit(small_src, os.path.join(ROOT, "public", rel), (192, 192))
+                    vis["imageSmall"] = rel
+                if not big_src or not small_src:
+                    missing.append(f"{wid}: permutation '{vkey}' big={bool(big_src)} small={bool(small_src)}")
+                if "image" in vis or "imageSmall" in vis:
+                    visuals.append(vis)
+            if visuals:
+                asc["visuals"] = visuals
             entry["ascended"] = asc
 
         out["weapons"][wid] = entry

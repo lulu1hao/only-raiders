@@ -129,6 +129,113 @@ const TILE_BADGE = { x: 5, y: 74, w: 16, h: 16 }
 
 const weaponMetaById = new Map((weaponsData.weapons || []).map((w) => [w.id, w]))
 
+/**
+ * 武器视觉版本（实机缩略图由 BP_WeaponIconCapture 实时渲染，增强型武器的部分增强项会改变模型）：
+ * - 'base'            普通版本（品质 = 武器原品质）
+ * - 'asc'             增强型默认外观（未选择改变模型的增强项）
+ * - 'asc:<key>'       增强型 + 改变模型的增强项（如木星/叛徒「加装瞄准镜」、颂歌「卡宾枪改装」、响尾蛇「弹鼓」）
+ * 所有增强型版本品质恒为 Legendary。
+ */
+const WEAPON_VARIANTS = new Map()
+for (const w of weaponsData.weapons || []) {
+  const asc = weaponVisuals.weapons?.[w.id]?.ascended
+  const list = [{ variant: 'base', asc: false, rarity: w.rarity, ampIds: [], image: w.image }]
+  if (asc) {
+    const ascRarity = asc.rarity || 'Legendary'
+    const visualAmpIds = new Set()
+    for (const v of asc.visuals || []) (v.ampIds || []).forEach((id) => visualAmpIds.add(id))
+    list.push({
+      variant: 'asc',
+      asc: true,
+      rarity: ascRarity,
+      ampIds: [],
+      excludesAmpIds: [...visualAmpIds],
+      image: asc.image,
+    })
+    for (const v of asc.visuals || []) {
+      if (!v?.key || !(v.ampIds || []).length) continue
+      list.push({
+        variant: `asc:${v.key}`,
+        asc: true,
+        rarity: ascRarity,
+        ampIds: [...v.ampIds],
+        image: v.image || asc.image,
+      })
+    }
+  }
+  WEAPON_VARIANTS.set(w.id, list)
+}
+
+function weaponVariantsOf(weaponOrId) {
+  const id = typeof weaponOrId === 'string' ? weaponOrId : weaponOrId?.id
+  return WEAPON_VARIANTS.get(id) || []
+}
+
+function ampsSpecOf(weaponId) {
+  return weaponVisuals.weapons?.[weaponId]?.ascended?.amps || {}
+}
+
+/**
+ * 依据目标增强项选择应匹配的增强型视觉版本（含全部 key 增强项的版本中取 key 最多者）
+ */
+export function resolveWeaponVisualVariant(weaponId, amplified, ampIds = []) {
+  const list = weaponVariantsOf(weaponId)
+  if (!amplified) return list.find((v) => v.variant === 'base') || null
+  const ids = new Set(ampIds || [])
+  let best = list.find((v) => v.variant === 'asc') || null
+  for (const v of list) {
+    if (!v.asc || v.variant === 'asc') continue
+    if (v.ampIds.every((id) => ids.has(id)) && (!best || v.ampIds.length > (best.ampIds?.length || 0))) {
+      best = v
+    }
+  }
+  return best
+}
+
+/**
+ * 补齐增强项前置依赖（requiresIds）并剔除互斥项（按输入顺序优先保留）
+ */
+function completeAmpIds(weaponMeta, ids) {
+  const amps = weaponMeta?.amplifications || []
+  const byId = new Map(amps.map((a) => [a.id, a]))
+  const out = []
+  const push = (id, depth = 0) => {
+    const a = byId.get(id)
+    if (!a || out.includes(id) || depth > 4) return
+    for (const req of a.requiresIds || []) push(req, depth + 1)
+    const clash = out.some(
+      (o) => (a.conflictAmpIds || []).includes(o) || (byId.get(o)?.conflictAmpIds || []).includes(id),
+    )
+    if (!clash) out.push(id)
+  }
+  for (const id of ids || []) push(id)
+  return out
+}
+
+/**
+ * 某增强视觉版本下可能出现的可见配件格数量（增强项可移除指定位置的配件槽）
+ */
+function visibleModCountsForVariant(weaponMeta, vd) {
+  const nSlots = (weaponMeta?.modSlots || []).length
+  if (!vd?.asc) return [nSlots]
+  const amps = ampsSpecOf(weaponMeta.id)
+  const required = new Set()
+  for (const id of vd.ampIds || []) (amps[id]?.removesSlotPositions || []).forEach((p) => required.add(p))
+  const excluded = new Set(vd.excludesAmpIds || [])
+  const counts = new Set([Math.max(0, nSlots - required.size)])
+  const union = new Set(required)
+  for (const [id, a] of Object.entries(amps)) {
+    if (excluded.has(id)) continue
+    const rm = a.removesSlotPositions || []
+    if (!rm.length) continue
+    const s = new Set([...required, ...rm])
+    counts.add(Math.max(0, nSlots - s.size))
+    rm.forEach((p) => union.add(p))
+  }
+  counts.add(Math.max(0, nSlots - union.size))
+  return [...counts]
+}
+
 // UMG ScaleBox 内图标在卡片内的归一化中心与宽高占比 (cx, cy, wFrac, hFrac)
 const ICON_BOX_SPECS = {
   tile: { cx: 0.5, cy: 0.38, wf: 0.73, hf: 0.73 },
@@ -311,7 +418,7 @@ export async function ensureLoadoutTemplates() {
       weapons: new Map(),
       items: new Map(),
       mods: new Map(),
-      // `${weaponId}|${'base'|'asc'}|${'big'|'small'}` -> 模板（asc = 增强型武器，品质恒为 Legendary）
+      // `${weaponId}|${'base'|'asc'|'asc:<key>'}|${'big'|'small'}` -> 模板（asc* = 增强型武器，品质恒为 Legendary）
       weaponVariants: new Map(),
       // 弹药类型名 (weaponsData.ammo) -> 白色字形模板
       ammo: new Map(),
@@ -346,6 +453,12 @@ export async function ensureLoadoutTemplates() {
         const ascRarity = vis.ascended.rarity || 'Legendary'
         addVariant(w, 'asc', 'big', vis.ascended.image, ascRarity)
         addVariant(w, 'asc', 'small', vis.ascended.imageSmall, ascRarity)
+        // 改变模型的增强项组合（瞄准镜 / 卡宾枪托 / 弹鼓等）各自拥有独立缩略图
+        for (const v of vis.ascended.visuals || []) {
+          if (!v?.key) continue
+          addVariant(w, `asc:${v.key}`, 'big', v.image, ascRarity)
+          addVariant(w, `asc:${v.key}`, 'small', v.imageSmall, ascRarity)
+        }
       }
     }
 
@@ -2121,22 +2234,43 @@ function detectWeaponModLayout(imageData, cardRect1080, vp) {
   const step = 1
   const cy = cardRect1080.y + WEAPON_CARD.modRowCenterY
   const xs = []
-  const prof = []
+  // 亮格剖面（暗色卡底 + 亮描边/亮背板）与暗格剖面（高亮品质卡底，如传说橙色渐变上的深色配件格）
+  const profBright = []
+  const profDark = []
+  const innerLums = []
+  const outerLums = []
   const lum = (x, y) => bilerpLum(data, W, H, vp.ox + x * vp.scale, vp.oy + y * vp.scale)
   for (let x = x0; x <= x1; x += step) {
     // 上描边 (y≈115/114) 与下描边 (y≈153/154) 相对外侧 4px 背景的亮度增量
-    const topEdge = Math.max(lum(x, cy - 19.4), lum(x, cy - 18.6), lum(x, cy - 20.2))
+    const tA = lum(x, cy - 19.4)
+    const tB = lum(x, cy - 18.6)
+    const tC = lum(x, cy - 20.2)
+    const bA = lum(x, cy + 18.6)
+    const bB = lum(x, cy + 19.4)
+    const bC = lum(x, cy + 20.2)
     const topOut = lum(x, cy - 24)
-    const botEdge = Math.max(lum(x, cy + 18.6), lum(x, cy + 19.4), lum(x, cy + 20.2))
     const botOut = lum(x, cy + 24)
     // 格子内部背板与外部背景的差异（Backplate 为 Secondary 色）
     const inner = lum(x, cy - 12) + lum(x, cy + 12)
     const outer = topOut + botOut
     xs.push(x)
-    prof.push(
-      Math.max(0, topEdge - topOut) + Math.max(0, botEdge - botOut) + 0.35 * (inner - outer),
+    innerLums.push(inner * 0.5)
+    outerLums.push(outer * 0.5)
+    profBright.push(
+      Math.max(0, Math.max(tA, tB, tC) - topOut) +
+        Math.max(0, Math.max(bA, bB, bC) - botOut) +
+        0.35 * (inner - outer),
+    )
+    profDark.push(
+      Math.max(0, topOut - Math.min(tA, tB, tC)) +
+        Math.max(0, botOut - Math.min(bA, bB, bC)) +
+        0.35 * (outer - inner),
     )
   }
+  // 极性判定：配件格（含增强槽）占据配件行大部分宽度，行内中位亮度 ≈ 格内背板亮度；
+  // 若格内明显暗于格外卡底（传说/史诗等高亮渐变卡底），改用暗格剖面
+  const darkSlots = medianOf(innerLums) < medianOf(outerLums) - 18
+  const prof = darkSlots ? profDark : profBright
 
   const table = {}
   let bestAll = { n: 0, asc: false, corr: -1 }
@@ -2188,25 +2322,12 @@ function detectWeaponModLayout(imageData, cardRect1080, vp) {
     asc: best.asc,
     corr: +best.corr.toFixed(3),
     flat,
+    darkSlots,
     table,
     confident: best.corr >= 0.45,
   }
 }
 
-function possibleVisibleModCounts(weaponMeta, variant) {
-  const nSlots = (weaponMeta?.modSlots || []).length
-  if (variant !== 'asc') return [nSlots]
-  const amps = weaponVisuals.weapons?.[weaponMeta.id]?.ascended?.amps || {}
-  const counts = new Set([nSlots])
-  const union = new Set()
-  for (const a of Object.values(amps)) {
-    const rm = a.removesSlotPositions || []
-    if (rm.length) counts.add(Math.max(0, nSlots - rm.length))
-    rm.forEach((p) => union.add(p))
-  }
-  counts.add(Math.max(0, nSlots - union.size))
-  return [...counts]
-}
 
 /**
  * 识别增强型武器增强槽内的 24px 增强图标，返回对应 app 增强 id 列表
@@ -2273,9 +2394,11 @@ function identifyWeaponCard(imageData, cardRect1080, vp, db) {
   }
 
   const scored = []
+  // 品质角标明确时作为强约束：增强型武器（所有视觉版本）恒为 Legendary，普通版本须与武器原品质一致
+  const obsRarity = state.rarityConfident ? state.rarity : null
   for (const w of weaponsData.weapons || []) {
-    const nSlots = (w.modSlots || []).length
-    for (const variant of ['base', 'asc']) {
+    for (const vd of weaponVariantsOf(w)) {
+      const variant = vd.variant
       const tpl =
         db.weaponVariants?.get(`${w.id}|${variant}|big`) ||
         (variant === 'base' ? db.weapons.get(w.id) : null)
@@ -2286,13 +2409,14 @@ function identifyWeaponCard(imageData, cardRect1080, vp, db) {
         if (ammo.confident) s += ammo.key === w.ammo ? 0.3 : -0.45
         else s += ammo.key === w.ammo ? 0.08 : -0.04
       }
+      if (obsRarity && vd.rarity && obsRarity !== vd.rarity) s -= 0.25
 
       // 布局拟合：候选武器(版本)允许的配件格布局中相关度最高者，相对全局最优布局的差距计罚
-      const allowedN = variant === 'asc' ? possibleVisibleModCounts(w, 'asc') : [nSlots]
+      const allowedN = visibleModCountsForVariant(w, vd)
       let fitN = allowedN[0]
       let fit = -1
       for (const n of allowedN) {
-        const c = layout.table?.[`${n}|${variant === 'asc'}`] ?? -1
+        const c = layout.table?.[`${n}|${vd.asc}`] ?? -1
         if (c > fit) {
           fit = c
           fitN = n
@@ -2300,22 +2424,22 @@ function identifyWeaponCard(imageData, cardRect1080, vp, db) {
       }
       if (layout.corr >= 0.3) s += 0.6 * Math.min(0, fit - layout.corr) + (fit >= 0.6 ? 0.08 : 0)
 
-      if (variant === 'asc') {
+      if (vd.asc) {
         const g = ascGlyphScore(w, fitN)
         s += g >= 0.55 ? 0.15 : g < 0.35 ? -0.2 : 0
       }
-      scored.push({ w, variant, s, thumb, fitN, fit })
+      scored.push({ w, vd, variant, s, thumb, fitN, fit })
     }
   }
   scored.sort((a, b) => b.s - a.s)
   const top = scored[0]
   if (!top) return { occupied: true, identified: false, state, ammo, layout }
-  // 同一武器的另一变体不计入「竞品差距」
+  // 同一武器的其他版本不计入「竞品差距」
   const rival = scored.find((x) => x.w.id !== top.w.id)
   const margin = rival ? top.s - rival.s : top.s
   const resolvedLayout = {
     n: top.fitN,
-    asc: top.variant === 'asc',
+    asc: top.vd.asc,
     corr: +top.fit.toFixed(3),
     confident: top.fit >= 0.45,
   }
@@ -2335,7 +2459,10 @@ function identifyWeaponCard(imageData, cardRect1080, vp, db) {
     identified: true,
     weaponId: top.w.id,
     meta: top.w,
-    amplified: top.variant === 'asc',
+    amplified: top.vd.asc,
+    variant: top.variant,
+    visualAmpIds: [...(top.vd.ampIds || [])],
+    excludesAmpIds: [...(top.vd.excludesAmpIds || [])],
     score: +top.s.toFixed(3),
     thumb: +top.thumb.toFixed(3),
     margin: +margin.toFixed(3),
@@ -2368,14 +2495,20 @@ function resolveVisibleModSlotKeys(weaponMeta, amplified, visibleCount, ampIds =
   return keys.slice(0, visibleCount)
 }
 
-function inferAmpIdsFromRemovedSlots(weaponMeta, visibleCount) {
+function inferAmpIdsFromRemovedSlots(weaponMeta, visibleCount, knownAmpIds = [], excludeAmpIds = []) {
   const slots = weaponMeta?.modSlots || []
   const amps = weaponVisuals.weapons?.[weaponMeta?.id]?.ascended?.amps || {}
-  const missing = slots.length - visibleCount
+  const known = new Set(knownAmpIds)
+  const removedByKnown = new Set()
+  for (const id of known) (amps[id]?.removesSlotPositions || []).forEach((p) => removedByKnown.add(p))
+  const missing = slots.length - removedByKnown.size - visibleCount
   if (missing <= 0) return []
-  const cands = Object.entries(amps).filter(
-    ([, a]) => (a.removesSlotPositions || []).length === missing,
-  )
+  const exclude = new Set(excludeAmpIds)
+  const cands = Object.entries(amps).filter(([id, a]) => {
+    if (known.has(id) || exclude.has(id)) return false
+    const extra = (a.removesSlotPositions || []).filter((p) => !removedByKnown.has(p))
+    return extra.length === missing
+  })
   return cands.length === 1 ? [cands[0][0]] : []
 }
 
@@ -2553,8 +2686,16 @@ export async function recognizeLoadoutFromImageData(imageData) {
       let slotKeys = wMeta.modSlots || []
       if (wid.amplified) {
         const { upgrade } = weaponModRowBoxes(wRect1080, wid.layout.n, true)
-        ampIds = recognizeAscendedUpgrade(imageData, upgrade, vp, wMeta, db).ampIds
-        if (!ampIds.length) ampIds = inferAmpIdsFromRemovedSlots(wMeta, wid.layout.n)
+        // 增强项证据融合：改变模型的缩略图版本 (瞄准镜/卡宾枪托/弹鼓) + 增强槽图标 + 被移除的配件格
+        const glyphAmpIds = recognizeAscendedUpgrade(imageData, upgrade, vp, wMeta, db).ampIds
+        const known = completeAmpIds(wMeta, [...(wid.visualAmpIds || []), ...glyphAmpIds])
+        const inferred = inferAmpIdsFromRemovedSlots(
+          wMeta,
+          wid.layout.n,
+          known,
+          wid.excludesAmpIds || [],
+        )
+        ampIds = completeAmpIds(wMeta, [...known, ...inferred])
         slotKeys = resolveVisibleModSlotKeys(wMeta, true, wid.layout.n, ampIds)
       }
       const tier = wid.amplified ? maxTier : estimateWeaponTier(imageData, wRect1080, vp, maxTier)
@@ -2801,8 +2942,9 @@ function detectStashRowOrigins1080p(imageData, viewport) {
 
 /**
  * 储备箱武器格检索（实时 3D 渲染缩略图）：品质角标 + 底栏弹药徽章硬过滤，
- * 再以 small(储备格机位) / big(紧凑/宽幅) 多框静态贴图匹配，并对同弹药同品质的其他武器做竞品消歧；
- * opts.amplified = true / false 时仅接受增强型 / 普通版本。
+ * 再以 small(储备格机位) / big(紧凑/宽幅) 多框静态贴图匹配，并对同弹药同品质的其他武器(含全部增强视觉版本)做竞品消歧；
+ * opts.amplified = true / false 时仅接受增强型 / 普通版本；
+ * opts.ampIds 指定目标增强项时，优先选取缩略图与该增强组合一致的格子（如带瞄准镜的增强型木星）。
  */
 function findWeaponInStashGrid(imageData, viewport, targetId, db, opts = {}) {
   const wMeta = weaponMetaById.get(targetId)
@@ -2810,11 +2952,16 @@ function findWeaponInStashGrid(imageData, viewport, targetId, db, opts = {}) {
   const { width: W, height: H } = imageData
   const grid = UMG_RECTS_1080P.stashGrid
   const rowOrigins = detectStashRowOrigins1080p(imageData, viewport)
-  const wantVariants =
-    opts.amplified === true ? ['asc'] : opts.amplified === false ? ['base'] : ['base', 'asc']
-
-  const variantRarity = (w, v) =>
-    v === 'asc' ? weaponVisuals.weapons?.[w.id]?.ascended?.rarity || 'Legendary' : w.rarity
+  const allVariants = weaponVariantsOf(wMeta)
+  const wantVariants = allVariants.filter((vd) =>
+    opts.amplified === true ? vd.asc : opts.amplified === false ? !vd.asc : true,
+  )
+  if (!wantVariants.length) return null
+  const otherVariants = allVariants.filter((vd) => !wantVariants.includes(vd))
+  const expected =
+    opts.amplified === true ? resolveWeaponVisualVariant(targetId, true, opts.ampIds || []) : null
+  // 未指定增强项时视觉版本不确定：仅轻微偏好默认增强外观，其余增强型版本同样可接受
+  const hasTargetAmps = (opts.ampIds || []).length > 0
 
   let bestCell = null
   let bestScore = -Infinity
@@ -2832,6 +2979,15 @@ function findWeaponInStashGrid(imageData, viewport, targetId, db, opts = {}) {
       const state = analyzeCardState(imageData, frect, 'tile')
       if (!state.occupied) continue
 
+      // 品质硬过滤：增强型版本恒为 Legendary
+      if (
+        state.rarityConfident &&
+        state.rarity &&
+        !wantVariants.some((vd) => vd.rarity === state.rarity)
+      ) {
+        continue
+      }
+
       const ammo = db.ammo?.size
         ? classifyGlyph(imageData, offsetRect(r1080, TILE_BADGE), viewport, db.ammo)
         : { key: null, confident: false }
@@ -2841,13 +2997,13 @@ function findWeaponInStashGrid(imageData, viewport, targetId, db, opts = {}) {
       const obsTight = sampleIconBoxBilerp(imageData, frect, 'weaponTileTight', WP_W, WP_H)
       const obsWide = sampleIconBoxBilerp(imageData, frect, 'weaponTileWide', WP_W, WP_H)
 
-      const scoreVariant = (w, v) => {
-        const rar = variantRarity(w, v)
+      const scoreVariant = (w, vd) => {
+        const rar = vd.rarity
         if (state.rarityConfident && state.rarity && rar && state.rarity !== rar) return -Infinity
-        const small = db.weaponVariants?.get(`${w.id}|${v}|small`)
+        const small = db.weaponVariants?.get(`${w.id}|${vd.variant}|small`)
         const big =
-          db.weaponVariants?.get(`${w.id}|${v}|big`) ||
-          (v === 'base' ? db.weapons.get(w.id) : null)
+          db.weaponVariants?.get(`${w.id}|${vd.variant}|big`) ||
+          (vd.variant === 'base' ? db.weapons.get(w.id) : null)
         let s = -Infinity
         if (small) s = Math.max(s, scoreTemplateAgainstObs(obsSmall, state, small))
         if (big) {
@@ -2861,7 +3017,14 @@ function findWeaponInStashGrid(imageData, viewport, targetId, db, opts = {}) {
       }
 
       let targetScore = -Infinity
-      for (const v of wantVariants) targetScore = Math.max(targetScore, scoreVariant(wMeta, v))
+      let targetVariant = null
+      for (const vd of wantVariants) {
+        const s = scoreVariant(wMeta, vd)
+        if (s > targetScore) {
+          targetScore = s
+          targetVariant = vd.variant
+        }
+      }
 
       // 弹药徽章 + 品质角标已唯一锁定目标武器（同弹药同品质无其他武器/版本）时，
       // 实时渲染缩略图仅需弱一致即可接受，且无需竞品消歧
@@ -2870,33 +3033,33 @@ function findWeaponInStashGrid(imageData, viewport, targetId, db, opts = {}) {
         ammo.key === wMeta.ammo &&
         state.rarityConfident &&
         state.rarity &&
-        wantVariants.some((v) => variantRarity(wMeta, v) === state.rarity) &&
+        wantVariants.some((vd) => vd.rarity === state.rarity) &&
         !(weaponsData.weapons || []).some(
           (rw) =>
             rw.ammo === ammo.key &&
-            ['base', 'asc'].some(
-              (v) =>
-                (v === 'base' || weaponVisuals.weapons?.[rw.id]?.ascended) &&
-                variantRarity(rw, v) === state.rarity &&
-                !(rw.id === targetId && wantVariants.includes(v)),
+            weaponVariantsOf(rw).some(
+              (vd) =>
+                vd.rarity === state.rarity &&
+                !(rw.id === targetId && wantVariants.includes(vd)),
             ),
         )
 
       if (!Number.isFinite(targetScore) || targetScore < (uniqueByCues ? 0.2 : 0.5)) continue
 
-      // 指定增强/普通版本时，若同武器另一版本明显更像则跳过
-      if (!uniqueByCues && (opts.amplified === true || opts.amplified === false)) {
-        const other = scoreVariant(wMeta, opts.amplified ? 'base' : 'asc')
+      // 指定增强/普通版本时，若同武器另一版本（任一视觉版本）明显更像则跳过
+      if (!uniqueByCues && otherVariants.length) {
+        let other = -Infinity
+        for (const vd of otherVariants) other = Math.max(other, scoreVariant(wMeta, vd))
         if (Number.isFinite(other) && other > targetScore + 0.05) continue
       }
 
-      // 竞品消歧：仅与弹药类型兼容的其他武器比较
+      // 竞品消歧：仅与弹药类型兼容的其他武器（含其增强型各视觉版本）比较
       let rivalBeat = false
       for (const rw of uniqueByCues ? [] : weaponsData.weapons || []) {
         if (rw.id === targetId) continue
         if (ammo.key && ammo.confident && rw.ammo !== ammo.key) continue
-        for (const v of ['base', 'asc']) {
-          const rs = scoreVariant(rw, v)
+        for (const vd of weaponVariantsOf(rw)) {
+          const rs = scoreVariant(rw, vd)
           if (Number.isFinite(rs) && rs > targetScore + 0.035) {
             rivalBeat = true
             break
@@ -2906,7 +3069,18 @@ function findWeaponInStashGrid(imageData, viewport, targetId, db, opts = {}) {
       }
       if (rivalBeat) continue
 
-      const rankScore = targetScore + (ammo.confident ? 0.05 : 0) + (uniqueByCues ? 0.4 : 0)
+      // 目标增强组合对应的视觉版本优先（同页存在多把同型增强武器时选中增强项一致者）
+      const visualBonus = expected
+        ? targetVariant === expected.variant
+          ? hasTargetAmps
+            ? 0.08
+            : 0.03
+          : hasTargetAmps
+            ? -0.04
+            : 0
+        : 0
+      const rankScore =
+        targetScore + (ammo.confident ? 0.05 : 0) + (uniqueByCues ? 0.4 : 0) + visualBonus
       if (rankScore > bestScore) {
         const cellRect = mapRect(r1080, viewport)
         bestScore = rankScore
@@ -2914,6 +3088,7 @@ function findWeaponInStashGrid(imageData, viewport, targetId, db, opts = {}) {
           row,
           col,
           score: +targetScore.toFixed(3),
+          variant: targetVariant,
           count: 1,
           ammo: ammo.key,
           normX: +((cellRect.x + cellRect.w * 0.5) / W).toFixed(5),
@@ -3420,6 +3595,7 @@ export async function verifyTargetSlotMatched(
       matched: wid.weaponId === targetId && variantOk,
       weaponId: wid.weaponId,
       amplified: wid.amplified,
+      variant: wid.variant,
       score: wid.score,
     }
   }

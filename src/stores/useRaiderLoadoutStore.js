@@ -987,7 +987,11 @@ export const useRaiderLoadoutStore = defineStore('raiderLoadout', () => {
       a: l.augmentId,
       s: l.shieldId || '',
       w: l.weapons.map((w) =>
-        w ? [w.weaponId, w.tier, w.ampIds || [], w.mods || {}] : null,
+        w
+          ? w.amplified && !(w.ampIds || []).length
+            ? [w.weaponId, w.tier, [], w.mods || {}, 1]
+            : [w.weaponId, w.tier, w.ampIds || [], w.mods || {}]
+          : null,
       ),
       q: l.quickUse.map((q) => (q ? [q.itemId, q.count] : null)),
       x: l.aux.map((x) => (x ? [x.itemId, x.count] : null)),
@@ -1039,6 +1043,8 @@ export const useRaiderLoadoutStore = defineStore('raiderLoadout', () => {
                   tier: item[1],
                   ampIds: item[2] || [],
                   mods: item[3] || {},
+                  // 第 5 位：增强型（Ascended）但未选择增强项
+                  amplified: item[4] === 1 || item[4] === true,
                 }
               : null,
           )

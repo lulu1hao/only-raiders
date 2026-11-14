@@ -93,7 +93,17 @@
             "icon": "T_UI_Icon_Upgrade_MoreBulletsReload",
             "removesSlotPositions": []
           }
-        }
+        },
+        "visuals": [
+          {
+            "key": "drum-mag",
+            "ampIds": [
+              "drum-mag"
+            ],
+            "image": "weapons/ascended/rattler__drum-mag.png",
+            "imageSmall": "weapons/ascended/small/rattler__drum-mag.png"
+          }
+        ]
       }
     },
     "kettle": {
@@ -177,7 +187,17 @@
               1
             ]
           }
-        }
+        },
+        "visuals": [
+          {
+            "key": "scoped",
+            "ampIds": [
+              "scoped"
+            ],
+            "image": "weapons/ascended/renegade__scoped.png",
+            "imageSmall": "weapons/ascended/small/renegade__scoped.png"
+          }
+        ]
       }
     },
     "stiletto": {
@@ -315,7 +335,17 @@
               3
             ]
           }
-        }
+        },
+        "visuals": [
+          {
+            "key": "carbine-conversion",
+            "ampIds": [
+              "carbine-conversion"
+            ],
+            "image": "weapons/ascended/canto__carbine-conversion.png",
+            "imageSmall": "weapons/ascended/small/canto__carbine-conversion.png"
+          }
+        ]
       }
     },
     "dolabra": {
@@ -423,7 +453,17 @@
             "icon": "T_UI_Icon_Upgrade_ScopeVariant",
             "removesSlotPositions": []
           }
-        }
+        },
+        "visuals": [
+          {
+            "key": "scoped",
+            "ampIds": [
+              "scoped"
+            ],
+            "image": "weapons/ascended/jupiter__scoped.png",
+            "imageSmall": "weapons/ascended/small/jupiter__scoped.png"
+          }
+        ]
       }
     },
     "rascal": {
