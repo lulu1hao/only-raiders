@@ -1,6 +1,6 @@
 [package]
 name = "arc-map"
-version = "0.1.0"
+version = "0.1.1"
 description = "Arc Raiders · The Dam 3D 地形查看器"
 authors = ["you"]
 license = ""

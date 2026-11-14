@@ -2,7 +2,7 @@ import { computed, reactive } from 'vue'
 
 const PREFS_STORAGE_KEY = 'only_raiders_updater_prefs_v1'
 const DEFAULT_REPO = 'lulu1hao/only-raiders'
-const FALLBACK_VERSION = '0.1.0'
+const FALLBACK_VERSION = '0.1.1'
 
 function getTauriInvoke() {
   if (typeof window === 'undefined') return null

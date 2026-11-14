@@ -1,7 +1,7 @@
 {
   "name": "arc-map",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "Arc Raiders · The Dam 3D 地形查看器",
   "scripts": {
