@@ -10,30 +10,76 @@ import weaponVisuals from '../data/weaponVisuals.json'
 import { getModById, rarityMeta, shortAmpName } from '../composables/useWeaponCalculator'
 import { invokeTauri, isTauriRuntime } from '../stores/useOverlayWindowStore'
 import { assetUrl } from './assetUrl'
+import {
+  DEFAULT_RAIDER_SYNC_OPTIONS,
+  readLocalProgressionContext,
+  resolveItemRestockChannels,
+  sanitizeRaiderSyncOptions,
+} from './raiderAcquisitionCatalog'
+import { runAutoRestockSession } from './raiderAutoRestockRunner'
 import { abortRaiderAutoSync, captureGameClientImageData } from './raiderAutoSyncPlanner'
 import {
+  CAPTURE_MAX_WIDTH,
+  execSafeClick,
+  execSafeCtrlClick,
+  execSafeDoubleClick,
+  execSafeDrag,
+  execSafePark,
+  execSafeScroll,
+  execSafeShiftClick,
+  pointNorm,
+  rectCenterNorm,
+  waitSafeOrThrow,
+} from './raiderInputHelpers'
+import {
+  MOD_SLOT_NORMALIZATION,
   UMG_RECTS_1080P,
   detectSelectedNonBackpackSlot1080p,
   didStashScrollChange,
+  findBatchTargetsInStashGrid,
   findTargetInStashGrid,
+  inspectEquippedWeaponSlotDetail,
   inspectStashPageState,
   inspectWeaponCard,
   isRect1080pSelected,
   isStashFilterRailActive,
   recognizeLoadoutFromImageData,
+  resolveVisibleModSlotKeys,
   resolveWeaponVisualVariant,
   verifyTargetSlotMatched,
+  weaponModRowBoxes,
 } from './raiderLoadoutRecognizer'
 
 export { abortRaiderAutoSync, captureGameClientImageData }
 
 /**
- * 仓库检索 / 槽位复核的匹配选项：增强型状态 + 目标增强项（决定增强型武器的缩略图视觉版本）
+ * 仓库检索 / 槽位复核的匹配选项：增强型状态、目标增强项、武器等级门槛及配件槽类型
  */
-function itemMatchOpts(item) {
-  return item?.kind === 'weapon'
-    ? { amplified: item.amplified, ampIds: item.ampIds || [] }
-    : { amplified: item?.amplified }
+function itemMatchOpts(item, override = {}) {
+  if (item?.kind === 'weapon') {
+    return {
+      amplified: item.amplified,
+      ampIds: item.ampIds || [],
+      minTier: item.minTier || 1,
+      strictMinTier: item.strictMinTier || 0,
+      strictTierMatch: Boolean(item.strictTierMatch),
+      ...override,
+    }
+  }
+  if (item?.kind === 'mod') {
+    return {
+      modSlotKey: item.modSlotKey,
+      ...override,
+    }
+  }
+  if (item?.kind === 'quickUse' || item?.kind === 'aux' || item?.kind === 'safePocket') {
+    return {
+      amplified: item?.amplified,
+      minCount: Math.max(1, Number(item?.targetCount) || 1),
+      ...override,
+    }
+  }
+  return { amplified: item?.amplified, ...override }
 }
 
 function isWeaponEntryAmplified(entry) {
@@ -85,10 +131,25 @@ export function describeLoadoutBrief(loadout) {
   return parts.length ? parts.join(' · ') : '裸装配置'
 }
 
+function findModIdForSlot(modsObj, slotKey) {
+  if (!modsObj || typeof modsObj !== 'object') return null
+  if (modsObj[slotKey]) return modsObj[slotKey]
+  const aliases = MOD_SLOT_NORMALIZATION[slotKey] || []
+  for (const a of aliases) {
+    if (modsObj[a]) return modsObj[a]
+  }
+  return null
+}
+
 /**
  * 计算目标战备与游戏内实机战备的逐槽位差量及 1080p UMG 投影框
  */
-export function analyzeLoadoutSyncDiff(inGameLoadout, targetLoadout) {
+export function analyzeLoadoutSyncDiff(inGameLoadout, targetLoadout, rawSyncOptions = {}) {
+  const syncOptions = sanitizeRaiderSyncOptions(rawSyncOptions)
+  const progressionCtx =
+    syncOptions.autoRestockEnabled && syncOptions.respectLocalProgression
+      ? readLocalProgressionContext()
+      : null
   const tgt = targetLoadout || {}
   const live = inGameLoadout || null
   const entries = []
@@ -152,13 +213,21 @@ export function analyzeLoadoutSyncDiff(inGameLoadout, targetLoadout) {
     // 增强型武器（游戏内 Ascended 变体）与普通版本为不同物品：须同时比对增强状态
     const tgtAmplified = isWeaponEntryAmplified(wEntry)
     const liveAmplified = isWeaponEntryAmplified(liveW)
-    const matched = Boolean(
+    const liveSameWeapon = Boolean(
       liveW && liveW.weaponId === wMeta.id && liveAmplified === tgtAmplified,
+    )
+    const tgtTier = tgtAmplified ? 1 : Math.max(1, Math.min(4, Number(wEntry.tier) || 1))
+    const liveTier = liveSameWeapon ? Math.max(1, Number(liveW.tier) || 1) : 0
+    const tierMatched = !syncOptions.syncWeaponTier || tgtAmplified || liveTier >= tgtTier
+    const matched = Boolean(liveSameWeapon && tierMatched)
+    const needsTierUpgrade = Boolean(
+      syncOptions.syncWeaponTier && !tgtAmplified && liveSameWeapon && liveTier < tgtTier,
     )
     // 增强型武器的部分增强项（瞄准镜 / 卡宾枪托 / 弹鼓）会改变实机缩略图，按目标增强组合选取对应外观
     const tgtVisual = resolveWeaponVisualVariant(wMeta.id, tgtAmplified, wEntry.ampIds || [])
 
-    const roman = ROMAN[(wEntry.tier || 1) - 1] || 'I'
+    const roman = ROMAN[tgtTier - 1] || 'I'
+    const liveRoman = ROMAN[liveTier - 1] || String(liveTier)
     const modBadges = Object.values(wEntry.mods || {})
       .map((mId) => getModById(mId))
       .filter(Boolean)
@@ -171,6 +240,7 @@ export function analyzeLoadoutSyncDiff(inGameLoadout, targetLoadout) {
       .filter((a) => (wEntry.ampIds || []).includes(a.id))
       .map((a) => shortAmpName(a))
 
+    const wRect = i === 0 ? UMG_RECTS_1080P.weapon1 : UMG_RECTS_1080P.weapon2
     entries.push({
       key: `weapon${i + 1}`,
       kind: 'weapon',
@@ -181,6 +251,11 @@ export function analyzeLoadoutSyncDiff(inGameLoadout, targetLoadout) {
       targetName: tgtAmplified ? `增强型 ${wMeta.zhName}` : wMeta.zhName,
       amplified: tgtAmplified,
       ampIds: [...(wEntry.ampIds || [])],
+      targetTier: tgtTier,
+      liveTier,
+      needsTierUpgrade,
+      minTier: syncOptions.syncWeaponTier && !tgtAmplified ? tgtTier : 1,
+      strictTierMatch: Boolean(syncOptions.syncWeaponTier && !tgtAmplified && tgtTier > 1),
       icon: assetUrl(
         (tgtAmplified &&
           (tgtVisual?.image || weaponVisuals.weapons?.[wMeta.id]?.ascended?.image)) ||
@@ -188,7 +263,11 @@ export function analyzeLoadoutSyncDiff(inGameLoadout, targetLoadout) {
       ),
       rarity: tgtAmplified ? 'Legendary' : wMeta.rarity,
       color: rarityMeta[tgtAmplified ? 'Legendary' : wMeta.rarity]?.color || '#fd4b10',
-      badge: tgtAmplified ? '增强型' : `Lv.${roman}`,
+      badge: tgtAmplified
+        ? '增强型'
+        : needsTierUpgrade
+          ? `Lv.${liveRoman}→${roman}`
+          : `Lv.${roman}`,
       modBadges,
       subTags: [...ampBadges, ...modBadges.map((m) => m.name)],
       liveName: liveWMeta
@@ -197,8 +276,71 @@ export function analyzeLoadoutSyncDiff(inGameLoadout, targetLoadout) {
           : liveWMeta.zhName
         : null,
       matched,
-      rect1080p: i === 0 ? UMG_RECTS_1080P.weapon1 : UMG_RECTS_1080P.weapon2,
+      rect1080p: wRect,
     })
+
+    // 3b. 武器配件差异条目（默认关闭，仅开启 syncWeaponMods 时参与计算）
+    if (syncOptions.syncWeaponMods && wEntry.mods && typeof wEntry.mods === 'object') {
+      const slotKeys = resolveVisibleModSlotKeys(wMeta, {
+        amplified: tgtAmplified,
+        ampIds: wEntry.ampIds || [],
+        mods: wEntry.mods,
+      })
+      const modBoxes = weaponModRowBoxes(wRect, slotKeys.length, tgtAmplified).mods
+      for (let sIdx = 0; sIdx < slotKeys.length; sIdx++) {
+        const slotKey = slotKeys[sIdx]
+        const modId = findModIdForSlot(wEntry.mods, slotKey)
+        if (!modId) continue
+        const modMeta = getModById(modId)
+        if (!modMeta) continue
+
+        const liveModId = liveSameWeapon ? findModIdForSlot(liveW?.mods, slotKey) : null
+        const modMatched = Boolean(liveSameWeapon && liveModId === modId)
+        entries.push({
+          key: `weapon${i}_mod_${slotKey}`,
+          kind: 'mod',
+          weaponSlotIndex: i,
+          parentWeaponId: wMeta.id,
+          parentAmplified: tgtAmplified,
+          modSlotKey: slotKey,
+          slotIndex: sIdx,
+          stashFilter: 'modifications',
+          slotLabel: `武器${i === 0 ? 'I' : 'II'}配件`,
+          targetId: modMeta.id,
+          targetName: modMeta.zhName || modMeta.name,
+          icon: assetUrl(modMeta.image || modMeta.icon || ''),
+          rarity: modMeta.rarity || 'Common',
+          color: rarityMeta[modMeta.rarity]?.color || '#37d7ff',
+          targetCount: 1,
+          badge: '配件',
+          subTags: [wMeta.zhName],
+          liveName: liveModId ? getModById(liveModId)?.zhName || liveModId : null,
+          matched: modMatched,
+          rect1080p: modBoxes[sIdx] || wRect,
+        })
+      }
+    }
+  }
+
+  const evalPositionalSlot = (liveSlot, targetEntry, meta) => {
+    const tgtCount = Math.max(1, Number(targetEntry?.count) || 1)
+    const liveCount = liveSlot?.itemId ? Math.max(1, Number(liveSlot.count) || 1) : 0
+    const sameItem = Boolean(liveSlot && liveSlot.itemId === meta.id)
+    const matched = Boolean(sameItem && liveCount >= tgtCount)
+    const deficitCount = matched ? 0 : sameItem ? tgtCount - liveCount : tgtCount
+    const liveMeta = liveSlot?.itemId ? itemMap.get(liveSlot.itemId) : null
+    return {
+      tgtCount,
+      liveCount: sameItem ? liveCount : 0,
+      deficitCount,
+      matched,
+      badge: !matched && sameItem ? `${liveCount}/${tgtCount}` : `×${tgtCount}`,
+      liveName: liveMeta
+        ? liveCount > 1 || sameItem
+          ? `${liveMeta.zhName} ×${liveCount}`
+          : liveMeta.zhName
+        : null,
+    }
   }
 
   // 4. 快速使用栏位
@@ -209,26 +351,26 @@ export function analyzeLoadoutSyncDiff(inGameLoadout, targetLoadout) {
     const qMeta = itemMap.get(qEntry.itemId)
     if (!qMeta) continue
 
-    const liveQ = live?.quickUse?.[i]
-    const liveQMeta = liveQ?.itemId ? itemMap.get(liveQ.itemId) : null
-    const matched = Boolean(liveQ && liveQ.itemId === qMeta.id)
-
+    const pos = evalPositionalSlot(live?.quickUse?.[i], qEntry, qMeta)
     entries.push({
       key: `quickUse${i}`,
       kind: 'quickUse',
       slotIndex: i,
       stashFilter: 'utilities',
+      itemCategory: qMeta.category,
       slotLabel: `快捷 ${i + 1}`,
       targetId: qMeta.id,
       targetName: qMeta.zhName,
       icon: assetUrl(qMeta.icon),
       rarity: qMeta.rarity,
       color: rarityMeta[qMeta.rarity]?.color || '#26bf57',
-      targetCount: qEntry.count || 1,
-      badge: `×${qEntry.count || 1}`,
+      targetCount: pos.tgtCount,
+      liveCount: pos.liveCount,
+      deficitCount: pos.deficitCount,
+      badge: pos.badge,
       subTags: qMeta.statTags?.slice(0, 1) || [],
-      liveName: liveQMeta ? liveQMeta.zhName : null,
-      matched,
+      liveName: pos.liveName,
+      matched: pos.matched,
       rect1080p: UMG_RECTS_1080P.quickUse[i],
     })
   }
@@ -244,27 +386,27 @@ export function analyzeLoadoutSyncDiff(inGameLoadout, targetLoadout) {
       const aMeta = itemMap.get(aEntry.itemId)
       if (!aMeta) continue
 
-      const liveA = live?.aux?.[i]
-      const liveAMeta = liveA?.itemId ? itemMap.get(liveA.itemId) : null
-      const matched = Boolean(liveA && liveA.itemId === aMeta.id)
+      const pos = evalPositionalSlot(live?.aux?.[i], aEntry, aMeta)
       const rectIdx = Math.min(2, i + integratedOffset)
-
       entries.push({
         key: `aux${i}`,
         kind: 'aux',
         slotIndex: i,
         stashFilter: resolveItemStashFilter(aMeta.category),
+        itemCategory: aMeta.category,
         slotLabel: `${auxSpec.label} ${i + 1}`,
         targetId: aMeta.id,
         targetName: aMeta.zhName,
         icon: assetUrl(aMeta.icon),
         rarity: aMeta.rarity,
         color: rarityMeta[aMeta.rarity]?.color || '#ffbc13',
-        targetCount: aEntry.count || 1,
-        badge: `×${aEntry.count || 1}`,
+        targetCount: pos.tgtCount,
+        liveCount: pos.liveCount,
+        deficitCount: pos.deficitCount,
+        badge: pos.badge,
         subTags: aMeta.statTags?.slice(0, 1) || [],
-        liveName: liveAMeta ? liveAMeta.zhName : null,
-        matched,
+        liveName: pos.liveName,
+        matched: pos.matched,
         rect1080p: UMG_RECTS_1080P.aux[rectIdx],
       })
     }
@@ -281,41 +423,54 @@ export function analyzeLoadoutSyncDiff(inGameLoadout, targetLoadout) {
     const spMeta = itemMap.get(spEntry.itemId)
     if (!spMeta) continue
 
-    const liveSp = live?.safePocket?.[i]
-    const liveSpMeta = liveSp?.itemId ? itemMap.get(liveSp.itemId) : null
-    const matched = Boolean(liveSp && liveSp.itemId === spMeta.id)
-
+    const pos = evalPositionalSlot(live?.safePocket?.[i], spEntry, spMeta)
     entries.push({
       key: `safePocket${i}`,
       kind: 'safePocket',
       slotIndex: i,
       stashFilter: resolveItemStashFilter(spMeta.category),
+      itemCategory: spMeta.category,
       slotLabel: `安全袋 ${i + 1}`,
       targetId: spMeta.id,
       targetName: spMeta.zhName,
       icon: assetUrl(spMeta.icon),
       rarity: spMeta.rarity,
       color: rarityMeta[spMeta.rarity]?.color || '#00a9f2',
-      targetCount: spEntry.count || 1,
-      badge: `×${spEntry.count || 1}`,
+      targetCount: pos.tgtCount,
+      liveCount: pos.liveCount,
+      deficitCount: pos.deficitCount,
+      badge: pos.badge,
       subTags: spMeta.statTags?.slice(0, 1) || [],
-      liveName: liveSpMeta ? liveSpMeta.zhName : null,
-      matched,
+      liveName: pos.liveName,
+      matched: pos.matched,
       rect1080p: spRects?.[i] || UMG_RECTS_1080P.safePocketWithAux[i],
     })
   }
 
-  // 7. 背包槽位
+  // 7. 背包槽位（仅比较物品种类与总数量，不要求格位顺序一致）
   const bpLimit = tgtAug?.backpackSlots || 10
+  const liveBpRemain = new Map()
+  if (Array.isArray(live?.backpack)) {
+    for (const lb of live.backpack) {
+      if (!lb?.itemId) continue
+      const qty = Math.max(1, Number(lb.count) || 1)
+      liveBpRemain.set(lb.itemId, (liveBpRemain.get(lb.itemId) || 0) + qty)
+    }
+  }
   for (let i = 0; i < bpLimit; i++) {
     const bEntry = tgt.backpack?.[i]
     if (!bEntry?.itemId) continue
     const bMeta = itemMap.get(bEntry.itemId)
     if (!bMeta) continue
 
-    const liveB = live?.backpack?.[i]
-    const liveBMeta = liveB?.itemId ? itemMap.get(liveB.itemId) : null
-    const matched = Boolean(liveB && liveB.itemId === bMeta.id)
+    const tgtCount = Math.max(1, Number(bEntry.count) || 1)
+    const avail = liveBpRemain.get(bMeta.id) || 0
+    const take = Math.min(avail, tgtCount)
+    if (take > 0) {
+      liveBpRemain.set(bMeta.id, avail - take)
+    }
+    const matched = avail >= tgtCount
+    const deficitCount = matched ? 0 : tgtCount - avail
 
     entries.push({
       key: `backpack${i}`,
@@ -329,13 +484,34 @@ export function analyzeLoadoutSyncDiff(inGameLoadout, targetLoadout) {
       icon: assetUrl(bMeta.icon),
       rarity: bMeta.rarity,
       color: rarityMeta[bMeta.rarity]?.color || '#a4a5aa',
-      targetCount: bEntry.count || 1,
-      badge: `×${bEntry.count || 1}`,
+      targetCount: tgtCount,
+      deficitCount,
+      badge: !matched && avail > 0 ? `${avail}/${tgtCount}` : `×${tgtCount}`,
       subTags: bMeta.statTags?.slice(0, 1) || [],
-      liveName: liveBMeta ? liveBMeta.zhName : null,
+      liveName: avail > 0 ? `${bMeta.zhName} ×${take}` : null,
       matched,
       rect1080p: UMG_RECTS_1080P.backpack[i],
     })
+  }
+
+  if (syncOptions.autoRestockEnabled) {
+    for (const entry of entries) {
+      if (entry.matched) continue
+      if (entry.needsTierUpgrade) {
+        entry.canRestock = false
+        entry.restockBadge = '工坊·升级'
+        continue
+      }
+      const ch = resolveItemRestockChannels(
+        entry.kind,
+        entry.targetId,
+        syncOptions,
+        progressionCtx,
+        { amplified: Boolean(entry.amplified) },
+      )
+      entry.canRestock = ch.canRestock
+      entry.restockBadge = ch.badgeLabel
+    }
   }
 
   const matchedCount = entries.filter((e) => e.matched).length
@@ -351,183 +527,10 @@ export function analyzeLoadoutSyncDiff(inGameLoadout, targetLoadout) {
   }
 }
 
-const SAFE_PARK_X = 0.02
-const SAFE_PARK_Y = 0.5
-
-async function waitSafeOrThrow(hwnd, durationMs, checkDrift = true) {
-  // 后端单次安全等待上限 6000ms：超长等待（如武器加载等待）分段执行，全程保持 ESC/F10/鼠标急停监听
-  let remaining = Math.max(20, Math.round(durationMs))
-  while (remaining > 0) {
-    const chunk = Math.min(remaining, 5000)
-    remaining -= chunk
-    const res = await invokeTauri('raider_wait_safe', {
-      hwnd,
-      durationMs: Math.max(20, chunk),
-      checkDrift,
-    })
-    if (!res) {
-      throw new Error('安全等待指令通信失败，已安全中止')
-    }
-    if (res.aborted || !res.ok) {
-      const err = new Error(res.reason || '已触发安全急停')
-      err.aborted = Boolean(res.aborted)
-      throw err
-    }
-  }
-}
-
-async function execSafePark(hwnd, checkDrift = true) {
-  const res = await invokeTauri('raider_exec_input', {
-    hwnd,
-    kind: 'park',
-    normX: SAFE_PARK_X,
-    normY: SAFE_PARK_Y,
-    holdMs: 0,
-    checkDrift,
-    parkAfter: false,
-  })
-  if (!res) {
-    throw new Error('键鼠归位指令通信失败，已安全中止')
-  }
-  if (res.aborted || !res.ok) {
-    const err = new Error(res.reason || '已触发安全急停')
-    err.aborted = Boolean(res.aborted)
-    throw err
-  }
-}
-
-async function execSafeClick(hwnd, normX, normY, checkDrift = true) {
-  const res = await invokeTauri('raider_exec_input', {
-    hwnd,
-    kind: 'click',
-    normX,
-    normY,
-    holdMs: 48,
-    checkDrift,
-    parkAfter: false,
-  })
-  if (!res) {
-    throw new Error('键鼠点击指令通信失败，已安全中止')
-  }
-  if (res.aborted || !res.ok) {
-    const err = new Error(res.reason || '已触发安全急停')
-    err.aborted = Boolean(res.aborted)
-    throw err
-  }
-}
-
-const CAPTURE_MAX_WIDTH = 2560
-
-async function execSafeDrag(
-  hwnd,
-  fromNormX,
-  fromNormY,
-  toNormX,
-  toNormY,
-  checkDrift = true,
-  holdMs = 52,
-) {
-  const res = await invokeTauri('raider_exec_input', {
-    hwnd,
-    kind: 'drag',
-    normX: fromNormX,
-    normY: fromNormY,
-    toNormX,
-    toNormY,
-    holdMs,
-    checkDrift,
-    parkAfter: true,
-  })
-  if (!res) {
-    throw new Error('键鼠拖拽指令通信失败，已安全中止')
-  }
-  if (res.aborted || !res.ok) {
-    const err = new Error(res.reason || '已触发安全急停')
-    err.aborted = Boolean(res.aborted)
-    throw err
-  }
-}
-
-async function execSafeShiftClick(hwnd, normX, normY, checkDrift = true) {
-  const res = await invokeTauri('raider_exec_input', {
-    hwnd,
-    kind: 'shift_click',
-    normX,
-    normY,
-    holdMs: 48,
-    checkDrift,
-    parkAfter: true,
-  })
-  if (!res) {
-    throw new Error('快捷移动指令通信失败，已安全中止')
-  }
-  if (res.aborted || !res.ok) {
-    const err = new Error(res.reason || '已触发安全急停')
-    err.aborted = Boolean(res.aborted)
-    throw err
-  }
-}
-
-async function execSafeDoubleClick(hwnd, normX, normY, checkDrift = true) {
-  const res = await invokeTauri('raider_exec_input', {
-    hwnd,
-    kind: 'double_click',
-    normX,
-    normY,
-    holdMs: 42,
-    checkDrift,
-    parkAfter: true,
-  })
-  if (!res) {
-    throw new Error('双击装配指令通信失败，已安全中止')
-  }
-  if (res.aborted || !res.ok) {
-    const err = new Error(res.reason || '已触发安全急停')
-    err.aborted = Boolean(res.aborted)
-    throw err
-  }
-}
-
-async function execSafeScroll(hwnd, normX, normY, wheelDelta, checkDrift = true) {
-  const res = await invokeTauri('raider_exec_input', {
-    hwnd,
-    kind: 'scroll',
-    normX,
-    normY,
-    wheelDelta,
-    holdMs: 0,
-    checkDrift,
-    // 滚轮悬停点 (356, 580) 已精确落在储备箱第 1~2 列与第 2~3 行的 8px 暗缝十字中心，无需归位避免焦点跳出滚动容器
-    parkAfter: false,
-  })
-  if (!res) {
-    throw new Error('滚轮翻页指令通信失败，已安全中止')
-  }
-  if (res.aborted || !res.ok) {
-    const err = new Error(res.reason || '已触发安全急停')
-    err.aborted = Boolean(res.aborted)
-    throw err
-  }
-}
-
 const MAX_SCROLL_PAGES_DOWN = 20
 const MAX_SCROLL_PAGES_UP = 22
 const SCROLL_STEP_DOWN = -2040 // 向下 17 格滚轮（UE5 约跨越 5.2 行 / ~21 格，大幅提升滑动幅度并保留 ~1.25 行重叠防漏格）
 const SCROLL_STEP_UP = 2160 // 向上 18 格滚轮大幅回溯
-
-function rectCenterNorm(rect1080p, vp, W, H) {
-  return {
-    x: (vp.ox + (rect1080p.x + rect1080p.w * 0.5) * vp.scale) / W,
-    y: (vp.oy + (rect1080p.y + rect1080p.h * 0.5) * vp.scale) / H,
-  }
-}
-
-function pointNorm(pt1080p, vp, W, H) {
-  return {
-    x: (vp.ox + pt1080p.x * vp.scale) / W,
-    y: (vp.oy + pt1080p.y * vp.scale) / H,
-  }
-}
 
 /**
  * 确保最左侧仓库分类导航栏 (WBP_InventoryFilterList) 处于聚焦可点击态。
@@ -601,8 +604,12 @@ async function searchItemInStashWithScroll({
   stepLabel = '',
   onProgress,
   settleMs = null,
+  matchOptsOverride = null,
+  preferredCount = null,
 }) {
   const hoverPt = pointNorm(UMG_RECTS_1080P.stashScrollHover, vp, W, H)
+  const searchOpts = itemMatchOpts(item, matchOptsOverride || {})
+  const prefCount = preferredCount ?? (item.deficitCount || item.targetCount || null)
   let curImg =
     initialImageData ||
     (await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)).imageData
@@ -613,8 +620,8 @@ async function searchItemInStashWithScroll({
     vp,
     item.kind,
     item.targetId,
-    item.targetCount || null,
-    itemMatchOpts(item),
+    prefCount,
+    searchOpts,
   )
   if (hit) {
     return { hit, imageData: curImg }
@@ -669,8 +676,8 @@ async function searchItemInStashWithScroll({
         vp,
         item.kind,
         item.targetId,
-        item.targetCount || null,
-        itemMatchOpts(item),
+        prefCount,
+        searchOpts,
       )
       if (hit) {
         return { hit, imageData: curImg }
@@ -712,8 +719,8 @@ async function searchItemInStashWithScroll({
         vp,
         item.kind,
         item.targetId,
-        item.targetCount || null,
-        itemMatchOpts(item),
+        prefCount,
+        searchOpts,
       )
       if (hit) {
         scrollState.atTop = !upState.scrolledFromTop
@@ -759,15 +766,28 @@ async function trySwapFromOtherWeaponSlot({
     return null
   }
   const img = imageData || (await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)).imageData
-  const otherCheck = await verifyTargetSlotMatched(
-    img,
-    vp,
-    'weapon',
-    otherRect,
-    item.targetId,
-    itemMatchOpts(item),
-  )
-  if (!otherCheck.matched) return null
+  const otherDetail = await inspectEquippedWeaponSlotDetail(img, vp, otherIdx)
+  const otherVariantOk =
+    otherDetail?.identified &&
+    otherDetail.weaponId === item.targetId &&
+    Boolean(otherDetail.amplified) === Boolean(item.amplified)
+  if (!otherVariantOk) return null
+
+  const curDetail = await inspectEquippedWeaponSlotDetail(img, vp, item.slotIndex)
+  if (
+    curDetail?.identified &&
+    curDetail.weaponId === item.targetId &&
+    Boolean(curDetail.amplified) === Boolean(item.amplified) &&
+    (curDetail.tier || 1) >= (otherDetail.tier || 1)
+  ) {
+    return null
+  }
+  if (item.minTier > 1 && !item.amplified && (otherDetail.tier || 1) < item.minTier) {
+    // 若开启匹配等级，另一栏的同款低于目标等级且当前无须低阶兜底，先按需保留/互换逻辑决定
+    if (curDetail?.identified && curDetail.weaponId === item.targetId) {
+      return null
+    }
+  }
 
   // 抓取另一武器卡片的缩略图区域（避开中部配件格，防止误拖配件）
   const grabPt = {
@@ -783,7 +803,7 @@ async function trySwapFromOtherWeaponSlot({
     'weapon',
     slotRect1080p,
     item.targetId,
-    itemMatchOpts(item),
+    itemMatchOpts(item, { strictTierMatch: false }),
   )
   if (!res.matched && res.loading && weaponWait > 0) {
     onLoadingWait?.()
@@ -795,10 +815,15 @@ async function trySwapFromOtherWeaponSlot({
       'weapon',
       slotRect1080p,
       item.targetId,
-      itemMatchOpts(item),
+      itemMatchOpts(item, { strictTierMatch: false }),
     )
   }
-  return { attempted: true, matched: Boolean(res.matched), imageData: cap.imageData }
+  return {
+    attempted: true,
+    matched: Boolean(res.matched),
+    tierMatched: Boolean(res.tierMatched),
+    imageData: cap.imageData,
+  }
 }
 
 /**
@@ -808,20 +833,1212 @@ async function trySwapFromOtherWeaponSlot({
  */
 export const DEFAULT_WEAPON_LOAD_WAIT_MS = 3000
 
+export function buildRestockBillAndUpgrades(diff, syncOptions) {
+  const billMap = new Map()
+  const upgradeTasks = []
+
+  for (const e of diff?.entries || []) {
+    if (e.matched) continue
+    if (e.kind === 'weapon' && e.needsTierUpgrade) {
+      if (syncOptions.syncWeaponTier && !e.amplified && e.targetTier > 1) {
+        upgradeTasks.push({
+          weaponId: e.targetId,
+          weaponName: e.targetName,
+          fromTier: Math.max(1, e.liveTier || 1),
+          targetTier: e.targetTier,
+          requiresAcquiredKey: null,
+        })
+      }
+      continue
+    }
+
+    const acqKind = ['augment', 'shield', 'weapon', 'mod'].includes(e.kind) ? e.kind : 'item'
+    const key = `${acqKind}|${e.targetId}|${e.amplified ? 1 : 0}`
+    const existing = billMap.get(key)
+    const addCount = Math.max(1, Number(e.deficitCount ?? e.targetCount) || 1)
+    if (existing) {
+      existing.neededCount += addCount
+    } else {
+      billMap.set(key, {
+        key,
+        kind: acqKind,
+        targetId: e.targetId,
+        targetName: e.targetName,
+        amplified: Boolean(e.amplified),
+        neededCount: addCount,
+      })
+    }
+
+    if (syncOptions.syncWeaponTier && e.kind === 'weapon' && !e.amplified && e.targetTier > 1) {
+      upgradeTasks.push({
+        weaponId: e.targetId,
+        weaponName: e.targetName,
+        fromTier: 1,
+        targetTier: e.targetTier,
+        requiresAcquiredKey: key,
+      })
+    }
+  }
+
+  return {
+    restockBill: Array.from(billMap.values()),
+    upgradeTasks,
+  }
+}
+
+/**
+ * 计算两帧储备箱网格视觉签名之间的平均绝对差异
+ */
+function stashSignatureMeanDiff(sigA, sigB) {
+  if (!sigA || !sigB || sigA.length !== sigB.length || !sigA.length) return 0
+  let sum = 0
+  for (let i = 0; i < sigA.length; i++) {
+    sum += Math.abs(sigA[i] - sigB[i])
+  }
+  return sum / sigA.length
+}
+
+/**
+ * 按当前实机实际穿戴的强化动态校验槽位上限与安全口袋行坐标
+ */
+function resolveDynamicSlotRect(item, activeAugmentInGame, tgtAug) {
+  let slotRect1080p = item.rect1080p
+  if (activeAugmentInGame && activeAugmentInGame.id !== tgtAug.id) {
+    if (
+      item.kind === 'backpack' &&
+      item.slotIndex >= (activeAugmentInGame.backpackSlots || 10)
+    ) {
+      return { skip: true, rect1080p: null }
+    }
+    if (
+      item.kind === 'quickUse' &&
+      item.slotIndex >= (activeAugmentInGame.quickUseSlots || 4)
+    ) {
+      return { skip: true, rect1080p: null }
+    }
+    if (item.kind === 'aux' && !activeAugmentInGame.auxSlots?.count) {
+      return { skip: true, rect1080p: null }
+    }
+    if (item.kind === 'safePocket') {
+      if (item.slotIndex >= (activeAugmentInGame.safePocketSlots || 0)) {
+        return { skip: true, rect1080p: null }
+      }
+      const liveHasAux = Boolean(
+        activeAugmentInGame.integratedItem || activeAugmentInGame.auxSlots?.count,
+      )
+      const liveSpRects = liveHasAux
+        ? UMG_RECTS_1080P.safePocketWithAux
+        : UMG_RECTS_1080P.safePocketNoAux
+      slotRect1080p = liveSpRects[item.slotIndex] || slotRect1080p
+    }
+  }
+  return { skip: false, rect1080p: slotRect1080p }
+}
+
+/**
+ * 为指定筛选类目组装主筛选页与兜底跨类筛选页顺序
+ */
+function buildCandidateFiltersForGroup(primaryFilterKey, entries) {
+  if (entries.some((e) => e.kind === 'mod')) {
+    return ['modifications']
+  }
+  const primary = primaryFilterKey || 'all'
+  const filters = [primary]
+  if (entries.some((e) => e.itemCategory === 'material') && !filters.includes('misc')) {
+    filters.push('misc')
+  }
+  if (
+    primary !== 'all' &&
+    entries.some((e) => ['key', 'material', 'trinket', 'gadget'].includes(e.itemCategory))
+  ) {
+    filters.push('all')
+  }
+  return filters
+}
+
+/**
+ * 识别存在「同物品拆分为多份非满堆叠占用 ≥2 个精确栏位」的 itemId：
+ * 例如安全袋放 ×1、快捷栏放 ×1 而单格上限为 5，此类物品必须走单槽精准拖拽，避免 Shift 自动堆叠合并。
+ */
+function detectSplitStackPositionalIds(targetLoadout, activeAug) {
+  const stats = new Map()
+  const recordSlot = (entry) => {
+    if (!entry?.itemId) return
+    const meta = itemMap.get(entry.itemId)
+    const maxStack = Math.max(1, Number(meta?.maxStack) || 1)
+    const cnt = Math.max(1, Number(entry.count) || 1)
+    let st = stats.get(entry.itemId)
+    if (!st) {
+      st = { slots: 0, hasPartial: false }
+      stats.set(entry.itemId, st)
+    }
+    st.slots++
+    if (cnt < maxStack) st.hasPartial = true
+  }
+
+  const quLim = activeAug?.quickUseSlots || 4
+  for (let i = 0; i < quLim; i++) recordSlot(targetLoadout?.quickUse?.[i])
+
+  const auxLim = activeAug?.auxSlots?.count || 0
+  for (let i = 0; i < auxLim; i++) recordSlot(targetLoadout?.aux?.[i])
+
+  const spLim = activeAug?.safePocketSlots || 0
+  for (let i = 0; i < spLim; i++) recordSlot(targetLoadout?.safePocket?.[i])
+
+  const splitIds = new Set()
+  for (const [itemId, st] of stats.entries()) {
+    if (st.slots >= 2 && st.hasPartial) {
+      splitIds.add(itemId)
+    }
+  }
+  return splitIds
+}
+
+/**
+ * 枚举当前强化下所有有效的右侧精确位置栏位（快捷栏 / 专属栏 / 安全口袋）及其 1080p 矩形
+ */
+function collectPositionalSlotSpecs(targetLoadout, activeAug) {
+  const specs = []
+  const quLim = activeAug?.quickUseSlots || 4
+  for (let i = 0; i < quLim; i++) {
+    specs.push({
+      kind: 'quickUse',
+      slotIndex: i,
+      rect1080p: UMG_RECTS_1080P.quickUse[i],
+      targetEntry: targetLoadout?.quickUse?.[i] || null,
+    })
+  }
+
+  const auxLim = activeAug?.auxSlots?.count || 0
+  const integratedOffset = activeAug?.integratedItem ? 1 : 0
+  for (let i = 0; i < auxLim; i++) {
+    const rectIdx = Math.min(2, i + integratedOffset)
+    specs.push({
+      kind: 'aux',
+      slotIndex: i,
+      rect1080p: UMG_RECTS_1080P.aux[rectIdx],
+      targetEntry: targetLoadout?.aux?.[i] || null,
+    })
+  }
+
+  const hasAuxRow = Boolean(activeAug?.integratedItem || auxLim > 0)
+  const spRects = hasAuxRow ? UMG_RECTS_1080P.safePocketWithAux : UMG_RECTS_1080P.safePocketNoAux
+  const spLim = activeAug?.safePocketSlots || 0
+  for (let i = 0; i < spLim; i++) {
+    if (!spRects?.[i]) continue
+    specs.push({
+      kind: 'safePocket',
+      slotIndex: i,
+      rect1080p: spRects[i],
+      targetEntry: targetLoadout?.safePocket?.[i] || null,
+    })
+  }
+  return specs
+}
+
+/**
+ * 单槽位检索并直接拖拽装配（供核心装备、武器配件及单/拆分堆叠容器项复用）
+ */
+async function equipSingleEntryDirect(ctx, item, { pct, stepLabel }) {
+  const {
+    hwnd,
+    vp,
+    W,
+    H,
+    targetLoadout,
+    tgtAug,
+    syncOptions,
+    weaponWait,
+    onProgress,
+  } = ctx
+  const stepWait = (normalMs) =>
+    item?.kind === 'weapon' ? Math.max(normalMs, weaponWait) : normalMs
+
+  const { skip, rect1080p } = resolveDynamicSlotRect(item, ctx.activeAugmentInGame, tgtAug)
+  if (skip || !rect1080p) return
+
+  let slotRect1080p = rect1080p
+  let dstPt = rectCenterNorm(slotRect1080p, vp, W, H)
+  onProgress?.({
+    progressPct: pct,
+    message: `装配 ${item.slotLabel}：${item.targetName} ${stepLabel}`,
+  })
+
+  if (item.kind !== 'backpack' && item.kind !== 'mod') {
+    // ==================== 分支 A：非背包/非配件栏位（原生目标槽过滤模式） ====================
+    const alreadySelected = ctx.latestFrameImg
+      ? isRect1080pSelected(ctx.latestFrameImg, vp, slotRect1080p)
+      : false
+
+    let postSlotImg = ctx.latestFrameImg
+    if (!alreadySelected) {
+      await execSafeClick(hwnd, dstPt.x, dstPt.y)
+      ctx.lastNonBackpackRect = slotRect1080p
+      ctx.activeFilter = null
+      ctx.scrollState.atTop = false
+      if (item.kind === 'weapon' && weaponWait > 0) {
+        onProgress?.({
+          progressPct: pct,
+          message: `等待武器列表加载 ${(weaponWait / 1000).toFixed(1)} 秒：${item.targetName} ${stepLabel}`,
+        })
+      }
+      await waitSafeOrThrow(hwnd, stepWait(165))
+      await execSafePark(hwnd)
+      await waitSafeOrThrow(hwnd, 75)
+      postSlotImg = (await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)).imageData
+      ctx.latestFrameImg = postSlotImg
+    } else {
+      ctx.lastNonBackpackRect = slotRect1080p
+    }
+
+    const preCheck = await verifyTargetSlotMatched(
+      postSlotImg,
+      vp,
+      item.kind,
+      slotRect1080p,
+      item.targetId,
+      itemMatchOpts(item),
+    )
+    if (preCheck.matched) {
+      if (item.kind === 'augment') ctx.activeAugmentInGame = tgtAug
+      return
+    }
+
+    const isPositionalStack =
+      item.kind === 'quickUse' || item.kind === 'aux' || item.kind === 'safePocket'
+    let curHaveCount =
+      isPositionalStack && preCheck.itemMatched ? Math.max(1, Number(preCheck.count) || 1) : 0
+
+    // 武器等阶控制：若本槽已装备目标同款武器（如 Lv.II），仅当仓库存在更高等级 (> curTier) 时替换，防止低阶覆盖高阶
+    const alreadySameWeaponLowerTier = Boolean(
+      item.kind === 'weapon' &&
+        syncOptions.syncWeaponTier &&
+        !item.amplified &&
+        preCheck.weaponMatched &&
+        !preCheck.tierMatched,
+    )
+    const currentWeaponTier = alreadySameWeaponLowerTier ? Math.max(1, preCheck.tier || 1) : 0
+
+    // 双武器栏：仅当未持有同款武器或目标需要换位时尝试另一武器栏互换
+    if (item.kind === 'weapon' && !alreadySameWeaponLowerTier) {
+      const swapRes = await trySwapFromOtherWeaponSlot({
+        hwnd,
+        vp,
+        W,
+        H,
+        item,
+        slotRect1080p,
+        dstPt,
+        imageData: postSlotImg,
+        targetLoadout,
+        settleMs: stepWait(175),
+        weaponWait,
+        onLoadingWait: () =>
+          onProgress?.({
+            progressPct: pct,
+            message: `武器栏加载中，继续等待 ${(weaponWait / 1000).toFixed(1)} 秒：${item.targetName} ${stepLabel}`,
+          }),
+      })
+      if (swapRes?.attempted) {
+        ctx.latestFrameImg = swapRes.imageData
+        postSlotImg = swapRes.imageData
+        if (swapRes.matched) {
+          ctx.anyChanged = true
+          if (swapRes.tierMatched || !syncOptions.syncWeaponTier || item.amplified) {
+            ctx.equippedCount++
+          } else {
+            ctx.equippedBaseWeapon = true
+          }
+          return
+        }
+      }
+    }
+
+    if (isStashFilterRailActive(postSlotImg, vp)) {
+      const filterPt = UMG_RECTS_1080P.stashFilters[item.stashFilter]
+      if (filterPt) {
+        const fp = pointNorm(filterPt, vp, W, H)
+        if (fp.x > 0.01 && fp.x < 0.35 && fp.y > 0.1 && fp.y < 0.9) {
+          await execSafeClick(hwnd, fp.x, fp.y)
+          ctx.activeFilter = item.stashFilter
+          ctx.scrollState.atTop = true
+          await waitSafeOrThrow(hwnd, stepWait(160))
+          await execSafePark(hwnd)
+          await waitSafeOrThrow(hwnd, 75)
+          postSlotImg = null
+          ctx.latestFrameImg = null
+        }
+      }
+    }
+
+    const isTieredWeapon =
+      item.kind === 'weapon' && syncOptions.syncWeaponTier && !item.amplified
+    const maxRounds = isPositionalStack ? 4 : 1
+
+    for (let round = 0; round < maxRounds; round++) {
+      let found = null
+      let activeSearchOpts = null
+      const neededRemain = isPositionalStack
+        ? Math.max(1, (Number(item.targetCount) || 1) - curHaveCount)
+        : item.targetCount || null
+      const searchImg = round === 0 ? postSlotImg : ctx.latestFrameImg
+
+      if (isTieredWeapon) {
+        const minWanted = alreadySameWeaponLowerTier ? currentWeaponTier + 1 : item.targetTier
+        activeSearchOpts = { minTier: item.targetTier, strictMinTier: minWanted }
+        found = await searchItemInStashWithScroll({
+          hwnd,
+          vp,
+          W,
+          H,
+          item,
+          scrollState: ctx.scrollState,
+          initialImageData: searchImg,
+          basePct: pct,
+          stepLabel,
+          onProgress,
+          settleMs: stepWait(210),
+          matchOptsOverride: activeSearchOpts,
+        })
+        // 若目标武器尚未装备、且仓库内无达标高阶拷贝，允许先取低阶本体以便阶段 2 在武器台升阶
+        if (!found?.hit && !alreadySameWeaponLowerTier && minWanted > 1) {
+          ctx.scrollState.atTop = false
+          activeSearchOpts = { minTier: item.targetTier, strictMinTier: 0 }
+          found = await searchItemInStashWithScroll({
+            hwnd,
+            vp,
+            W,
+            H,
+            item,
+            scrollState: ctx.scrollState,
+            initialImageData: null,
+            basePct: pct,
+            stepLabel,
+            onProgress,
+            settleMs: stepWait(210),
+            matchOptsOverride: activeSearchOpts,
+          })
+        }
+      } else {
+        found = await searchItemInStashWithScroll({
+          hwnd,
+          vp,
+          W,
+          H,
+          item,
+          scrollState: ctx.scrollState,
+          initialImageData: searchImg,
+          basePct: pct,
+          stepLabel,
+          onProgress,
+          settleMs: item.kind === 'weapon' ? stepWait(210) : null,
+          preferredCount: neededRemain,
+        })
+      }
+
+      if (found?.imageData) ctx.latestFrameImg = found.imageData
+      if (!found?.hit) {
+        if (isPositionalStack) ctx.exhaustedTargetIds.add(item.targetId)
+        break
+      }
+
+      const dragMatchOpts = itemMatchOpts(item, {
+        ...(activeSearchOpts || {}),
+        strictTierMatch: false,
+      })
+
+      const captureAndVerify = async () => {
+        let cap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
+        let res = await verifyTargetSlotMatched(
+          cap.imageData,
+          vp,
+          item.kind,
+          slotRect1080p,
+          item.targetId,
+          dragMatchOpts,
+        )
+        if (!res.matched && res.loading && item.kind === 'weapon' && weaponWait > 0) {
+          onProgress?.({
+            progressPct: pct,
+            message: `武器栏加载中，继续等待 ${(weaponWait / 1000).toFixed(1)} 秒：${item.targetName} ${stepLabel}`,
+          })
+          await waitSafeOrThrow(hwnd, weaponWait)
+          cap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
+          res = await verifyTargetSlotMatched(
+            cap.imageData,
+            vp,
+            item.kind,
+            slotRect1080p,
+            item.targetId,
+            dragMatchOpts,
+          )
+        }
+        ctx.latestFrameImg = cap.imageData
+        return { cap, res }
+      }
+
+      const hasMadeProgress = (res) =>
+        Boolean(
+          res.matched ||
+            (isPositionalStack && res.itemMatched && (res.count || 1) > curHaveCount),
+        )
+
+      // 策略 1（首选）：真实平滑拖拽
+      await execSafeDrag(hwnd, found.hit.normX, found.hit.normY, dstPt.x, dstPt.y, true, 52)
+      await waitSafeOrThrow(hwnd, stepWait(165))
+      let { cap: verifyCap, res: verifyRes } = await captureAndVerify()
+
+      // 策略 2（重压慢拖兜底）
+      if (!hasMadeProgress(verifyRes)) {
+        const reHit = await findTargetInStashGrid(
+          verifyCap.imageData,
+          vp,
+          item.kind,
+          item.targetId,
+          neededRemain,
+          dragMatchOpts,
+        )
+        if (reHit) {
+          await execSafeDrag(hwnd, reHit.normX, reHit.normY, dstPt.x, dstPt.y, true, 96)
+          await waitSafeOrThrow(hwnd, stepWait(175))
+          ;({ cap: verifyCap, res: verifyRes } = await captureAndVerify())
+        }
+      }
+
+      // 策略 3（原生 SHIFT 快速移动 / 双击兜底）
+      let quickMoveSafe =
+        !hasMadeProgress(verifyRes) &&
+        (!verifyRes.occupied || item.kind === 'augment' || item.kind === 'shield')
+      if (quickMoveSafe && item.kind === 'weapon' && item.slotIndex === 1) {
+        const w1 = await inspectWeaponCard(verifyCap.imageData, vp, UMG_RECTS_1080P.weapon1)
+        quickMoveSafe = Boolean(w1?.occupied)
+      }
+      if (quickMoveSafe) {
+        const reHit2 = await findTargetInStashGrid(
+          verifyCap.imageData,
+          vp,
+          item.kind,
+          item.targetId,
+          neededRemain,
+          dragMatchOpts,
+        )
+        if (reHit2) {
+          await execSafeShiftClick(hwnd, reHit2.normX, reHit2.normY)
+          await waitSafeOrThrow(hwnd, stepWait(165))
+          ;({ cap: verifyCap, res: verifyRes } = await captureAndVerify())
+        }
+        if (!hasMadeProgress(verifyRes)) {
+          const reHit3 = await findTargetInStashGrid(
+            verifyCap.imageData,
+            vp,
+            item.kind,
+            item.targetId,
+            neededRemain,
+            dragMatchOpts,
+          )
+          if (reHit3) {
+            await execSafeDoubleClick(hwnd, reHit3.normX, reHit3.normY)
+            await waitSafeOrThrow(hwnd, stepWait(165))
+            ;({ cap: verifyCap, res: verifyRes } = await captureAndVerify())
+          }
+        }
+      }
+
+      if (verifyRes.matched) {
+        ctx.anyChanged = true
+        if (item.kind === 'weapon' && syncOptions.syncWeaponTier && !item.amplified) {
+          if (verifyRes.tierMatched) ctx.equippedCount++
+          else ctx.equippedBaseWeapon = true
+        } else {
+          ctx.equippedCount++
+        }
+        if (item.kind === 'augment') {
+          ctx.activeAugmentInGame = tgtAug
+        }
+        break
+      }
+
+      if (isPositionalStack && verifyRes.itemMatched && (verifyRes.count || 1) > curHaveCount) {
+        ctx.anyChanged = true
+        curHaveCount = verifyRes.count || 1
+        continue
+      }
+      break
+    }
+    return
+  }
+
+  // ==================== 分支 B：背包 & 武器配件栏位（恢复左侧导航栏焦点 + 分类翻页拖拽） ====================
+  const focusRes = await ensureStashFilterRailFocused({
+    hwnd,
+    vp,
+    W,
+    H,
+    preferredBackpackRect1080p:
+      item.kind === 'backpack' ? slotRect1080p : UMG_RECTS_1080P.backpack[0],
+    lastNonBackpackRect1080p: ctx.lastNonBackpackRect,
+  })
+  if (focusRes.recovered) {
+    ctx.activeFilter = null
+    ctx.lastNonBackpackRect = null
+    ctx.scrollState.atTop = false
+  }
+
+  let reuseImg = focusRes.imageData
+  if (item.kind === 'mod') {
+    let wDetail = await inspectEquippedWeaponSlotDetail(reuseImg, vp, item.weaponSlotIndex)
+    if (wDetail?.occupied && !wDetail.identified && weaponWait > 0) {
+      await waitSafeOrThrow(hwnd, weaponWait)
+      reuseImg = (await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)).imageData
+      wDetail = await inspectEquippedWeaponSlotDetail(reuseImg, vp, item.weaponSlotIndex)
+    }
+    if (
+      !wDetail?.identified ||
+      wDetail.weaponId !== item.parentWeaponId ||
+      Boolean(wDetail.amplified) !== Boolean(item.parentAmplified)
+    ) {
+      return
+    }
+    if (wDetail.mods?.[item.modSlotKey] === item.targetId) {
+      return
+    }
+    slotRect1080p = wDetail.modRectsBySlotKey?.[item.modSlotKey] || slotRect1080p
+    dstPt = rectCenterNorm(slotRect1080p, vp, W, H)
+  }
+
+  const candidateFilters = buildCandidateFiltersForGroup(item.stashFilter, [item])
+  let found = null
+  for (const filterKey of candidateFilters) {
+    const filterPt = UMG_RECTS_1080P.stashFilters[filterKey]
+    if (filterPt && ctx.activeFilter !== filterKey && focusRes.focused) {
+      const fp = pointNorm(filterPt, vp, W, H)
+      if (fp.x > 0.01 && fp.x < 0.35 && fp.y > 0.1 && fp.y < 0.9) {
+        await execSafeClick(hwnd, fp.x, fp.y)
+        ctx.activeFilter = filterKey
+        ctx.scrollState.atTop = true
+        reuseImg = null
+        await waitSafeOrThrow(hwnd, 160)
+        await execSafePark(hwnd)
+        await waitSafeOrThrow(hwnd, 75)
+      }
+    }
+
+    found = await searchItemInStashWithScroll({
+      hwnd,
+      vp,
+      W,
+      H,
+      item,
+      scrollState: ctx.scrollState,
+      initialImageData: reuseImg,
+      basePct: pct,
+      stepLabel,
+      onProgress,
+    })
+    reuseImg = null
+    if (found?.hit) break
+  }
+
+  if (!found?.hit) return
+
+  await execSafeDrag(hwnd, found.hit.normX, found.hit.normY, dstPt.x, dstPt.y, true, 52)
+  await waitSafeOrThrow(hwnd, 165)
+
+  let verifyCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
+  let verifyRes = await verifyTargetSlotMatched(
+    verifyCap.imageData,
+    vp,
+    item.kind,
+    slotRect1080p,
+    item.targetId,
+    itemMatchOpts(item),
+  )
+
+  if (!verifyRes.matched) {
+    const reHit = await findTargetInStashGrid(
+      verifyCap.imageData,
+      vp,
+      item.kind,
+      item.targetId,
+      item.targetCount || null,
+      itemMatchOpts(item),
+    )
+    if (reHit) {
+      await execSafeDrag(hwnd, reHit.normX, reHit.normY, dstPt.x, dstPt.y, true, 96)
+      await waitSafeOrThrow(hwnd, 175)
+      verifyCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
+      verifyRes = await verifyTargetSlotMatched(
+        verifyCap.imageData,
+        vp,
+        item.kind,
+        slotRect1080p,
+        item.targetId,
+        itemMatchOpts(item),
+      )
+    }
+  }
+
+  ctx.latestFrameImg = verifyCap.imageData
+  if (verifyRes.matched) {
+    ctx.anyChanged = true
+    ctx.equippedCount++
+  } else if (verifyRes.itemMatched) {
+    ctx.anyChanged = true
+  }
+}
+
+/**
+ * 阶段 3a：对同一筛选类目下的多格物品执行「Ctrl 多选 + Shift 快速移仓」
+ */
+async function batchQuickMoveContainerGroup(ctx, primaryFilterKey, groupEntries, { pct }) {
+  const { hwnd, vp, W, H, onProgress } = ctx
+  const demandRemain = new Map()
+  for (const e of groupEntries) {
+    const qty = Math.max(1, Number(e.deficitCount ?? e.targetCount) || 1)
+    demandRemain.set(e.targetId, (demandRemain.get(e.targetId) || 0) + qty)
+  }
+
+  const buildActiveDemands = () => {
+    const list = []
+    for (const [targetId, neededCount] of demandRemain.entries()) {
+      if (neededCount <= 0) continue
+      const meta = itemMap.get(targetId)
+      list.push({
+        targetId,
+        neededCount,
+        maxStack: meta?.maxStack || 1,
+      })
+    }
+    return list
+  }
+
+  const focusRes = await ensureStashFilterRailFocused({
+    hwnd,
+    vp,
+    W,
+    H,
+    preferredBackpackRect1080p: UMG_RECTS_1080P.backpack[0],
+    lastNonBackpackRect1080p: ctx.lastNonBackpackRect,
+  })
+  if (focusRes.recovered) {
+    ctx.activeFilter = null
+    ctx.lastNonBackpackRect = null
+    ctx.scrollState.atTop = false
+  }
+  if (!focusRes.focused) {
+    return { movedAny: false, abortedByFull: true }
+  }
+
+  const hoverPt = pointNorm(UMG_RECTS_1080P.stashScrollHover, vp, W, H)
+  const candidateFilters = buildCandidateFiltersForGroup(primaryFilterKey, groupEntries)
+  let movedAny = false
+  let abortedByFull = false
+
+  for (const filterKey of candidateFilters) {
+    if (buildActiveDemands().length === 0 || abortedByFull) break
+
+    const filterPt = UMG_RECTS_1080P.stashFilters[filterKey]
+    if (filterPt) {
+      const fp = pointNorm(filterPt, vp, W, H)
+      if (fp.x > 0.01 && fp.x < 0.35 && fp.y > 0.1 && fp.y < 0.9) {
+        await execSafeClick(hwnd, fp.x, fp.y)
+        ctx.activeFilter = filterKey
+        ctx.scrollState.atTop = true
+        await waitSafeOrThrow(hwnd, 160)
+        await execSafePark(hwnd)
+        await waitSafeOrThrow(hwnd, 75)
+      }
+    }
+
+    let curImg = (await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)).imageData
+    ctx.latestFrameImg = curImg
+    let firstPage = inspectStashPageState(curImg, vp)
+    let prevSig = firstPage.signature
+    const startedConfirmedAtTop = Boolean(ctx.scrollState.atTop) && !firstPage.scrolledFromTop
+
+    const sweepVisiblePage = async () => {
+      for (let round = 0; round < 6; round++) {
+        const demands = buildActiveDemands()
+        if (!demands.length) return true
+
+        const hits = await findBatchTargetsInStashGrid(curImg, vp, demands)
+        if (!hits.length) return false
+
+        const preSig = inspectStashPageState(curImg, vp).signature
+        onProgress?.({
+          progressPct: pct,
+          message: `批量多选移仓 (${filterKey})：选中 ${hits.length} 格`,
+        })
+
+        if (hits.length >= 2) {
+          for (let hi = 0; hi < hits.length; hi++) {
+            await execSafeCtrlClick(hwnd, hits[hi].normX, hits[hi].normY, true, false)
+            await waitSafeOrThrow(hwnd, 55)
+          }
+          const lastHit = hits[hits.length - 1]
+          await execSafeShiftClick(hwnd, lastHit.normX, lastHit.normY)
+        } else {
+          await execSafeShiftClick(hwnd, hits[0].normX, hits[0].normY)
+        }
+
+        await waitSafeOrThrow(hwnd, 185)
+        const postCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
+        curImg = postCap.imageData
+        ctx.latestFrameImg = curImg
+        const postState = inspectStashPageState(curImg, vp)
+        firstPage = postState
+
+        // 若仓库网格像素未变化，说明右侧战备容器已满或被锁定，提前结束批移交给核对阶段
+        if (stashSignatureMeanDiff(preSig, postState.signature) < 0.65) {
+          abortedByFull = true
+          return true
+        }
+
+        movedAny = true
+        for (const h of hits) {
+          const curNeed = demandRemain.get(h.targetId) || 0
+          demandRemain.set(h.targetId, Math.max(0, curNeed - Math.max(1, h.count || 1)))
+        }
+        prevSig = postState.signature
+      }
+      return false
+    }
+
+    await sweepVisiblePage()
+    if (buildActiveDemands().length === 0 || abortedByFull) continue
+
+    if (
+      startedConfirmedAtTop &&
+      firstPage.occupiedCount < 20 &&
+      firstPage.bottomRowsOccupied === 0 &&
+      !firstPage.hasScrollbar
+    ) {
+      continue
+    }
+
+    const canScrollDown =
+      !firstPage.atBottom &&
+      (firstPage.occupiedCount >= 20 || firstPage.bottomRowsOccupied > 0 || firstPage.hasScrollbar)
+
+    if (canScrollDown) {
+      for (let page = 1; page <= MAX_SCROLL_PAGES_DOWN; page++) {
+        if (buildActiveDemands().length === 0 || abortedByFull) break
+        onProgress?.({
+          progressPct: pct,
+          message: `批量检索仓库 (${filterKey}) · 下翻第 ${page} 页`,
+        })
+        await execSafeScroll(hwnd, hoverPt.x, hoverPt.y, SCROLL_STEP_DOWN)
+        await waitSafeOrThrow(hwnd, 200)
+
+        const nextCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
+        curImg = nextCap.imageData
+        ctx.latestFrameImg = curImg
+        const pageState = inspectStashPageState(curImg, vp)
+        if (!didStashScrollChange(prevSig, pageState.signature)) break
+
+        ctx.scrollState.atTop = false
+        prevSig = pageState.signature
+        await sweepVisiblePage()
+        if (buildActiveDemands().length === 0 || abortedByFull) break
+
+        if (
+          pageState.atBottom ||
+          (pageState.occupiedCount < 20 &&
+            pageState.bottomRowsOccupied === 0 &&
+            !pageState.hasScrollbar)
+        ) {
+          break
+        }
+      }
+    }
+
+    if (buildActiveDemands().length > 0 && !abortedByFull && (!startedConfirmedAtTop || firstPage.scrolledFromTop)) {
+      for (let page = 1; page <= MAX_SCROLL_PAGES_UP; page++) {
+        if (buildActiveDemands().length === 0 || abortedByFull) break
+        await execSafeScroll(hwnd, hoverPt.x, hoverPt.y, SCROLL_STEP_UP)
+        await waitSafeOrThrow(hwnd, 200)
+
+        const upCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
+        curImg = upCap.imageData
+        ctx.latestFrameImg = curImg
+        const upState = inspectStashPageState(curImg, vp)
+        if (!didStashScrollChange(prevSig, upState.signature)) {
+          ctx.scrollState.atTop = true
+          break
+        }
+        prevSig = upState.signature
+        await sweepVisiblePage()
+        if (upState.hasScrollbar && !upState.scrolledFromTop) {
+          ctx.scrollState.atTop = true
+          break
+        }
+      }
+    }
+  }
+
+  if (!abortedByFull) {
+    for (const [targetId, rem] of demandRemain.entries()) {
+      if (rem > 0) {
+        ctx.exhaustedTargetIds.add(targetId)
+      }
+    }
+  }
+
+  return { movedAny, abortedByFull }
+}
+
+/**
+ * 阶段 3b：右侧战备栏精确核对与理货
+ * Pass 1：将背包或错位栏位中的目标道具拖回快捷栏 / 专属栏 / 安全口袋准确槽位；
+ * Pass 2：将 Shift 误塞入「目标应为空」或「背包所需」的精确栏位道具腾挪到空余背包格。
+ */
+async function rearrangeRightPanelContainers(ctx, { pct }) {
+  const { hwnd, vp, W, H, targetLoadout, onProgress } = ctx
+  let curCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
+  ctx.latestFrameImg = curCap.imageData
+  let curRec = await recognizeLoadoutFromImageData(curCap.imageData, { fullWindowOnly: true })
+  if (!curRec?.ok) return false
+
+  const activeAug = ctx.activeAugmentInGame
+  const bpCap = activeAug?.backpackSlots || 10
+  const posSpecs = collectPositionalSlotSpecs(targetLoadout, activeAug)
+  let rearrangedAny = false
+
+  const readPosSlot = (rec, spec) => rec?.loadout?.[spec.kind]?.[spec.slotIndex] || null
+  const isSpecSatisfied = (rec, spec) => {
+    const tgtId = spec.targetEntry?.itemId
+    const cur = readPosSlot(rec, spec)
+    if (!tgtId) return !cur?.itemId
+    const tgtCount = Math.max(1, Number(spec.targetEntry?.count) || 1)
+    return cur?.itemId === tgtId && Math.max(1, Number(cur?.count) || 1) >= tgtCount
+  }
+
+  // Pass 1：对齐快捷栏 / 专属栏 / 安全口袋目标槽位（支持部分堆叠二次/多次合并补齐）
+  for (const dstSpec of posSpecs) {
+    const tgtId = dstSpec.targetEntry?.itemId
+    if (!tgtId) continue
+    if (isSpecSatisfied(curRec, dstSpec)) continue
+
+    const tgtCount = Math.max(1, Number(dstSpec.targetEntry?.count) || 1)
+    const triedDonorKeys = new Set()
+
+    for (let attempt = 0; attempt < 3; attempt++) {
+      if (isSpecSatisfied(curRec, dstSpec)) break
+
+      const prevSlot = readPosSlot(curRec, dstSpec)
+      const prevCount =
+        prevSlot?.itemId === tgtId ? Math.max(1, Number(prevSlot.count) || 1) : 0
+
+      // 优先从非目标精确栏位取件（一次拖拽顺带释放误占槽位），其次从背包取件
+      let donorRect = null
+      let donorKey = null
+      for (const altSpec of posSpecs) {
+        if (altSpec === dstSpec) continue
+        if (altSpec.targetEntry?.itemId === tgtId) continue
+        if (readPosSlot(curRec, altSpec)?.itemId !== tgtId) continue
+        const key = `${altSpec.kind}:${altSpec.slotIndex}`
+        if (triedDonorKeys.has(key)) continue
+        donorRect = altSpec.rect1080p
+        donorKey = key
+        break
+      }
+      if (!donorRect) {
+        const liveBp = curRec.loadout?.backpack || []
+        for (let bi = Math.min(liveBp.length, bpCap) - 1; bi >= 0; bi--) {
+          if (liveBp[bi]?.itemId !== tgtId) continue
+          const key = `bp:${bi}`
+          if (triedDonorKeys.has(key)) continue
+          donorRect = UMG_RECTS_1080P.backpack[bi]
+          donorKey = key
+          break
+        }
+      }
+      if (!donorRect || !donorKey) break
+
+      triedDonorKeys.add(donorKey)
+      const srcPt = rectCenterNorm(donorRect, vp, W, H)
+      const dstPt = rectCenterNorm(dstSpec.rect1080p, vp, W, H)
+      onProgress?.({
+        progressPct: pct,
+        message: `整理右侧栏位：将 ${itemMap.get(tgtId)?.zhName || tgtId} 拖入指定格`,
+      })
+      await execSafeDrag(hwnd, srcPt.x, srcPt.y, dstPt.x, dstPt.y, true, 52)
+      await waitSafeOrThrow(hwnd, 165)
+
+      let verifyCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
+      let verifyRes = await verifyTargetSlotMatched(
+        verifyCap.imageData,
+        vp,
+        dstSpec.kind,
+        dstSpec.rect1080p,
+        tgtId,
+        { minCount: tgtCount },
+      )
+      let progressed =
+        verifyRes.matched || (verifyRes.itemMatched && (verifyRes.count || 1) > prevCount)
+      if (!progressed) {
+        await execSafeDrag(hwnd, srcPt.x, srcPt.y, dstPt.x, dstPt.y, true, 96)
+        await waitSafeOrThrow(hwnd, 175)
+        verifyCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
+        verifyRes = await verifyTargetSlotMatched(
+          verifyCap.imageData,
+          vp,
+          dstSpec.kind,
+          dstSpec.rect1080p,
+          tgtId,
+          { minCount: tgtCount },
+        )
+        progressed =
+          verifyRes.matched || (verifyRes.itemMatched && (verifyRes.count || 1) > prevCount)
+      }
+
+      if (progressed) rearrangedAny = true
+      ctx.latestFrameImg = verifyCap.imageData
+      const nextRec = await recognizeLoadoutFromImageData(verifyCap.imageData, {
+        fullWindowOnly: true,
+      })
+      if (nextRec?.ok) {
+        curRec = nextRec
+      }
+      if (!progressed) break
+    }
+  }
+
+  // Pass 2：统计背包所需种类数量，将错落入精确栏位的物品腾挪到空闲背包格
+  const bpNeedCounts = new Map()
+  for (let bi = 0; bi < bpCap; bi++) {
+    const be = targetLoadout?.backpack?.[bi]
+    if (!be?.itemId) continue
+    bpNeedCounts.set(be.itemId, (bpNeedCounts.get(be.itemId) || 0) + Math.max(1, be.count || 1))
+  }
+  const liveBpNow = curRec.loadout?.backpack || []
+  for (let bi = 0; bi < liveBpNow.length; bi++) {
+    const lb = liveBpNow[bi]
+    if (!lb?.itemId) continue
+    const rem = bpNeedCounts.get(lb.itemId) || 0
+    if (rem > 0) bpNeedCounts.set(lb.itemId, Math.max(0, rem - Math.max(1, lb.count || 1)))
+  }
+
+  for (const posSpec of posSpecs) {
+    const curItem = readPosSlot(curRec, posSpec)
+    if (!curItem?.itemId) continue
+    const tgtId = posSpec.targetEntry?.itemId || null
+    if (tgtId === curItem.itemId) continue
+
+    const shouldEvict = !tgtId || (bpNeedCounts.get(curItem.itemId) || 0) > 0
+    if (!shouldEvict) continue
+
+    let emptyBpIdx = -1
+    const liveBpList = curRec.loadout?.backpack || []
+    for (let bi = 0; bi < bpCap; bi++) {
+      if (!liveBpList[bi]?.itemId) {
+        emptyBpIdx = bi
+        break
+      }
+    }
+    if (emptyBpIdx < 0) break
+
+    const srcPt = rectCenterNorm(posSpec.rect1080p, vp, W, H)
+    const dstPt = rectCenterNorm(UMG_RECTS_1080P.backpack[emptyBpIdx], vp, W, H)
+    onProgress?.({
+      progressPct: pct,
+      message: `腾挪错位物品至背包：${itemMap.get(curItem.itemId)?.zhName || curItem.itemId}`,
+    })
+    await execSafeDrag(hwnd, srcPt.x, srcPt.y, dstPt.x, dstPt.y, true, 52)
+    await waitSafeOrThrow(hwnd, 165)
+
+    const evCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
+    ctx.latestFrameImg = evCap.imageData
+    rearrangedAny = true
+    const nextRec = await recognizeLoadoutFromImageData(evCap.imageData, { fullWindowOnly: true })
+    if (nextRec?.ok) {
+      curRec = nextRec
+    }
+  }
+
+  return rearrangedAny
+}
+
+/**
+ * 执行一轮「仓库检索 -> 实机拖拽/装配」遍历（三阶段流水线：核心装备 -> 武器配件 -> 容器批移/核对/补位）
+ */
+async function executeStashEquipPass({
+  hwnd,
+  targetLoadout,
+  baseLoadout,
+  pendingEntries,
+  initialImageData,
+  vp,
+  W,
+  H,
+  syncOptions,
+  weaponWait,
+  pctStart = 20,
+  pctEnd = 90,
+  onProgress,
+}) {
+  const tgtAug = augMap.get(targetLoadout?.augmentId) || augMap.get('none')
+  const liveInitialAug = augMap.get(baseLoadout?.augmentId) || augMap.get('none')
+
+  const ctx = {
+    hwnd,
+    vp,
+    W,
+    H,
+    targetLoadout,
+    tgtAug,
+    syncOptions,
+    weaponWait,
+    onProgress,
+    equippedCount: 0,
+    equippedBaseWeapon: false,
+    anyChanged: false,
+    activeAugmentInGame: baseLoadout?.augmentId === tgtAug.id ? tgtAug : liveInitialAug,
+    activeFilter: null,
+    latestFrameImg: initialImageData,
+    lastNonBackpackRect: detectSelectedNonBackpackSlot1080p(initialImageData, vp),
+    scrollState: { atTop: false },
+    exhaustedTargetIds: new Set(),
+  }
+
+  const coreEntries = [
+    ...pendingEntries.filter((e) => e.kind === 'augment'),
+    ...pendingEntries.filter((e) => e.kind === 'shield' || e.kind === 'weapon'),
+  ]
+  const modEntries = pendingEntries.filter((e) => e.kind === 'mod')
+  const containerEntries = pendingEntries.filter(
+    (e) =>
+      e.kind === 'quickUse' ||
+      e.kind === 'aux' ||
+      e.kind === 'safePocket' ||
+      e.kind === 'backpack',
+  )
+
+  const totalApprox = Math.max(1, coreEntries.length + modEntries.length + containerEntries.length)
+  const calcPct = (done) =>
+    Math.min(pctEnd, pctStart + Math.round((done / totalApprox) * (pctEnd - pctStart)))
+
+  let stepDone = 0
+
+  // 阶段 1：核心装备（强化 / 护盾 / 武器）单槽精准装配
+  for (const item of coreEntries) {
+    stepDone++
+    await equipSingleEntryDirect(ctx, item, {
+      pct: calcPct(stepDone),
+      stepLabel: `(${stepDone}/${totalApprox})`,
+    })
+  }
+
+  // 阶段 2：武器配件精准装配
+  for (const item of modEntries) {
+    stepDone++
+    await equipSingleEntryDirect(ctx, item, {
+      pct: calcPct(stepDone),
+      stepLabel: `(${stepDone}/${totalApprox})`,
+    })
+  }
+
+  // 阶段 3：容器物品（快捷栏 / 专属栏 / 安全口袋 / 背包）
+  const activeContainerPending = containerEntries.filter(
+    (e) => !resolveDynamicSlotRect(e, ctx.activeAugmentInGame, tgtAug).skip,
+  )
+
+  if (activeContainerPending.length > 0) {
+    const splitStackIds = detectSplitStackPositionalIds(targetLoadout, ctx.activeAugmentInGame)
+    const directFallbackEntries = []
+    const filterGroups = new Map()
+
+    for (const entry of activeContainerPending) {
+      if (entry.kind !== 'backpack' && splitStackIds.has(entry.targetId)) {
+        directFallbackEntries.push(entry)
+        continue
+      }
+      const fKey = entry.stashFilter || 'all'
+      if (!filterGroups.has(fKey)) filterGroups.set(fKey, [])
+      filterGroups.get(fKey).push(entry)
+    }
+
+    const batchGroups = []
+    for (const [fKey, group] of filterGroups.entries()) {
+      // 同一筛选栏内仅剩单个格位待装时，直接单次拖拽比 Shift+核对更省步骤
+      if (group.length === 1) {
+        directFallbackEntries.push(group[0])
+      } else {
+        batchGroups.push([fKey, group])
+      }
+    }
+
+    // 阶段 3a：同筛选栏多格物品 Ctrl 多选 + Shift 快速移仓
+    let batchMovedAny = false
+    for (const [fKey, group] of batchGroups) {
+      const bRes = await batchQuickMoveContainerGroup(ctx, fKey, group, {
+        pct: calcPct(stepDone + Math.max(1, Math.round(group.length * 0.5))),
+      })
+      if (bRes.movedAny) batchMovedAny = true
+    }
+
+    // 阶段 3b：右侧快捷栏 / 专属栏 / 安全口袋对位核对与错位腾挪
+    let rearrangedAny = false
+    if (batchMovedAny || directFallbackEntries.some((e) => e.kind !== 'backpack')) {
+      rearrangedAny = await rearrangeRightPanelContainers(ctx, {
+        pct: calcPct(stepDone + Math.max(1, activeContainerPending.length - 1)),
+      })
+    }
+
+    // 阶段 3c：整画面复核剩余缺口，未满或需精准放置的物品走单槽拖拽补齐
+    let remainingDirect = directFallbackEntries
+    if (batchMovedAny || rearrangedAny) {
+      ctx.anyChanged = true
+      const afterCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
+      ctx.latestFrameImg = afterCap.imageData
+      const afterRec = await recognizeLoadoutFromImageData(afterCap.imageData, { fullWindowOnly: true })
+      if (afterRec?.ok) {
+        const afterDiff = analyzeLoadoutSyncDiff(afterRec.loadout, targetLoadout, syncOptions)
+        const afterByKey = new Map(afterDiff.entries.map((e) => [e.key, e]))
+        remainingDirect = []
+        for (const pe of activeContainerPending) {
+          const ae = afterByKey.get(pe.key)
+          if (ae?.matched) {
+            ctx.equippedCount++
+          } else if (ae && !ctx.exhaustedTargetIds.has(ae.targetId)) {
+            remainingDirect.push(ae)
+          }
+        }
+      }
+    }
+
+    for (const item of remainingDirect) {
+      if (ctx.exhaustedTargetIds.has(item.targetId)) continue
+      stepDone++
+      await equipSingleEntryDirect(ctx, item, {
+        pct: calcPct(Math.min(totalApprox, stepDone)),
+        stepLabel: `(${stepDone}/${totalApprox})`,
+      })
+    }
+  }
+
+  return {
+    equippedCount: ctx.equippedCount,
+    equippedBaseWeapon: ctx.equippedBaseWeapon,
+    anyChanged: Boolean(ctx.anyChanged || ctx.equippedCount > 0 || ctx.equippedBaseWeapon),
+    activeAugmentInGame: ctx.activeAugmentInGame,
+    lastNonBackpackRect: ctx.lastNonBackpackRect,
+  }
+}
+
 export async function runLoadoutAutoSyncSession({
   targetLoadout,
   onProgress,
   weaponLoadWaitMs = DEFAULT_WEAPON_LOAD_WAIT_MS,
+  syncOptions: rawSyncOptions = DEFAULT_RAIDER_SYNC_OPTIONS,
 }) {
   if (!isTauriRuntime()) {
     throw new Error('仅桌面端支持自动配装，浏览器端请使用全屏透视配装指引')
   }
-  // 武器缩略图为游戏实时 3D 渲染 (BP_WeaponIconCapture)，加载明显慢于普通物品：武器相关步骤统一等待该时长
+  const syncOptions = sanitizeRaiderSyncOptions(rawSyncOptions)
   const weaponWait = Math.round(
     Math.max(0, Math.min(15000, Number(weaponLoadWaitMs) || 0)),
   )
-  const stepWait = (item, normalMs) =>
-    item?.kind === 'weapon' ? Math.max(normalMs, weaponWait) : normalMs
 
   try {
     onProgress?.({ progressPct: 5, message: '正在定位游戏窗口...' })
@@ -846,8 +2063,7 @@ export async function runLoadoutAutoSyncSession({
 
     onProgress?.({ progressPct: 16, message: '正在扫描当前实机战备槽位...' })
     let firstCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
-    let firstRec = await recognizeLoadoutFromImageData(firstCap.imageData)
-    // 武器栏已占用但缩略图仍在加载（无法识别）时，按配置等待后重扫一次
+    let firstRec = await recognizeLoadoutFromImageData(firstCap.imageData, { fullWindowOnly: true })
     if (
       firstRec.ok &&
       weaponWait > 0 &&
@@ -859,7 +2075,7 @@ export async function runLoadoutAutoSyncSession({
       })
       await waitSafeOrThrow(hwnd, weaponWait)
       firstCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
-      firstRec = await recognizeLoadoutFromImageData(firstCap.imageData)
+      firstRec = await recognizeLoadoutFromImageData(firstCap.imageData, { fullWindowOnly: true })
     }
     if (!firstRec.ok) {
       return {
@@ -868,7 +2084,7 @@ export async function runLoadoutAutoSyncSession({
       }
     }
 
-    const initialDiff = analyzeLoadoutSyncDiff(firstRec.loadout, targetLoadout)
+    const initialDiff = analyzeLoadoutSyncDiff(firstRec.loadout, targetLoadout, syncOptions)
     if (initialDiff.totalTargetSlots === 0) {
       return {
         ok: false,
@@ -885,7 +2101,7 @@ export async function runLoadoutAutoSyncSession({
       }
     }
 
-    if (!firstRec.hasStashPanel) {
+    if (!firstRec.hasStashPanel && !syncOptions.autoRestockEnabled) {
       return {
         ok: true,
         inGameLoadout: firstRec.loadout,
@@ -895,421 +2111,110 @@ export async function runLoadoutAutoSyncSession({
       }
     }
 
-    const vp = firstRec.viewport
-    const W = firstCap.imageData.width
-    const H = firstCap.imageData.height
-
-    // 装配顺序编排：
-    // 1. 强化 (augment) 最优先（决定背包格数、快捷栏数、专属栏与安全口袋位置）；
-    // 2. 其余非背包栏位（护盾 -> 武器 -> 快捷栏 -> 强化专属栏 -> 安全口袋），全程使用右侧目标槽原生过滤，无需依赖左侧导航栏；
-    // 3. 背包栏位最后统一执行（点击背包格一次性恢复最左侧分类导航栏焦点后批量筛选拖拽入包）。
-    const rawPending = initialDiff.entries.filter((e) => !e.matched)
-    const pendingList = [
-      ...rawPending.filter((e) => e.kind === 'augment'),
-      ...rawPending.filter((e) => e.kind !== 'augment' && e.kind !== 'backpack'),
-      ...rawPending.filter((e) => e.kind === 'backpack'),
-    ]
-
-    const tgtAug = augMap.get(targetLoadout?.augmentId) || augMap.get('none')
-    const liveInitialAug =
-      augMap.get(firstRec.loadout?.augmentId) || augMap.get('none')
-    let activeAugmentInGame =
-      firstRec.loadout?.augmentId === tgtAug.id ? tgtAug : liveInitialAug
-
+    let vp = firstRec.viewport
+    let W = firstCap.imageData.width
+    let H = firstCap.imageData.height
     let equippedCount = 0
-    let activeFilter = null
-    let latestFrameImg = firstCap.imageData
-    let lastNonBackpackRect = detectSelectedNonBackpackSlot1080p(
-      firstCap.imageData,
-      vp,
-    )
-    const scrollState = { atTop: false }
+    let activeAugmentInGame = augMap.get(firstRec.loadout?.augmentId) || augMap.get('none')
+    let lastNonBackpackRect = detectSelectedNonBackpackSlot1080p(firstCap.imageData, vp)
+    let midLoadout = firstRec.loadout
 
-    for (let idx = 0; idx < pendingList.length; idx++) {
-      const item = pendingList[idx]
-      const stepLabel = `(${idx + 1}/${pendingList.length})`
-      const pct = Math.min(92, 22 + Math.round(((idx + 1) / pendingList.length) * 68))
+    // 阶段 1：优先从仓库检索并装配已拥有的装备/配件
+    if (firstRec.hasStashPanel) {
+      const p1 = await executeStashEquipPass({
+        hwnd,
+        targetLoadout,
+        baseLoadout: firstRec.loadout,
+        pendingEntries: initialDiff.entries.filter((e) => !e.matched),
+        initialImageData: firstCap.imageData,
+        vp,
+        W,
+        H,
+        syncOptions,
+        weaponWait,
+        pctStart: 20,
+        pctEnd: syncOptions.autoRestockEnabled ? 54 : 92,
+        onProgress,
+      })
+      equippedCount += p1.equippedCount
+      activeAugmentInGame = p1.activeAugmentInGame
+      lastNonBackpackRect = p1.lastNonBackpackRect
 
-      // 若目标强化未能在仓库中找到并装备，按当前实机实际穿戴的强化动态校验槽位上限与安全口袋行坐标
-      let slotRect1080p = item.rect1080p
-      if (activeAugmentInGame && activeAugmentInGame.id !== tgtAug.id) {
-        if (
-          item.kind === 'backpack' &&
-          item.slotIndex >= (activeAugmentInGame.backpackSlots || 10)
-        ) {
-          continue
-        }
-        if (
-          item.kind === 'quickUse' &&
-          item.slotIndex >= (activeAugmentInGame.quickUseSlots || 4)
-        ) {
-          continue
-        }
-        if (item.kind === 'aux' && !activeAugmentInGame.auxSlots?.count) {
-          continue
-        }
-        if (item.kind === 'safePocket') {
-          if (item.slotIndex >= (activeAugmentInGame.safePocketSlots || 0)) {
-            continue
-          }
-          const liveHasAux = Boolean(
-            activeAugmentInGame.integratedItem ||
-              activeAugmentInGame.auxSlots?.count,
-          )
-          const liveSpRects = liveHasAux
-            ? UMG_RECTS_1080P.safePocketWithAux
-            : UMG_RECTS_1080P.safePocketNoAux
-          slotRect1080p = liveSpRects[item.slotIndex] || slotRect1080p
+      if (syncOptions.autoRestockEnabled && p1.anyChanged) {
+        const midCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
+        const midRec = await recognizeLoadoutFromImageData(midCap.imageData, { fullWindowOnly: true })
+        if (midRec?.ok) {
+          midLoadout = midRec.loadout
         }
       }
+    }
 
-      const dstPt = rectCenterNorm(slotRect1080p, vp, W, H)
-      onProgress?.({
-        progressPct: pct,
-        message: `装配 ${item.slotLabel}：${item.targetName} ${stepLabel}`,
-      })
-
-      if (item.kind !== 'backpack') {
-        // ==================== 分支 A：非背包栏位（原生目标槽过滤模式） ====================
-        // 先确保右侧目标战备栏位处于选中态（若玩家此前已选中该格则无需重复点击，防止二次点击取消单槽过滤）
-        const alreadySelected = latestFrameImg
-          ? isRect1080pSelected(latestFrameImg, vp, slotRect1080p)
-          : false
-
-        let postSlotImg = latestFrameImg
-        if (!alreadySelected) {
-          await execSafeClick(hwnd, dstPt.x, dstPt.y)
-          lastNonBackpackRect = slotRect1080p
-          activeFilter = null
-          scrollState.atTop = false
-          if (item.kind === 'weapon' && weaponWait > 0) {
-            onProgress?.({
-              progressPct: pct,
-              message: `等待武器列表加载 ${(weaponWait / 1000).toFixed(1)} 秒：${item.targetName} ${stepLabel}`,
-            })
-          }
-          await waitSafeOrThrow(hwnd, stepWait(item, 165))
-          await execSafePark(hwnd)
-          await waitSafeOrThrow(hwnd, 75)
-          postSlotImg = (
-            await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
-          ).imageData
-          latestFrameImg = postSlotImg
-        } else {
-          lastNonBackpackRect = slotRect1080p
-        }
-
-        const preCheck = await verifyTargetSlotMatched(
-          postSlotImg,
-          vp,
-          item.kind,
-          slotRect1080p,
-          item.targetId,
-          itemMatchOpts(item),
-        )
-        if (preCheck.matched) {
-          if (item.kind === 'augment') activeAugmentInGame = tgtAug
-          continue
-        }
-
-        // 双武器栏：目标武器已装备在另一武器栏时直接栏位间互换
-        if (item.kind === 'weapon') {
-          const swapRes = await trySwapFromOtherWeaponSlot({
+    // 阶段 2 & 3：当开启「自动补货」且仍有缺口或低阶武器时，批量前往商人购买 / 工坊制造 / 武器升级后返仓补装
+    let restockSummary = { boughtCount: 0, craftedCount: 0, upgradedCount: 0 }
+    if (syncOptions.autoRestockEnabled) {
+      const midDiff = analyzeLoadoutSyncDiff(midLoadout, targetLoadout, syncOptions)
+      if (midDiff.pendingCount > 0) {
+        const { restockBill, upgradeTasks } = buildRestockBillAndUpgrades(midDiff, syncOptions)
+        if (restockBill.length > 0 || upgradeTasks.length > 0) {
+          const restockRes = await runAutoRestockSession({
             hwnd,
-            vp,
-            W,
-            H,
-            item,
-            slotRect1080p,
-            dstPt,
-            imageData: postSlotImg,
-            targetLoadout,
-            settleMs: stepWait(item, 175),
-            weaponWait,
-            onLoadingWait: () =>
-              onProgress?.({
-                progressPct: pct,
-                message: `武器栏加载中，继续等待 ${(weaponWait / 1000).toFixed(1)} 秒：${item.targetName} ${stepLabel}`,
-              }),
-          })
-          if (swapRes?.attempted) {
-            latestFrameImg = swapRes.imageData
-            postSlotImg = swapRes.imageData
-            if (swapRes.matched) {
-              equippedCount++
-              continue
-            }
-          }
-        }
-
-        // 若个别槽位（如安全口袋）未锁定最左侧分类栏，则顺带点击对应分类按钮加速过滤
-        if (isStashFilterRailActive(postSlotImg, vp)) {
-          const filterPt = UMG_RECTS_1080P.stashFilters[item.stashFilter]
-          if (filterPt) {
-            const fp = pointNorm(filterPt, vp, W, H)
-            if (fp.x > 0.01 && fp.x < 0.35 && fp.y > 0.1 && fp.y < 0.9) {
-              await execSafeClick(hwnd, fp.x, fp.y)
-              activeFilter = item.stashFilter
-              scrollState.atTop = true
-              await waitSafeOrThrow(hwnd, stepWait(item, 160))
-              await execSafePark(hwnd)
-              await waitSafeOrThrow(hwnd, 75)
-              postSlotImg = null
-              latestFrameImg = null
-            }
-          }
-        }
-
-        const found = await searchItemInStashWithScroll({
-          hwnd,
-          vp,
-          W,
-          H,
-          item,
-          scrollState,
-          initialImageData: postSlotImg,
-          basePct: pct,
-          stepLabel,
-          onProgress,
-          settleMs: item.kind === 'weapon' ? stepWait(item, 210) : null,
-        })
-        if (found?.imageData) latestFrameImg = found.imageData
-        if (!found?.hit) continue
-
-        // 抓帧复核目标槽；武器栏若仍在加载实时渲染缩略图（已占用但无法识别），再等待一轮后复核
-        const captureAndVerify = async () => {
-          let cap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
-          let res = await verifyTargetSlotMatched(
-            cap.imageData,
-            vp,
-            item.kind,
-            slotRect1080p,
-            item.targetId,
-            itemMatchOpts(item),
-          )
-          if (!res.matched && res.loading && item.kind === 'weapon' && weaponWait > 0) {
-            onProgress?.({
-              progressPct: pct,
-              message: `武器栏加载中，继续等待 ${(weaponWait / 1000).toFixed(1)} 秒：${item.targetName} ${stepLabel}`,
-            })
-            await waitSafeOrThrow(hwnd, weaponWait)
-            cap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
-            res = await verifyTargetSlotMatched(
-              cap.imageData,
-              vp,
-              item.kind,
-              slotRect1080p,
-              item.targetId,
-              itemMatchOpts(item),
-            )
-          }
-          latestFrameImg = cap.imageData
-          return { cap, res }
-        }
-
-        // 策略 1（首选）：真实 MOUSEEVENTF_MOVE 平滑拖拽 (Stash 匹配格 -> 右侧指定目标战备槽)，兼容空槽与已装备槽替换
-        await execSafeDrag(
-          hwnd,
-          found.hit.normX,
-          found.hit.normY,
-          dstPt.x,
-          dstPt.y,
-          true,
-          52,
-        )
-        await waitSafeOrThrow(hwnd, stepWait(item, 165))
-
-        let { cap: verifyCap, res: verifyRes } = await captureAndVerify()
-
-        // 策略 2（重压慢拖兜底）：重新在当前储备箱画面定位物品后，加长按压与起拖时间再次精准拖拽投放
-        if (!verifyRes.matched) {
-          const reHit = await findTargetInStashGrid(
-            verifyCap.imageData,
-            vp,
-            item.kind,
-            item.targetId,
-            item.targetCount || null,
-            itemMatchOpts(item),
-          )
-          if (reHit) {
-            await execSafeDrag(
-              hwnd,
-              reHit.normX,
-              reHit.normY,
-              dstPt.x,
-              dstPt.y,
-              true,
-              96,
-            )
-            await waitSafeOrThrow(hwnd, stepWait(item, 175))
-            ;({ cap: verifyCap, res: verifyRes } = await captureAndVerify())
-          }
-        }
-
-        // 策略 3（原生 SHIFT 快速移动 / 双击兜底）：仅在目标槽为空或唯一单槽（强化/护盾）时启用，避免覆盖非目标槽
-        let quickMoveSafe =
-          !verifyRes.matched &&
-          (!verifyRes.occupied || item.kind === 'augment' || item.kind === 'shield')
-        // 武器 II：快速移动会优先落入空的武器 I 栏，仅当武器 I 已占用时启用
-        if (quickMoveSafe && item.kind === 'weapon' && item.slotIndex === 1) {
-          const w1 = await inspectWeaponCard(verifyCap.imageData, vp, UMG_RECTS_1080P.weapon1)
-          quickMoveSafe = Boolean(w1?.occupied)
-        }
-        if (quickMoveSafe) {
-          const reHit2 = await findTargetInStashGrid(
-            verifyCap.imageData,
-            vp,
-            item.kind,
-            item.targetId,
-            item.targetCount || null,
-            itemMatchOpts(item),
-          )
-          if (reHit2) {
-            await execSafeShiftClick(hwnd, reHit2.normX, reHit2.normY)
-            await waitSafeOrThrow(hwnd, stepWait(item, 165))
-            ;({ cap: verifyCap, res: verifyRes } = await captureAndVerify())
-          }
-          if (!verifyRes.matched) {
-            const reHit3 = await findTargetInStashGrid(
-              verifyCap.imageData,
-              vp,
-              item.kind,
-              item.targetId,
-              item.targetCount || null,
-              itemMatchOpts(item),
-            )
-            if (reHit3) {
-              await execSafeDoubleClick(hwnd, reHit3.normX, reHit3.normY)
-              await waitSafeOrThrow(hwnd, stepWait(item, 165))
-              ;({ cap: verifyCap, res: verifyRes } = await captureAndVerify())
-            }
-          }
-        }
-
-        if (verifyRes.matched) {
-          equippedCount++
-          if (item.kind === 'augment') {
-            activeAugmentInGame = tgtAug
-          }
-        }
-      } else {
-        // ==================== 分支 B：背包栏位（自动恢复左侧导航栏焦点 + 分类翻页拖拽） ====================
-        const focusRes = await ensureStashFilterRailFocused({
-          hwnd,
-          vp,
-          W,
-          H,
-          preferredBackpackRect1080p: slotRect1080p,
-          lastNonBackpackRect1080p: lastNonBackpackRect,
-        })
-        if (focusRes.recovered) {
-          activeFilter = null
-          lastNonBackpackRect = null
-          scrollState.atTop = false
-        }
-
-        const candidateFilters = [item.stashFilter || 'all']
-        if (item.itemCategory === 'material' && !candidateFilters.includes('misc')) {
-          candidateFilters.push('misc')
-        }
-        if (
-          candidateFilters[0] !== 'all' &&
-          ['key', 'material', 'trinket', 'gadget'].includes(item.itemCategory)
-        ) {
-          candidateFilters.push('all')
-        }
-
-        let found = null
-        let reuseImg = focusRes.imageData
-        for (const filterKey of candidateFilters) {
-          const filterPt = UMG_RECTS_1080P.stashFilters[filterKey]
-          if (filterPt && activeFilter !== filterKey && focusRes.focused) {
-            const fp = pointNorm(filterPt, vp, W, H)
-            if (fp.x > 0.01 && fp.x < 0.35 && fp.y > 0.1 && fp.y < 0.9) {
-              await execSafeClick(hwnd, fp.x, fp.y)
-              activeFilter = filterKey
-              scrollState.atTop = true
-              reuseImg = null
-              await waitSafeOrThrow(hwnd, 160)
-              await execSafePark(hwnd)
-              await waitSafeOrThrow(hwnd, 75)
-            }
-          }
-
-          found = await searchItemInStashWithScroll({
-            hwnd,
-            vp,
-            W,
-            H,
-            item,
-            scrollState,
-            initialImageData: reuseImg,
-            basePct: pct,
-            stepLabel,
+            restockBill,
+            upgradeTasks,
+            syncOptions,
+            weaponLoadWaitMs: weaponWait,
             onProgress,
           })
-          reuseImg = null
-          if (found?.hit) break
-        }
-
-        if (!found?.hit) continue
-
-        // 背包槽位采用真实 MOUSEEVENTF_MOVE 平滑拖拽 (Stash -> 指定背包格)，精准落位不打乱左侧导航栏焦点
-        await execSafeDrag(
-          hwnd,
-          found.hit.normX,
-          found.hit.normY,
-          dstPt.x,
-          dstPt.y,
-          true,
-          52,
-        )
-        await waitSafeOrThrow(hwnd, 165)
-
-        let verifyCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
-        let verifyRes = await verifyTargetSlotMatched(
-          verifyCap.imageData,
-          vp,
-          item.kind,
-          slotRect1080p,
-          item.targetId,
-          itemMatchOpts(item),
-        )
-
-        if (!verifyRes.matched) {
-          const reHit = await findTargetInStashGrid(
-            verifyCap.imageData,
-            vp,
-            item.kind,
-            item.targetId,
-            item.targetCount || null,
-            itemMatchOpts(item),
-          )
-          if (reHit) {
-            await execSafeDrag(
-              hwnd,
-              reHit.normX,
-              reHit.normY,
-              dstPt.x,
-              dstPt.y,
-              true,
-              96,
-            )
-            await waitSafeOrThrow(hwnd, 175)
-            verifyCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
-            verifyRes = await verifyTargetSlotMatched(
-              verifyCap.imageData,
-              vp,
-              item.kind,
-              slotRect1080p,
-              item.targetId,
-              itemMatchOpts(item),
-            )
+          restockSummary = {
+            boughtCount: restockRes.boughtCount || 0,
+            craftedCount: restockRes.craftedCount || 0,
+            upgradedCount: restockRes.upgradedCount || 0,
           }
-        }
 
-        if (verifyRes.matched) {
-          equippedCount++
+          if (
+            restockRes.ok &&
+            (restockSummary.boughtCount > 0 ||
+              restockSummary.craftedCount > 0 ||
+              restockSummary.upgradedCount > 0)
+          ) {
+            onProgress?.({ progressPct: 78, message: '补货完毕，正在返仓二次装配...' })
+            let postCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
+            let postRec = await recognizeLoadoutFromImageData(postCap.imageData, { fullWindowOnly: true })
+            if (
+              postRec.ok &&
+              weaponWait > 0 &&
+              (postRec.weaponSlotStates || []).some((s) => s?.occupied && !s.identified)
+            ) {
+              await waitSafeOrThrow(hwnd, weaponWait)
+              postCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
+              postRec = await recognizeLoadoutFromImageData(postCap.imageData, { fullWindowOnly: true })
+            }
+            if (postRec.ok && postRec.hasStashPanel) {
+              vp = postRec.viewport
+              W = postCap.imageData.width
+              H = postCap.imageData.height
+              const postDiff = analyzeLoadoutSyncDiff(postRec.loadout, targetLoadout, syncOptions)
+              if (postDiff.pendingCount > 0) {
+                const p3 = await executeStashEquipPass({
+                  hwnd,
+                  targetLoadout,
+                  baseLoadout: postRec.loadout,
+                  pendingEntries: postDiff.entries.filter((e) => !e.matched),
+                  initialImageData: postCap.imageData,
+                  vp,
+                  W,
+                  H,
+                  syncOptions,
+                  weaponWait,
+                  pctStart: 79,
+                  pctEnd: 94,
+                  onProgress,
+                })
+                equippedCount += p3.equippedCount
+                activeAugmentInGame = p3.activeAugmentInGame
+                lastNonBackpackRect = p3.lastNonBackpackRect
+              }
+            }
+          }
         }
       }
     }
@@ -1335,21 +2240,28 @@ export async function runLoadoutAutoSyncSession({
 
     onProgress?.({ progressPct: 96, message: '正在复核实机战备状态...' })
     const finalCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
-    const finalRec = await recognizeLoadoutFromImageData(finalCap.imageData)
+    const finalRec = await recognizeLoadoutFromImageData(finalCap.imageData, { fullWindowOnly: true })
     const finalLoadout = finalRec.ok ? finalRec.loadout : firstRec.loadout
-    const finalDiff = analyzeLoadoutSyncDiff(finalLoadout, targetLoadout)
+    const finalDiff = analyzeLoadoutSyncDiff(finalLoadout, targetLoadout, syncOptions)
+
+    const restockParts = []
+    if (restockSummary.boughtCount > 0) restockParts.push(`购买 ${restockSummary.boughtCount} 件`)
+    if (restockSummary.craftedCount > 0) restockParts.push(`制造 ${restockSummary.craftedCount} 件`)
+    if (restockSummary.upgradedCount > 0) restockParts.push(`升级 ${restockSummary.upgradedCount} 级`)
+    const restockSuffix = restockParts.length ? `（${restockParts.join(' · ')}）` : ''
 
     const msg =
       finalDiff.pendingCount === 0
-        ? `同步完成（已就绪 ${finalDiff.matchedCount}/${finalDiff.totalTargetSlots} 项）`
-        : equippedCount > 0
-          ? `已自动装配 ${equippedCount} 项，剩余 ${finalDiff.pendingCount} 项未在仓库中找到，可开启透视指引核对`
+        ? `同步完成（已就绪 ${finalDiff.matchedCount}/${finalDiff.totalTargetSlots} 项${restockSuffix}）`
+        : equippedCount > 0 || restockParts.length > 0
+          ? `已装配 ${equippedCount} 项${restockSuffix}，剩余 ${finalDiff.pendingCount} 项暂缺，可开启透视指引核对`
           : `已完成全仓滚动检索（匹配 ${finalDiff.matchedCount}/${finalDiff.totalTargetSlots} 项），缺失项不在仓库中，可开启透视指引查看`
 
     return {
       ok: true,
       inGameLoadout: finalLoadout,
       equippedCount,
+      restockSummary,
       remainingCount: finalDiff.pendingCount,
       message: msg,
     }

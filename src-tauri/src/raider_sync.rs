@@ -67,6 +67,8 @@ mod imp {
     const VK_MENU: u8 = 0x12;
     const VK_LSHIFT: u8 = 0xA0;
     const SCANCODE_LSHIFT: u8 = 0x2A;
+    const VK_LCONTROL: u8 = 0xA2;
+    const SCANCODE_LCONTROL: u8 = 0x1D;
 
     const SW_RESTORE: i32 = 9;
     const PROCESS_QUERY_LIMITED_INFORMATION: u32 = 0x1000;
@@ -381,33 +383,39 @@ mod imp {
         }
     }
 
-    struct ShiftKeyReleaseGuard {
+    struct ModifierKeyReleaseGuard {
         pressed: bool,
+        vk: u8,
+        scancode: u8,
     }
 
-    impl ShiftKeyReleaseGuard {
-        fn press() -> Self {
+    impl ModifierKeyReleaseGuard {
+        fn press(vk: u8, scancode: u8) -> Self {
             unsafe {
-                keybd_event(VK_LSHIFT, SCANCODE_LSHIFT, 0, 0);
+                keybd_event(vk, scancode, 0, 0);
             }
-            Self { pressed: true }
+            Self {
+                pressed: true,
+                vk,
+                scancode,
+            }
         }
 
         fn release(&mut self) {
             if self.pressed {
                 unsafe {
-                    keybd_event(VK_LSHIFT, SCANCODE_LSHIFT, KEYEVENTF_KEYUP, 0);
+                    keybd_event(self.vk, self.scancode, KEYEVENTF_KEYUP, 0);
                 }
                 self.pressed = false;
             }
         }
     }
 
-    impl Drop for ShiftKeyReleaseGuard {
+    impl Drop for ModifierKeyReleaseGuard {
         fn drop(&mut self) {
             if self.pressed {
                 unsafe {
-                    keybd_event(VK_LSHIFT, SCANCODE_LSHIFT, KEYEVENTF_KEYUP, 0);
+                    keybd_event(self.vk, self.scancode, KEYEVENTF_KEYUP, 0);
                 }
                 self.pressed = false;
             }
@@ -1446,12 +1454,17 @@ mod imp {
             };
         }
 
-        // 游戏原生 [SHIFT] + 左键快速移动装备指令（底部栏提示：SHIFT 快速移动）
-        if kind == "shift_click" {
-            let mut shift_guard = ShiftKeyReleaseGuard::press();
+        // 游戏原生 [CTRL / SHIFT] + 左键多选/快速移动装备指令（底部栏提示：CTRL 多选 / SHIFT 快速移动）
+        if kind == "shift_click" || kind == "ctrl_click" {
+            let (vk, scancode) = if kind == "ctrl_click" {
+                (VK_LCONTROL, SCANCODE_LCONTROL)
+            } else {
+                (VK_LSHIFT, SCANCODE_LSHIFT)
+            };
+            let mut mod_guard = ModifierKeyReleaseGuard::press(vk, scancode);
             std::thread::sleep(Duration::from_millis(30));
             if let Some(reason) = check_safety_guards(hwnd, true, Some((target_x, target_y))) {
-                shift_guard.release();
+                mod_guard.release();
                 return SyncActionResultDto {
                     ok: false,
                     aborted: true,
@@ -1462,7 +1475,7 @@ mod imp {
             std::thread::sleep(Duration::from_millis(48));
             if let Some(reason) = check_safety_guards(hwnd, true, Some((target_x, target_y))) {
                 btn_guard.release();
-                shift_guard.release();
+                mod_guard.release();
                 return SyncActionResultDto {
                     ok: false,
                     aborted: true,
@@ -1471,7 +1484,7 @@ mod imp {
             }
             btn_guard.release();
             std::thread::sleep(Duration::from_millis(30));
-            shift_guard.release();
+            mod_guard.release();
 
             if park_after {
                 std::thread::sleep(Duration::from_millis(38));
@@ -1483,6 +1496,15 @@ mod imp {
                     };
                 }
                 park_cursor_neutral(cx, cy, cw, ch);
+            } else {
+                unsafe {
+                    let mut cur = POINT::default();
+                    if GetCursorPos(&mut cur) != 0 {
+                        if let Ok(mut g) = LAST_CURSOR_POS.lock() {
+                            *g = Some((cur.x, cur.y));
+                        }
+                    }
+                }
             }
             return SyncActionResultDto {
                 ok: true,

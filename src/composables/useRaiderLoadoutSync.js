@@ -2,6 +2,11 @@ import { computed, ref, watch } from 'vue'
 import { invokeTauri, isTauriRuntime } from '../stores/useOverlayWindowStore'
 import { sanitizeLoadoutState } from '../stores/useRaiderLoadoutStore'
 import {
+  DEFAULT_RAIDER_SYNC_OPTIONS,
+  RESTOCK_POLICY_OPTIONS,
+  sanitizeRaiderSyncOptions,
+} from '../utils/raiderAcquisitionCatalog'
+import {
   decodeSourceToImageData,
   recognizeLoadoutFromImageData,
 } from '../utils/raiderLoadoutRecognizer'
@@ -10,6 +15,8 @@ import {
   captureGameClientImageData,
   describeLoadoutBrief,
 } from '../utils/raiderLoadoutSyncPlanner'
+
+export { RESTOCK_POLICY_OPTIONS }
 
 // 武器栏加载等待（秒）：武器缩略图由游戏实时 3D 渲染，加载较慢；全局共享并持久化，主窗口与悬浮窗同步
 const WEAPON_WAIT_STORAGE_KEY = 'arcmap.raider.weaponLoadWaitSec'
@@ -56,6 +63,49 @@ if (typeof window !== 'undefined') {
 export function useWeaponLoadWait() {
   const weaponLoadWaitMs = computed(() => Math.round(clampWeaponWaitSec(weaponLoadWaitSec.value) * 1000))
   return { weaponLoadWaitSec, weaponLoadWaitMs }
+}
+
+// 自动配装进阶选项（武器等级匹配、武器配件同步、缺失时工坊/商人自动补货）：默认关闭，全局持久化且主窗与悬浮窗实时同步
+const SYNC_OPTIONS_STORAGE_KEY = 'arcmap.raider.syncOptions.v1'
+
+function readStoredSyncOptions() {
+  try {
+    const raw = window.localStorage?.getItem(SYNC_OPTIONS_STORAGE_KEY)
+    return raw ? sanitizeRaiderSyncOptions(JSON.parse(raw)) : { ...DEFAULT_RAIDER_SYNC_OPTIONS }
+  } catch {
+    return { ...DEFAULT_RAIDER_SYNC_OPTIONS }
+  }
+}
+
+const raiderSyncOptions = ref(readStoredSyncOptions())
+watch(
+  raiderSyncOptions,
+  (val) => {
+    try {
+      const clean = sanitizeRaiderSyncOptions(val)
+      window.localStorage?.setItem(SYNC_OPTIONS_STORAGE_KEY, JSON.stringify(clean))
+    } catch {
+      /* ignore quota / privacy mode */
+    }
+  },
+  { deep: true },
+)
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (e) => {
+    if (e.key === SYNC_OPTIONS_STORAGE_KEY) {
+      try {
+        raiderSyncOptions.value = e.newValue
+          ? sanitizeRaiderSyncOptions(JSON.parse(e.newValue))
+          : { ...DEFAULT_RAIDER_SYNC_OPTIONS }
+      } catch {
+        raiderSyncOptions.value = { ...DEFAULT_RAIDER_SYNC_OPTIONS }
+      }
+    }
+  })
+}
+
+export function useRaiderSyncOptions() {
+  return { syncOptions: raiderSyncOptions, RESTOCK_POLICY_OPTIONS }
 }
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
@@ -283,5 +333,7 @@ export function useRaiderLoadoutSync(loadoutStore, options = {}) {
     refreshGameWindowStatus,
     runPrecheckInGameState,
     weaponLoadWaitSec,
+    syncOptions: raiderSyncOptions,
+    RESTOCK_POLICY_OPTIONS,
   }
 }

@@ -99,12 +99,12 @@ export const UMG_RECTS_1080P = {
   ],
 }
 
-const SQ_W = 28
-const SQ_H = 28
-const WP_W = 44
-const WP_H = 22
-const MOD_W = 20
-const MOD_H = 20
+export const SQ_W = 28
+export const SQ_H = 28
+export const WP_W = 44
+export const WP_H = 22
+export const MOD_W = 20
+export const MOD_H = 20
 const GLYPH_W = 18
 const GLYPH_H = 18
 
@@ -114,7 +114,7 @@ const GLYPH_H = 18
  * - 配件栏：38x38 配件格 + 8px 间距，外层 ModificationSlotsContainer 左右各 4px 内边距；
  *   增强型武器 (Ascended) 在其右侧追加 40x40 的 AscendedUpgradeSlot（24px 增强图标），整行水平居中。
  */
-const WEAPON_CARD = {
+export const WEAPON_CARD = {
   w: 304,
   typeIcon: { x: 8, y: 168, w: 24, h: 24 },
   modRowCenterY: 134,
@@ -166,7 +166,7 @@ for (const w of weaponsData.weapons || []) {
   WEAPON_VARIANTS.set(w.id, list)
 }
 
-function weaponVariantsOf(weaponOrId) {
+export function weaponVariantsOf(weaponOrId) {
   const id = typeof weaponOrId === 'string' ? weaponOrId : weaponOrId?.id
   return WEAPON_VARIANTS.get(id) || []
 }
@@ -246,7 +246,7 @@ const ICON_BOX_SPECS = {
   modBox: { cx: 0.5, cy: 0.5, wf: 0.82, hf: 0.82 },
 }
 
-const MOD_SLOT_NORMALIZATION = {
+export const MOD_SLOT_NORMALIZATION = {
   Muzzle: ['Muzzle'],
   'Shotgun-Muzzle': ['Shotgun Muzzle'],
   Underbarrel: ['Underbarrel'],
@@ -259,11 +259,11 @@ const MOD_SLOT_NORMALIZATION = {
 
 let cachedTemplatesPromise = null
 
-function clamp(v, lo, hi) {
+export function clamp(v, lo, hi) {
   return v < lo ? lo : v > hi ? hi : v
 }
 
-function medianOf(arr) {
+export function medianOf(arr) {
   if (!arr.length) return 0
   const sorted = arr.slice().sort((a, b) => a - b)
   const mid = sorted.length >> 1
@@ -272,7 +272,7 @@ function medianOf(arr) {
     : (sorted[mid - 1] + sorted[mid]) * 0.5
 }
 
-function percentileOf(arr, q) {
+export function percentileOf(arr, q) {
   if (!arr.length) return 0
   const sorted = arr.slice().sort((a, b) => a - b)
   const idx = clamp((sorted.length - 1) * q, 0, sorted.length - 1)
@@ -418,6 +418,8 @@ export async function ensureLoadoutTemplates() {
       weapons: new Map(),
       items: new Map(),
       mods: new Map(),
+      // 储备箱 / 商店 / 工坊方格 (96x96 / 152x96) 中的武器配件 28x28 图标模板
+      modTiles: new Map(),
       // `${weaponId}|${'base'|'asc'|'asc:<key>'}|${'big'|'small'}` -> 模板（asc* = 增强型武器，品质恒为 Legendary）
       weaponVariants: new Map(),
       // 弹药类型名 (weaponsData.ammo) -> 白色字形模板
@@ -528,14 +530,21 @@ export async function ensureLoadoutTemplates() {
 
     for (const m of weaponsData.weaponMods || []) {
       if (!m.image) continue
+      const meta = { ...m, rarity: m.rarity || inferModRarity(m) }
       tasks.push(
         buildRgbaIconTemplate(m.image, MOD_W, MOD_H)
           .then((tpl) => {
             if (tpl) {
-              db.mods.set(m.id, {
-                ...tpl,
-                meta: { ...m, rarity: m.rarity || inferModRarity(m) },
-              })
+              db.mods.set(m.id, { ...tpl, meta })
+            }
+          })
+          .catch(() => {}),
+      )
+      tasks.push(
+        buildRgbaIconTemplate(m.image, SQ_W, SQ_H)
+          .then((tpl) => {
+            if (tpl) {
+              db.modTiles.set(m.id, { ...tpl, meta })
             }
           })
           .catch(() => {}),
@@ -555,7 +564,7 @@ export async function ensureLoadoutTemplates() {
 /**
  * 亚像素双线性采样 RGB 与亮度
  */
-function bilerpRgb(data, W, H, fx, fy, outRgb) {
+export function bilerpRgb(data, W, H, fx, fy, outRgb) {
   const cx = clamp(fx, 0, W - 1.001)
   const cy = clamp(fy, 0, H - 1.001)
   const x0 = cx | 0
@@ -586,7 +595,7 @@ function bilerpRgb(data, W, H, fx, fy, outRgb) {
     w11 * data[p11 + 2]
 }
 
-function bilerpLum(data, W, H, fx, fy) {
+export function bilerpLum(data, W, H, fx, fy) {
   const cx = clamp(fx, 0, W - 1.001)
   const cy = clamp(fy, 0, H - 1.001)
   const x0 = cx | 0
@@ -618,7 +627,7 @@ function bilerpLum(data, W, H, fx, fy) {
   return 0.299 * r + 0.587 * g + 0.114 * b
 }
 
-function mapRectFloat(rect1080, vp) {
+export function mapRectFloat(rect1080, vp) {
   return {
     x: vp.ox + rect1080.x * vp.scale,
     y: vp.oy + rect1080.y * vp.scale,
@@ -976,7 +985,7 @@ function solveArbitraryCropViewport(imageData) {
 /**
  * 自动定位截图中的 WBP_NewInventoryLoadout 视口变换（支持 16:9、16:10、21:9 带鱼屏、窗口化标题栏偏移及任意 Win+Shift+S 局部裁剪截图）
  */
-export function locateLoadoutViewport(imageData) {
+export function locateLoadoutViewport(imageData, { fullWindowOnly = false } = {}) {
   const { width: W, height: H } = imageData
   if (W < 360 || H < 240) {
     return { ok: false, error: '截图分辨率过低，无法识别战备槽位' }
@@ -1018,28 +1027,32 @@ export function locateLoadoutViewport(imageData) {
       oy: Math.max(24, H - REF_H * sFullW),
       prior: 0.8,
     },
-    // 5. 仅截取右侧战备面板 (1236x856 @ 1080p, 起点 636, 112)
-    (() => {
-      const sc = Math.min(W / 1236, H / 856)
-      return {
-        mode: 'cropped_panel',
-        scale: sc,
-        ox: (W - 1236 * sc) * 0.5 - 636 * sc,
-        oy: (H - 856 * sc) * 0.5 - 112 * sc,
-        prior: 0,
-      }
-    })(),
-    // 6. 同时截取左侧储备箱 + 右侧配装双面板 (不含顶底栏，1800x856 @ 1080p, 起点 60, 112)
-    (() => {
-      const sc = Math.min(W / 1812, H / 856)
-      return {
-        mode: 'cropped_dual_panel',
-        scale: sc,
-        ox: (W - 1812 * sc) * 0.5 - 54 * sc,
-        oy: (H - 856 * sc) * 0.5 - 112 * sc,
-        prior: 0,
-      }
-    })(),
+    ...(fullWindowOnly
+      ? []
+      : [
+          // 5. 仅截取右侧战备面板 (1236x856 @ 1080p, 起点 636, 112)
+          (() => {
+            const sc = Math.min(W / 1236, H / 856)
+            return {
+              mode: 'cropped_panel',
+              scale: sc,
+              ox: (W - 1236 * sc) * 0.5 - 636 * sc,
+              oy: (H - 856 * sc) * 0.5 - 112 * sc,
+              prior: 0,
+            }
+          })(),
+          // 6. 同时截取左侧储备箱 + 右侧配装双面板 (不含顶底栏，1800x856 @ 1080p, 起点 60, 112)
+          (() => {
+            const sc = Math.min(W / 1812, H / 856)
+            return {
+              mode: 'cropped_dual_panel',
+              scale: sc,
+              ox: (W - 1812 * sc) * 0.5 - 54 * sc,
+              oy: (H - 856 * sc) * 0.5 - 112 * sc,
+              prior: 0,
+            }
+          })(),
+        ]),
   ]
 
   let best = null
@@ -1100,7 +1113,7 @@ export function locateLoadoutViewport(imageData) {
   }
 
   // Stage 2: 当固定视口预设未能高置信命中（如 Win+Shift+S 任意手绘框选截图）时，启用通用多尺度梳状求解器
-  if (!best || bestRaw < 11.5) {
+  if (!fullWindowOnly && (!best || bestRaw < 11.5)) {
     const solved = solveArbitraryCropViewport(imageData)
     if (solved && solved.score > bestRaw + 0.5 && solved.score >= 4.5) {
       best = solved.vp
@@ -1109,7 +1122,7 @@ export function locateLoadoutViewport(imageData) {
     }
   }
 
-  if (!best || bestScore < 4.5) {
+  if (!best || bestScore < 4.5 || (fullWindowOnly && bestRaw < 13.5)) {
     return {
       ok: false,
       error: '未检测到奇袭者「战备」配装画面，请打开游戏内仓库/战备配装界面后截图',
@@ -1128,7 +1141,7 @@ export function locateLoadoutViewport(imageData) {
  * 解析卡片占用态、悬停奶油高亮态 (#f9eedf) 与左下方品质三角角标
  * cardType: 'tile' | 'gear' | 'weaponSlot'
  */
-function analyzeCardState(imageData, frect, cardType = 'tile') {
+export function analyzeCardState(imageData, frect, cardType = 'tile') {
   const { data, width: W, height: H } = imageData
   const { x: rx, y: ry, w: rw, h: rh } = frect
   if (rx < 1 || ry < 1 || rx + rw >= W - 1 || ry + rh >= H - 1 || rw < 10 || rh < 10) {
@@ -1262,7 +1275,7 @@ function analyzeCardState(imageData, frect, cardType = 'tile') {
 /**
  * 亚像素采样槽位内 UMG 图标框，并拟合四角双线性底板背景平面与有向梯度场
  */
-function sampleIconBoxBilerp(imageData, frect, boxType, outW, outH) {
+export function sampleIconBoxBilerp(imageData, frect, boxType, outW, outH) {
   const { data, width: W, height: H } = imageData
   const spec = ICON_BOX_SPECS[boxType]
   const bw = frect.w * spec.wf
@@ -1388,7 +1401,7 @@ function sampleIconBoxBilerp(imageData, frect, boxType, outW, outH) {
 /**
  * 计算模板在当前实机槽位背景平面上 Alpha 合成后的 RGB NCC + 有向梯度 NCC + 品质匹配分
  */
-function scoreTemplateAgainstObs(obs, cardState, tpl) {
+export function scoreTemplateAgainstObs(obs, cardState, tpl) {
   const { w, h, obsR, obsG, obsB, bgR, bgG, bgB, gx, gy, valid, validGrad } = obs
   const len = w * h
   const synR = new Float32Array(len)
@@ -1541,26 +1554,24 @@ function matchBestInSlot(
 }
 
 /**
- * 识别武器底栏右侧罗马数字等级角标 (I ~ IV)
- * 采用 0.5px 归一化采样 + 卡片右侧选框隔离 + 内腰竖笔横跨宽度 (避开上下横衬线) 精准区分 I/II/III/IV
+ * 识别底栏右侧罗马数字等级角标 (I ~ IV) 的公共核心
+ * 采用 0.5px 归一化采样 + 右侧选框隔离 + 内腰竖笔横跨宽度 (避开上下横衬线) 精准区分 I/II/III/IV
  */
-function estimateWeaponTier(imageData, weaponRect1080, vp, maxTier = 4) {
+function estimateTierInBox(imageData, originX1080, originY1080, vp, maxTier = 4, glyphScale = 1.0) {
   if (maxTier <= 1) return 1
   const { data, width: W, height: H } = imageData
 
-  const dxStart = 268.0
   const dxStep = 0.5
-  const Wr = 69 // 268.0 .. 302.0
-  const dyStart = 166.0
+  const Wr = 69 // 34.0px @ 0.5px step
   const dyStep = 0.5
-  const Hr = 61 // 166.0 .. 196.0
+  const Hr = 61 // 30.0px @ 0.5px step
   const raw = new Float32Array(Hr * Wr)
 
   for (let iy = 0; iy < Hr; iy++) {
-    const py = vp.oy + (weaponRect1080.y + dyStart + iy * dyStep) * vp.scale
+    const py = vp.oy + (originY1080 + iy * dyStep) * vp.scale
     const rowOff = iy * Wr
     for (let ix = 0; ix < Wr; ix++) {
-      const px = vp.ox + (weaponRect1080.x + dxStart + ix * dxStep) * vp.scale
+      const px = vp.ox + (originX1080 + ix * dxStep) * vp.scale
       raw[rowOff + ix] = bilerpLum(data, W, H, px, py)
     }
   }
@@ -1668,8 +1679,8 @@ function estimateWeaponTier(imageData, weaponRect1080, vp, maxTier = 4) {
   if (stemFirst < 0) return 1
 
   const stemSpanPx = (stemLast - stemFirst + 1) * 0.5
-  if (stemSpanPx < 7.4) return 1
-  if (stemSpanPx < 13.3) return Math.min(maxTier, 2)
+  if (stemSpanPx < 7.4 * glyphScale) return 1
+  if (stemSpanPx < 13.3 * glyphScale) return Math.min(maxTier, 2)
 
   // 区分 III 与 IV：IV 右侧 V 字形上宽下窄，上下 1/3 内收斜度明显
   const u0 = Math.max(0, yTop + Math.round(gh * 0.06))
@@ -1698,11 +1709,33 @@ function estimateWeaponTier(imageData, weaponRect1080, vp, maxTier = 4) {
     const lRight = lb.last * 0.5
     const uSpan = (ub.last - ub.first + 1) * 0.5
     const lSpan = (lb.last - lb.first + 1) * 0.5
-    if (uRight - lRight >= 1.15 || uSpan - lSpan >= 1.4) {
+    if (uRight - lRight >= 1.15 * glyphScale || uSpan - lSpan >= 1.4 * glyphScale) {
       return Math.min(maxTier, 4)
     }
   }
   return Math.min(maxTier, 3)
+}
+
+export function estimateWeaponTier(imageData, weaponRect1080, vp, maxTier = 4) {
+  return estimateTierInBox(
+    imageData,
+    weaponRect1080.x + 268.0,
+    weaponRect1080.y + 166.0,
+    vp,
+    maxTier,
+    1.0,
+  )
+}
+
+export function estimateStashTileWeaponTier(imageData, tileRect1080, vp, maxTier = 4) {
+  return estimateTierInBox(
+    imageData,
+    tileRect1080.x + tileRect1080.w - 36.0,
+    tileRect1080.y + tileRect1080.h - 34.0,
+    vp,
+    maxTier,
+    0.82,
+  )
 }
 
 const STACK_GLYPH_H = 25
@@ -2160,7 +2193,7 @@ function scoreGlyphInBox(imageData, box1080, vp, tpl) {
   return best
 }
 
-function classifyGlyph(imageData, box1080, vp, tplMap, allowedKeys = null) {
+export function classifyGlyph(imageData, box1080, vp, tplMap, allowedKeys = null) {
   const { width: W, height: H } = imageData
   const fx = vp.ox + box1080.x * vp.scale
   const fy = vp.oy + box1080.y * vp.scale
@@ -2197,7 +2230,7 @@ function offsetRect(base1080, sub) {
 /**
  * 计算武器卡片配件行在给定假设 (n 个配件格, 是否增强型) 下的各格 1080p 位置
  */
-function weaponModRowBoxes(cardRect1080, n, asc) {
+export function weaponModRowBoxes(cardRect1080, n, asc) {
   const C = WEAPON_CARD
   const modsW = n > 0 ? n * C.modBox + (n - 1) * C.modGap : 0
   const containerW = n > 0 ? modsW + C.modPad * 2 : 0
@@ -2475,7 +2508,7 @@ function identifyWeaponCard(imageData, cardRect1080, vp, db) {
 /**
  * 根据增强/配件格数量推断当前可见的配件槽位键序列（增强可移除指定位置的配件槽）
  */
-function resolveVisibleModSlotKeys(weaponMeta, amplified, visibleCount, ampIds = []) {
+export function resolveVisibleModSlotKeys(weaponMeta, amplified, visibleCount, ampIds = []) {
   const slots = weaponMeta?.modSlots || []
   if (!amplified || visibleCount >= slots.length) return slots.slice(0, visibleCount)
   const amps = weaponVisuals.weapons?.[weaponMeta.id]?.ascended?.amps || {}
@@ -2513,6 +2546,109 @@ function inferAmpIdsFromRemovedSlots(weaponMeta, visibleCount, knownAmpIds = [],
 }
 
 /**
+ * 识别武器卡片上单个 38x38 配件小格内的配件 ID
+ */
+function inspectSingleModSlot(imageData, box1080, vp, modMap, allowedSlots = null) {
+  const { data, width: W, height: H } = imageData
+  const frect = mapRectFloat(box1080, vp)
+  if (frect.x < 1 || frect.y < 1 || frect.x + frect.w >= W - 1 || frect.y + frect.h >= H - 1) {
+    return { occupied: false, modId: null, score: 0 }
+  }
+
+  const obs = sampleIconBoxBilerp(imageData, frect, 'modBox', MOD_W, MOD_H)
+  const rgb = [0, 0, 0]
+
+  // 采样小格右上深色背景基准亮度，用于识别灰底 Common 品质角标 (#a4a5aa)
+  const bgSamples = []
+  for (let by = 4; by <= 12; by += 4) {
+    for (let bx = 22; bx <= 34; bx += 4) {
+      bgSamples.push(
+        bilerpLum(
+          data,
+          W,
+          H,
+          vp.ox + (box1080.x + bx) * vp.scale,
+          vp.oy + (box1080.y + by) * vp.scale,
+        ),
+      )
+    }
+  }
+  const modBgLum = medianOf(bgSamples)
+
+  // 检测配件小格左下品质色标与高亮金属峰值（未装配占位灰标峰值 ~96-112 且无品质角标）
+  const votes = { Common: 0, Uncommon: 0, Rare: 0, Epic: 0, Legendary: 0 }
+  for (let wy = 24; wy <= 36; wy += 2) {
+    for (let wx = 1; wx <= 12; wx += 2) {
+      if ((wy - 24) / 12 - wx / 12 < 0) continue
+      bilerpRgb(
+        data,
+        W,
+        H,
+        vp.ox + (box1080.x + wx) * vp.scale,
+        vp.oy + (box1080.y + wy) * vp.scale,
+        rgb,
+      )
+      const r = rgb[0]
+      const g = rgb[1]
+      const b = rgb[2]
+      const lum = 0.299 * r + 0.587 * g + 0.114 * b
+      const mx = Math.max(r, g, b)
+      const sat = mx - Math.min(r, g, b)
+      if (sat >= 24 && mx >= 64) {
+        if (g > r + 18 && g >= b + 5) votes.Uncommon++
+        else if (b > r + 22 && g >= r - 10) votes.Rare++
+        else if (r > g + 18 && b > g + 12) votes.Epic++
+        else if (r > 125 && g > 85 && b < g - 20) votes.Legendary++
+      } else if (sat <= 20 && lum >= 82 && lum - modBgLum >= 44) {
+        votes.Common++
+      }
+    }
+  }
+
+  let modRarity = null
+  let bestCnt = 0
+  for (const [k, cnt] of Object.entries(votes)) {
+    if (cnt > bestCnt) {
+      bestCnt = cnt
+      modRarity = k
+    }
+  }
+  if (bestCnt < 2) modRarity = null
+
+  let peakLum = 0
+  for (let k = 0; k < obs.obsLum.length; k++) {
+    if (obs.obsLum[k] > peakLum) peakLum = obs.obsLum[k]
+  }
+
+  const modOccupied = modRarity !== null || peakLum >= 140
+  if (!modOccupied) {
+    return { occupied: false, modId: null, score: 0 }
+  }
+
+  const modState = {
+    occupied: true,
+    rarity: modRarity,
+    rarityConfident: modRarity !== null,
+  }
+  let bestModId = null
+  let bestModScore = -Infinity
+  for (const [mId, tpl] of modMap.entries()) {
+    if (allowedSlots && !allowedSlots.includes(tpl.meta.slot)) continue
+    const sc = scoreTemplateAgainstObs(obs, modState, tpl)
+    if (sc > bestModScore) {
+      bestModScore = sc
+      bestModId = mId
+    }
+  }
+
+  return {
+    occupied: true,
+    modId: bestModId && bestModScore >= 0.46 ? bestModId : null,
+    score: Number.isFinite(bestModScore) ? +bestModScore.toFixed(3) : 0,
+  }
+}
+
+/**
  * 识别武器卡片中部已装配的配件槽位 (38x38 @ 1080p, 居中排列在 y+115；增强型武器整体左移 20px)
  */
 function recognizeEquippedWeaponMods(
@@ -2526,118 +2662,92 @@ function recognizeEquippedWeaponMods(
   const allSlots = weaponMeta?.modSlots || []
   if (!allSlots.length || !modMap?.size) return {}
 
-  const { data, width: W, height: H } = imageData
   const slots = layoutOverride?.slotKeys || allSlots
   const n = slots.length
   const boxes = weaponModRowBoxes(weaponRect1080, n, Boolean(layoutOverride?.amplified)).mods
-  const rgb = [0, 0, 0]
   const mods = {}
 
   for (let idx = 0; idx < n; idx++) {
     const slotKey = slots[idx]
     const allowedSlots = MOD_SLOT_NORMALIZATION[slotKey] || [slotKey]
-    const box1080 = boxes[idx]
-    const frect = mapRectFloat(box1080, vp)
-    if (frect.x < 1 || frect.y < 1 || frect.x + frect.w >= W - 1 || frect.y + frect.h >= H - 1) {
-      continue
-    }
-
-    const obs = sampleIconBoxBilerp(imageData, frect, 'modBox', MOD_W, MOD_H)
-
-    // 采样小格右上深色背景基准亮度，用于识别灰底 Common 品质角标 (#a4a5aa)
-    const bgSamples = []
-    for (let by = 4; by <= 12; by += 4) {
-      for (let bx = 22; bx <= 34; bx += 4) {
-        bgSamples.push(
-          bilerpLum(
-            data,
-            W,
-            H,
-            vp.ox + (box1080.x + bx) * vp.scale,
-            vp.oy + (box1080.y + by) * vp.scale,
-          ),
-        )
-      }
-    }
-    const modBgLum = medianOf(bgSamples)
-
-    // 检测配件小格左下品质色标与高亮金属峰值（未装配占位灰标峰值 ~96-112 且无品质角标）
-    const votes = { Common: 0, Uncommon: 0, Rare: 0, Epic: 0, Legendary: 0 }
-    for (let wy = 24; wy <= 36; wy += 2) {
-      for (let wx = 1; wx <= 12; wx += 2) {
-        if ((wy - 24) / 12 - wx / 12 < 0) continue
-        bilerpRgb(
-          data,
-          W,
-          H,
-          vp.ox + (box1080.x + wx) * vp.scale,
-          vp.oy + (box1080.y + wy) * vp.scale,
-          rgb,
-        )
-        const r = rgb[0]
-        const g = rgb[1]
-        const b = rgb[2]
-        const lum = 0.299 * r + 0.587 * g + 0.114 * b
-        const mx = Math.max(r, g, b)
-        const sat = mx - Math.min(r, g, b)
-        if (sat >= 24 && mx >= 64) {
-          if (g > r + 18 && g >= b + 5) votes.Uncommon++
-          else if (b > r + 22 && g >= r - 10) votes.Rare++
-          else if (r > g + 18 && b > g + 12) votes.Epic++
-          else if (r > 125 && g > 85 && b < g - 20) votes.Legendary++
-        } else if (sat <= 20 && lum >= 82 && lum - modBgLum >= 44) {
-          votes.Common++
-        }
-      }
-    }
-
-    let modRarity = null
-    let bestCnt = 0
-    for (const [k, cnt] of Object.entries(votes)) {
-      if (cnt > bestCnt) {
-        bestCnt = cnt
-        modRarity = k
-      }
-    }
-    if (bestCnt < 2) modRarity = null
-
-    let peakLum = 0
-    for (let k = 0; k < obs.obsLum.length; k++) {
-      if (obs.obsLum[k] > peakLum) peakLum = obs.obsLum[k]
-    }
-
-    const modOccupied = modRarity !== null || peakLum >= 140
-    if (!modOccupied) continue
-
-    const modState = {
-      occupied: true,
-      rarity: modRarity,
-      rarityConfident: modRarity !== null,
-    }
-    let bestModId = null
-    let bestModScore = -Infinity
-    for (const [mId, tpl] of modMap.entries()) {
-      if (!allowedSlots.includes(tpl.meta.slot)) continue
-      const sc = scoreTemplateAgainstObs(obs, modState, tpl)
-      if (sc > bestModScore) {
-        bestModScore = sc
-        bestModId = mId
-      }
-    }
-
-    if (bestModId && bestModScore >= 0.46) {
-      mods[slotKey] = bestModId
+    const hit = inspectSingleModSlot(imageData, boxes[idx], vp, modMap, allowedSlots)
+    if (hit.modId) {
+      mods[slotKey] = hit.modId
     }
   }
 
   return mods
 }
 
+function resolveIdentifiedWeaponDetail(imageData, wRect1080, vp, db, wid) {
+  const wMeta = wid.meta
+  const maxTier = wMeta.tiers?.[wMeta.tiers.length - 1]?.tier || 1
+  let ampIds = []
+  let slotKeys = wMeta.modSlots || []
+  if (wid.amplified) {
+    const { upgrade } = weaponModRowBoxes(wRect1080, wid.layout.n, true)
+    const glyphAmpIds = recognizeAscendedUpgrade(imageData, upgrade, vp, wMeta, db).ampIds
+    const known = completeAmpIds(wMeta, [...(wid.visualAmpIds || []), ...glyphAmpIds])
+    const inferred = inferAmpIdsFromRemovedSlots(
+      wMeta,
+      wid.layout.n,
+      known,
+      wid.excludesAmpIds || [],
+    )
+    ampIds = completeAmpIds(wMeta, [...known, ...inferred])
+    slotKeys = resolveVisibleModSlotKeys(wMeta, true, wid.layout.n, ampIds)
+  }
+  const tier = wid.amplified ? maxTier : estimateWeaponTier(imageData, wRect1080, vp, maxTier)
+  const mods = recognizeEquippedWeaponMods(imageData, wRect1080, vp, wMeta, db.mods, {
+    amplified: wid.amplified,
+    slotKeys,
+  })
+  const boxes = weaponModRowBoxes(wRect1080, slotKeys.length, Boolean(wid.amplified)).mods
+  const modRectsBySlotKey = {}
+  for (let idx = 0; idx < slotKeys.length; idx++) {
+    modRectsBySlotKey[slotKeys[idx]] = boxes[idx]
+  }
+  return {
+    weapon: {
+      weaponId: wMeta.id,
+      tier,
+      ampIds,
+      amplified: wid.amplified,
+      mods,
+    },
+    slotKeys,
+    modRectsBySlotKey,
+  }
+}
+
+/**
+ * 单独识别已装备的主/副武器栏完整细节（身份 + 等级 + 已装配件 + 各配件格实时 1080p 坐标）
+ */
+export async function inspectEquippedWeaponSlotDetail(imageData, viewport, slotIndex) {
+  if (!imageData || !viewport) return null
+  const wRect1080 = slotIndex === 0 ? UMG_RECTS_1080P.weapon1 : UMG_RECTS_1080P.weapon2
+  const db = await ensureLoadoutTemplates()
+  const wid = identifyWeaponCard(imageData, wRect1080, viewport, db)
+  if (!wid?.occupied) return { occupied: false, identified: false }
+  if (!wid.identified) {
+    return { occupied: true, identified: false, loading: true, score: wid.score ?? 0 }
+  }
+  const detail = resolveIdentifiedWeaponDetail(imageData, wRect1080, viewport, db, wid)
+  return {
+    occupied: true,
+    identified: true,
+    score: wid.score,
+    ...detail.weapon,
+    slotKeys: detail.slotKeys,
+    modRectsBySlotKey: detail.modRectsBySlotKey,
+  }
+}
+
 /**
  * 从 ImageData 完整识别游戏内当前「战备」配装
  */
-export async function recognizeLoadoutFromImageData(imageData) {
-  const loc = locateLoadoutViewport(imageData)
+export async function recognizeLoadoutFromImageData(imageData, options = {}) {
+  const loc = locateLoadoutViewport(imageData, options)
   if (!loc.ok) return loc
 
   const vp = loc.viewport
@@ -2680,36 +2790,8 @@ export async function recognizeLoadoutFromImageData(imageData) {
       score: wid?.score ?? 0,
     }
     if (wid?.identified) {
-      const wMeta = wid.meta
-      const maxTier = wMeta.tiers?.[wMeta.tiers.length - 1]?.tier || 1
-      let ampIds = []
-      let slotKeys = wMeta.modSlots || []
-      if (wid.amplified) {
-        const { upgrade } = weaponModRowBoxes(wRect1080, wid.layout.n, true)
-        // 增强项证据融合：改变模型的缩略图版本 (瞄准镜/卡宾枪托/弹鼓) + 增强槽图标 + 被移除的配件格
-        const glyphAmpIds = recognizeAscendedUpgrade(imageData, upgrade, vp, wMeta, db).ampIds
-        const known = completeAmpIds(wMeta, [...(wid.visualAmpIds || []), ...glyphAmpIds])
-        const inferred = inferAmpIdsFromRemovedSlots(
-          wMeta,
-          wid.layout.n,
-          known,
-          wid.excludesAmpIds || [],
-        )
-        ampIds = completeAmpIds(wMeta, [...known, ...inferred])
-        slotKeys = resolveVisibleModSlotKeys(wMeta, true, wid.layout.n, ampIds)
-      }
-      const tier = wid.amplified ? maxTier : estimateWeaponTier(imageData, wRect1080, vp, maxTier)
-      const mods = recognizeEquippedWeaponMods(imageData, wRect1080, vp, wMeta, db.mods, {
-        amplified: wid.amplified,
-        slotKeys,
-      })
-      weapons[i] = {
-        weaponId: wMeta.id,
-        tier,
-        ampIds,
-        amplified: wid.amplified,
-        mods,
-      }
+      const detail = resolveIdentifiedWeaponDetail(imageData, wRect1080, vp, db, wid)
+      weapons[i] = detail.weapon
       slotConfidences[`weapon${i + 1}`] = wid.score
     }
   }
@@ -3069,6 +3151,16 @@ function findWeaponInStashGrid(imageData, viewport, targetId, db, opts = {}) {
       }
       if (rivalBeat) continue
 
+      // 武器阶级识别与偏好筛选（开启 syncWeaponTier 时优先选取仓库内达标高阶武器，避免用低阶覆盖高阶）
+      const maxWeaponTier = wMeta.tiers?.[wMeta.tiers.length - 1]?.tier || 1
+      let tileTier = opts.amplified === true ? maxWeaponTier : 1
+      if (opts.amplified !== true && maxWeaponTier > 1 && (opts.minTier > 1 || opts.strictMinTier > 1)) {
+        tileTier = estimateStashTileWeaponTier(imageData, r1080, viewport, maxWeaponTier)
+        if (opts.strictMinTier > 1 && tileTier < opts.strictMinTier) {
+          continue
+        }
+      }
+
       // 目标增强组合对应的视觉版本优先（同页存在多把同型增强武器时选中增强项一致者）
       const visualBonus = expected
         ? targetVariant === expected.variant
@@ -3079,8 +3171,18 @@ function findWeaponInStashGrid(imageData, viewport, targetId, db, opts = {}) {
             ? -0.04
             : 0
         : 0
+      const tierBonus =
+        opts.amplified !== true && (opts.minTier || 1) > 1
+          ? tileTier >= opts.minTier
+            ? 0.24
+            : tileTier * 0.04
+          : 0
       const rankScore =
-        targetScore + (ammo.confident ? 0.05 : 0) + (uniqueByCues ? 0.4 : 0) + visualBonus
+        targetScore +
+        (ammo.confident ? 0.05 : 0) +
+        (uniqueByCues ? 0.4 : 0) +
+        visualBonus +
+        tierBonus
       if (rankScore > bestScore) {
         const cellRect = mapRect(r1080, viewport)
         bestScore = rankScore
@@ -3089,6 +3191,7 @@ function findWeaponInStashGrid(imageData, viewport, targetId, db, opts = {}) {
           col,
           score: +targetScore.toFixed(3),
           variant: targetVariant,
+          tier: tileTier,
           count: 1,
           ammo: ammo.key,
           normX: +((cellRect.x + cellRect.w * 0.5) / W).toFixed(5),
@@ -3122,9 +3225,11 @@ export async function findTargetInStashGrid(
       ? db.augments
       : kind === 'shield'
         ? db.shields
-        : kind === 'weapon'
-          ? db.weapons
-          : db.items
+        : kind === 'mod'
+          ? db.modTiles
+          : kind === 'weapon'
+            ? db.weapons
+            : db.items
   const targetTpl = tplMap.get(targetId)
   if (!targetTpl) return null
 
@@ -3247,6 +3352,125 @@ export async function findTargetInStashGrid(
   }
 
   return bestCell
+}
+
+/**
+ * 单帧整页扫描储备箱，在一次截图中找出当前页所有可满足需求清单（demands: [{ targetId, neededCount, maxStack }]）的物品格子。
+ * 配合 Ctrl 多选 + Shift 批量快移使用：多选阶段仓库格子坐标完全冻结，无需逐个截屏重寻。
+ */
+export async function findBatchTargetsInStashGrid(imageData, viewport, demands) {
+  if (!imageData || !viewport || viewport.ox + 152 * viewport.scale < 0 || !demands?.length) {
+    return []
+  }
+  const db = await ensureLoadoutTemplates()
+  const demandMap = new Map()
+  for (const d of demands) {
+    if (!d?.targetId || (Number(d.neededCount) || 0) <= 0) continue
+    const tpl = db.items.get(d.targetId)
+    if (!tpl) continue
+    const prev = demandMap.get(d.targetId)
+    if (prev) {
+      prev.neededCount += Number(d.neededCount) || 1
+    } else {
+      demandMap.set(d.targetId, {
+        targetId: d.targetId,
+        neededCount: Number(d.neededCount) || 1,
+        maxStack: Number(d.maxStack) || tpl.meta?.maxStack || 1,
+        tpl,
+      })
+    }
+  }
+  if (!demandMap.size) return []
+
+  const { width: W, height: H } = imageData
+  const grid = UMG_RECTS_1080P.stashGrid
+  const rowOrigins = detectStashRowOrigins1080p(imageData, viewport)
+  const candidatesById = new Map()
+
+  for (let row = 0; row < rowOrigins.length; row++) {
+    const rowY = rowOrigins[row]
+    for (let col = 0; col < grid.cols; col++) {
+      const r1080 = {
+        x: grid.originX + col * grid.pitchX,
+        y: rowY,
+        w: grid.tileW,
+        h: grid.tileH,
+      }
+      const frect = mapRectFloat(r1080, viewport)
+      const state = analyzeCardState(imageData, frect, 'tile')
+      if (!state.occupied) continue
+
+      const obs = sampleIconBoxBilerp(imageData, frect, 'tile', SQ_W, SQ_H)
+
+      let bestId = null
+      let bestScore = -Infinity
+      for (const [tId, dem] of demandMap.entries()) {
+        const targetRarity = dem.tpl.meta?.rarity || null
+        if (state.rarityConfident && state.rarity && targetRarity && state.rarity !== targetRarity) {
+          continue
+        }
+        const sc = scoreTemplateAgainstObs(obs, state, dem.tpl)
+        if (sc > bestScore) {
+          bestScore = sc
+          bestId = tId
+        }
+      }
+      if (!bestId || bestScore < 0.54) continue
+
+      // 竞品消歧校验（与全部物品库比对，防止同品质外观近似物误入多选队列）
+      let rivalBeat = false
+      for (const [otherId, otherTpl] of db.items.entries()) {
+        if (otherId === bestId) continue
+        if (
+          state.rarityConfident &&
+          state.rarity &&
+          otherTpl.meta?.rarity &&
+          otherTpl.meta.rarity !== state.rarity
+        ) {
+          continue
+        }
+        const otherSc = scoreTemplateAgainstObs(obs, state, otherTpl)
+        if (otherSc > bestScore + 0.035) {
+          rivalBeat = true
+          break
+        }
+      }
+      if (rivalBeat) continue
+
+      const dem = demandMap.get(bestId)
+      const count =
+        dem.maxStack > 1
+          ? Math.max(1, recognizeTileStackCount(imageData, r1080, viewport, dem.maxStack) || 1)
+          : 1
+      const cellRect = mapRect(r1080, viewport)
+
+      if (!candidatesById.has(bestId)) candidatesById.set(bestId, [])
+      candidatesById.get(bestId).push({
+        row,
+        col,
+        targetId: bestId,
+        score: +bestScore.toFixed(3),
+        count,
+        normX: +((cellRect.x + cellRect.w * 0.5) / W).toFixed(5),
+        normY: +((cellRect.y + cellRect.h * 0.5) / H).toFixed(5),
+      })
+    }
+  }
+
+  const picked = []
+  for (const [tId, list] of candidatesById.entries()) {
+    const need = demandMap.get(tId)?.neededCount || 1
+    list.sort((a, b) => b.count - a.count || b.score - a.score)
+    let acc = 0
+    for (const c of list) {
+      if (acc >= need) break
+      picked.push(c)
+      acc += c.count
+    }
+  }
+
+  picked.sort((a, b) => a.row * 10 + a.col - (b.row * 10 + b.col))
+  return picked
 }
 
 /**
@@ -3590,13 +3814,35 @@ export async function verifyTargetSlotMatched(
       opts?.amplified === true || opts?.amplified === false
         ? wid.amplified === opts.amplified || !wid.layout?.confident
         : true
+    const weaponMatched = wid.weaponId === targetId && variantOk
+    const maxTier = wid.meta?.tiers?.[wid.meta.tiers.length - 1]?.tier || 1
+    const tier = wid.amplified
+      ? maxTier
+      : estimateWeaponTier(imageData, rect1080p, viewport, maxTier)
+    const tierMatched = opts?.minTier > 1 ? wid.amplified || tier >= opts.minTier : true
     return {
       occupied: true,
-      matched: wid.weaponId === targetId && variantOk,
+      matched: opts?.strictTierMatch ? weaponMatched && tierMatched : weaponMatched,
+      weaponMatched,
+      tier,
+      tierMatched,
       weaponId: wid.weaponId,
       amplified: wid.amplified,
       variant: wid.variant,
       score: wid.score,
+    }
+  }
+
+  if (kind === 'mod') {
+    const allowedSlots = opts?.modSlotKey
+      ? MOD_SLOT_NORMALIZATION[opts.modSlotKey] || [opts.modSlotKey]
+      : null
+    const modHit = inspectSingleModSlot(imageData, rect1080p, viewport, db.mods, allowedSlots)
+    return {
+      occupied: modHit.occupied,
+      matched: modHit.modId === targetId,
+      modId: modHit.modId,
+      score: modHit.score,
     }
   }
 
@@ -3640,15 +3886,39 @@ export async function verifyTargetSlotMatched(
     }
   }
 
+  const buildMatchedResult = (scoreVal, tpl) => {
+    if (cardType === 'tile') {
+      const maxStack = Math.max(1, Number(tpl?.meta?.maxStack) || 1)
+      const count =
+        maxStack > 1 ? recognizeTileStackCount(imageData, rect1080p, viewport, maxStack) : 1
+      const minCount = Math.max(1, Number(opts?.minCount) || 1)
+      const countMatched = count >= minCount
+      return {
+        occupied: true,
+        itemMatched: true,
+        count,
+        countMatched,
+        matched: countMatched,
+        score: +scoreVal.toFixed(3),
+      }
+    }
+    return {
+      occupied: true,
+      itemMatched: true,
+      matched: true,
+      score: +scoreVal.toFixed(3),
+    }
+  }
+
   if (bestId === targetId && bestScore >= 0.42) {
-    return { occupied: true, matched: true, score: +bestScore.toFixed(3) }
+    return buildMatchedResult(bestScore, candidateMap.get(targetId))
   }
 
   const targetTpl = candidateMap.get(targetId)
   if (targetTpl) {
     const directScore = scoreTemplateAgainstObs(obs, state, targetTpl)
     if (directScore >= 0.56 && bestScore - directScore < 0.035) {
-      return { occupied: true, matched: true, score: +directScore.toFixed(3) }
+      return buildMatchedResult(directScore, targetTpl)
     }
   }
 

@@ -1,0 +1,2518 @@
+{
+  "version": 1,
+  "stations": {
+    "workbench": {
+      "id": "workbench",
+      "zhName": "基础工作台"
+    },
+    "gunsmith": {
+      "id": "gunsmith",
+      "zhName": "武器工作台"
+    },
+    "gear_bench": {
+      "id": "gear_bench",
+      "zhName": "装备工作台"
+    },
+    "medical_lab": {
+      "id": "medical_lab",
+      "zhName": "医疗实验室"
+    },
+    "explosives_station": {
+      "id": "explosives_station",
+      "zhName": "爆炸物工作台"
+    },
+    "utility_station": {
+      "id": "utility_station",
+      "zhName": "工具工作台"
+    },
+    "refiner": {
+      "id": "refiner",
+      "zhName": "精加工机"
+    }
+  },
+  "traders": {
+    "tian_wen": {
+      "id": "tian_wen",
+      "zhName": "天玟",
+      "shopZh": "枪械商店"
+    },
+    "lance": {
+      "id": "lance",
+      "zhName": "兰斯",
+      "shopZh": "诊所"
+    },
+    "apollo": {
+      "id": "apollo",
+      "zhName": "阿波罗",
+      "shopZh": "手雷和小道具"
+    },
+    "shani": {
+      "id": "shani",
+      "zhName": "萨尼",
+      "shopZh": "安保区"
+    }
+  },
+  "shields": {
+    "light": {
+      "workshop": {
+        "stationId": "gear_bench",
+        "stationZh": "装备工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": true
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "medium": {
+      "workshop": {
+        "stationId": "gear_bench",
+        "stationZh": "装备工作台",
+        "minLevel": 2,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "heavy": {
+      "workshop": {
+        "stationId": "gear_bench",
+        "stationZh": "装备工作台",
+        "minLevel": 2,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    }
+  },
+  "augments": {
+    "combat_mk1": {
+      "workshop": {
+        "stationId": "gear_bench",
+        "stationZh": "装备工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "combat_mk2": {
+      "workshop": {
+        "stationId": "gear_bench",
+        "stationZh": "装备工作台",
+        "minLevel": 2,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "combat_mk3_aggressive": {
+      "workshop": {
+        "stationId": "gear_bench",
+        "stationZh": "装备工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-augment-combatmk3aggressive",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "combat_mk3_flanking": {
+      "workshop": {
+        "stationId": "gear_bench",
+        "stationZh": "装备工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-augment-combatmk3flanking",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "tactical_mk1": {
+      "workshop": {
+        "stationId": "gear_bench",
+        "stationZh": "装备工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "tactical_mk2": {
+      "workshop": {
+        "stationId": "gear_bench",
+        "stationZh": "装备工作台",
+        "minLevel": 2,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "tactical_mk3_defensive": {
+      "workshop": {
+        "stationId": "gear_bench",
+        "stationZh": "装备工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-augment-tacticalmk3defensive",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "tactical_mk3_healing": {
+      "workshop": {
+        "stationId": "gear_bench",
+        "stationZh": "装备工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-augment-tacticalmk3healing",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "tactical_mk3_smoke": {
+      "workshop": {
+        "stationId": "gear_bench",
+        "stationZh": "装备工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-augment-tacticalmk3smoke",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "tactical_mk3_revival": {
+      "workshop": {
+        "stationId": "gear_bench",
+        "stationZh": "装备工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-augment-tacticalmk3revival",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "looting_mk1": {
+      "workshop": {
+        "stationId": "gear_bench",
+        "stationZh": "装备工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": true
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "looting_mk2": {
+      "workshop": {
+        "stationId": "gear_bench",
+        "stationZh": "装备工作台",
+        "minLevel": 2,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "looting_mk3_cautious": {
+      "workshop": {
+        "stationId": "gear_bench",
+        "stationZh": "装备工作台",
+        "minLevel": 3,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "looting_mk3_survivor": {
+      "workshop": {
+        "stationId": "gear_bench",
+        "stationZh": "装备工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-augment-lootingmk3survivor",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "looting_mk3_safekeeper": {
+      "workshop": {
+        "stationId": "gear_bench",
+        "stationZh": "装备工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-augment-lootingmk3safekeeper",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    }
+  },
+  "weapons": {
+    "kettle": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": true
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "rattler": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": true,
+        "blueprintId": "bp-weapon-rattler",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "arpeggio": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-weapon-arpeggio",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "tempest": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-wpn-tempest",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "bettina": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-wpn-bettina",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "ferro": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": true
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "stiletto": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": true,
+        "blueprintId": "bp-weapon-stiletto",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "renegade": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "aphelion": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-wpn-aphelion",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "stitcher": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": true
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "canto": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-weapon-canto",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "bobcat": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-wpn-bobcat",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "il_toro": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": true,
+        "blueprintId": "bp-wpn-il-toro",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "vulcano": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-wpn-vulcano",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "dolabra": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-weapon-dolabra",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "hairpin": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": true
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "burletta": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": true,
+        "blueprintId": "bp-wpn-burletta",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "venator": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-wpn-venator",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "bantam": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": true,
+        "blueprintId": "bp-weapon-bantam",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "anvil": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-wpn-anvil",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "torrente": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-wpn-torrente",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "osprey": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-wpn-osprey",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "jupiter": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-wpn-jupiter",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "rascal": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-weapon-rascal",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "hullcracker": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-wpn-hullcracker",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "equalizer": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-wpn-equalizer",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    }
+  },
+  "weaponMods": {
+    "angled-grip-i": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "angled-grip-ii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-angledgripii",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "angled-grip-iii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-angledgripiii",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "compensator-i": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "compensator-ii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-compensatorii",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "compensator-iii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-comp3",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "extended-barrel-i": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "extended-barrel-ii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-extendedbarrelii",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "extended-barrel-iii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-extbarrel3",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "extended-light-mag-i": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "extended-light-mag-ii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-extendedlightmagii",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "extended-light-mag-iii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-extendedlightmagiii",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "extended-medium-mag-i": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "extended-medium-mag-ii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-extendedmediummagii",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "extended-medium-mag-iii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-medmag3",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "extended-shotgun-mag-i": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "extended-shotgun-mag-ii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-extendedshotgunmagii",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "extended-shotgun-mag-iii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-extendedshotgunmagiii",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "horizontal-grip": {
+      "workshop": null,
+      "trader": null
+    },
+    "kinetic-converter": {
+      "workshop": null,
+      "trader": null
+    },
+    "lightweight-stock": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-lightweightstock",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "muzzle-brake-i": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "muzzle-brake-ii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-muzzlebrakeii",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "muzzle-brake-iii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-muzzlebrakeiii",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "padded-stock": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-paddedstock",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "shotgun-choke-i": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "shotgun-choke-ii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-weapon-shotgunchokeii",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "shotgun-choke-iii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-weapon-shotgunchokeiii",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "shotgun-silencer": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-weapon-shotgunsilencer",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "silencer-i": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-silenceri",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "silencer-ii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-silencerii",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "silencer-iii": {
+      "workshop": null,
+      "trader": null
+    },
+    "stable-stock-i": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "stable-stock-ii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-stablestockii",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "stable-stock-iii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-stablestockiii",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "vertical-grip-i": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "vertical-grip-ii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-verticalgripii",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "vertical-grip-iii": {
+      "workshop": {
+        "stationId": "gunsmith",
+        "stationZh": "武器工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-mod-verticalgripiii",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    }
+  },
+  "items": {
+    "LightAmmo": {
+      "workshop": {
+        "stationId": "workbench",
+        "stationZh": "基础工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 25,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 25,
+        "limited": false
+      }
+    },
+    "MediumAmmo": {
+      "workshop": {
+        "stationId": "workbench",
+        "stationZh": "基础工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 20,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 20,
+        "limited": false
+      }
+    },
+    "HeavyAmmo": {
+      "workshop": {
+        "stationId": "workbench",
+        "stationZh": "基础工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 10,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 10,
+        "limited": false
+      }
+    },
+    "ShotgunAmmo": {
+      "workshop": {
+        "stationId": "workbench",
+        "stationZh": "基础工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 5,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 5,
+        "limited": false
+      }
+    },
+    "EnergyAmmo": {
+      "workshop": {
+        "stationId": "workbench",
+        "stationZh": "基础工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "LauncherAmmo": {
+      "workshop": {
+        "stationId": "workbench",
+        "stationZh": "基础工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 6,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "tian_wen",
+        "traderZh": "天玟",
+        "shopZh": "枪械商店",
+        "currency": "coins",
+        "bundleCount": 6,
+        "limited": true
+      }
+    },
+    "Consumable_ShieldOverTimePack": {
+      "workshop": {
+        "stationId": "medical_lab",
+        "stationZh": "医疗实验室",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": true
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "Armorpack": {
+      "workshop": {
+        "stationId": "medical_lab",
+        "stationZh": "医疗实验室",
+        "minLevel": 2,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "HealingHoT_Small": {
+      "workshop": {
+        "stationId": "medical_lab",
+        "stationZh": "医疗实验室",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": true
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "HealingHoT_Improvised": {
+      "workshop": {
+        "stationId": "medical_lab",
+        "stationZh": "医疗实验室",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "HealingHoT_Medium": {
+      "workshop": {
+        "stationId": "medical_lab",
+        "stationZh": "医疗实验室",
+        "minLevel": 2,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "HealthPack_01": {
+      "workshop": {
+        "stationId": "medical_lab",
+        "stationZh": "医疗实验室",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-gadget-vitashot",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "HealthSpray": {
+      "workshop": {
+        "stationId": "medical_lab",
+        "stationZh": "医疗实验室",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-item-vitaspray",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Defibrillator": {
+      "workshop": {
+        "stationId": "medical_lab",
+        "stationZh": "医疗实验室",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-gadget-defibrillator",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "AdrenalinShot": {
+      "workshop": {
+        "stationId": "medical_lab",
+        "stationZh": "医疗实验室",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "lance",
+        "traderZh": "兰斯",
+        "shopZh": "诊所",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "HEGrenade": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 3,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "StickyRemoteGrenade": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-item-triggernade",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "BasicStickyGrenade": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 2,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "ScatterMissileGrenade": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-item-wolfpack",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "DoTGrenade": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-throwable-blazegrenade",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "SmokeGrenade": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-throwable-smokegrenade",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "StunGrenade": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-throwable-showstopper",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "HomingMissileGrenade": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 1,
+        "blueprintRequired": true,
+        "blueprintId": "bp-throwable-seekergrenade",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Throwable_ShrapnelGrenade": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 2,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "Throwable_ImpactGrenade_Small": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": true
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "Throwable_SmokeGrenade_Small": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "Throwable_StaminaDoTGrenade": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "Throwable_TaggingGrenade": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-throwable-tagginggrenade",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "ThrowableDecoy": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-item-lure",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "Throwable_TetherGrenade": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-throwable-yankgrenade",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Throwable_Trailblazer": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-throwable-trailblazer",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "CrashPad": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 1,
+        "blueprintRequired": true,
+        "blueprintId": "bp-throwable-crashmat",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "TimedMine_Explosive": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-item-deadline",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "Deployable_JumpMine_Explosive": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-throwable-explosivemine",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "JoltMine": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-throwable-joltmine",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "DeployableBarricade": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 1,
+        "blueprintRequired": true,
+        "blueprintId": "bp-gadget-barricadekit",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "Zipline": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 2,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "DoorBlocker": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 1,
+        "blueprintRequired": true,
+        "blueprintId": "bp-gadget-doorblocker",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "EmitterTrap_TeslaCoil": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-gadget-surgecoil",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "JumpMine_Impulse": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 1,
+        "blueprintRequired": true,
+        "blueprintId": "bp-throwable-pulsemine",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "JumpMine_StaminaDoT": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 1,
+        "blueprintRequired": true,
+        "blueprintId": "bp-throwable-gasmine",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "LaserTrap_DoTGrenade": {
+      "workshop": {
+        "stationId": "workbench",
+        "stationZh": "基础工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "LaserTrap_SmokeGrenade": {
+      "workshop": {
+        "stationId": "workbench",
+        "stationZh": "基础工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "SnapHook": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-item-snaphook",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "GrapplingHook": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 1,
+        "blueprintRequired": true,
+        "blueprintId": "bp-gadget-grapplinghook",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "ARCFriendifierGadgetV2": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 3,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "TetherGun": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-gadget-tetherlauncher",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "PoweredDescender": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-gadget-powereddescender",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "CommonBinoculars": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "shani",
+        "traderZh": "萨尼",
+        "shopZh": "安保区",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "KeyItem_RaiderHatchKey": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 2,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "shani",
+        "traderZh": "萨尼",
+        "shopZh": "安保区",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": true
+      }
+    },
+    "Firecrackers": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "shani",
+        "traderZh": "萨尼",
+        "shopZh": "安保区",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "Throwable_Glowstick_Red": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-throwable-redlightstick",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "Throwable_Glowstick_Yellow": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-item-yellowlight",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "Throwable_Glowstick_Blue": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-throwable-bluelightstick",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "Throwable_Glowstick_Green": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-throwable-greenlightstick",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "Salvage_ExplosiveMixture": {
+      "workshop": {
+        "stationId": "refiner",
+        "stationZh": "精加工机",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "RemoteTrap_FireworkBox": {
+      "workshop": {
+        "stationId": "explosives_station",
+        "stationZh": "爆炸物工作台",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-item-fireworks",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "LaserTrap_ThrowableDecoy": {
+      "workshop": {
+        "stationId": "workbench",
+        "stationZh": "基础工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "WhiteFlag": {
+      "workshop": {
+        "stationId": "medical_lab",
+        "stationZh": "医疗实验室",
+        "minLevel": 1,
+        "blueprintRequired": true,
+        "blueprintId": "bp-gadget-whiteflag",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Deployable_SoundTrap": {
+      "workshop": null,
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "LaserTrap_StaminaDoT": {
+      "workshop": {
+        "stationId": "workbench",
+        "stationZh": "基础工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Deployable_RemoteFlareTrap": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 1,
+        "blueprintRequired": true,
+        "blueprintId": "bp-gadget-remoteraiderflare",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": {
+        "traderId": "apollo",
+        "traderZh": "阿波罗",
+        "shopZh": "手雷和小道具",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "Camera": {
+      "workshop": {
+        "stationId": "utility_station",
+        "stationZh": "工具工作台",
+        "minLevel": 1,
+        "blueprintRequired": true,
+        "blueprintId": "bp-gadget-advancedcamera",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "BasicCamera": {
+      "workshop": {
+        "stationId": "workbench",
+        "stationZh": "基础工作台",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Gadget_Instrument_Flute": {
+      "workshop": null,
+      "trader": {
+        "traderId": "shani",
+        "traderZh": "萨尼",
+        "shopZh": "安保区",
+        "currency": "coins",
+        "bundleCount": 1,
+        "limited": false
+      }
+    },
+    "Salvage_CollectorKey_01": {
+      "workshop": {
+        "stationId": "workbench",
+        "stationZh": "基础工作台",
+        "minLevel": 1,
+        "blueprintRequired": true,
+        "blueprintId": "bp-gadget-emperorgatewayconduit",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Salvage_MagneticAccelerator": {
+      "workshop": {
+        "stationId": "refiner",
+        "stationZh": "精加工机",
+        "minLevel": 3,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Salvage_ComplexGunParts": {
+      "workshop": {
+        "stationId": "refiner",
+        "stationZh": "精加工机",
+        "minLevel": 3,
+        "blueprintRequired": true,
+        "blueprintId": "bp-material-complexgunparts",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Salvage_PowerRod": {
+      "workshop": {
+        "stationId": "refiner",
+        "stationZh": "精加工机",
+        "minLevel": 3,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Salvage_AntiSeptic": {
+      "workshop": {
+        "stationId": "refiner",
+        "stationZh": "精加工机",
+        "minLevel": 2,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Salvage_ModComponents": {
+      "workshop": {
+        "stationId": "refiner",
+        "stationZh": "精加工机",
+        "minLevel": 2,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Salvage_AdvancedElectricalComponents": {
+      "workshop": {
+        "stationId": "refiner",
+        "stationZh": "精加工机",
+        "minLevel": 2,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Salvage_AdvancedGunParts": {
+      "workshop": {
+        "stationId": "refiner",
+        "stationZh": "精加工机",
+        "minLevel": 2,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Salvage_LightGunParts": {
+      "workshop": {
+        "stationId": "refiner",
+        "stationZh": "精加工机",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-material-lightgunparts",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Salvage_RefinedExplosives": {
+      "workshop": {
+        "stationId": "refiner",
+        "stationZh": "精加工机",
+        "minLevel": 2,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Salvage_MediumGunParts": {
+      "workshop": {
+        "stationId": "refiner",
+        "stationZh": "精加工机",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-material-mediumgunparts",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Salvage_Mat_HeavyGunParts": {
+      "workshop": {
+        "stationId": "refiner",
+        "stationZh": "精加工机",
+        "minLevel": 2,
+        "blueprintRequired": true,
+        "blueprintId": "bp-material-heavygunparts",
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Salvage_Mat_ArcCircuitBoard": {
+      "workshop": {
+        "stationId": "refiner",
+        "stationZh": "精加工机",
+        "minLevel": 2,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Salvage_Mat_ArcMechanism": {
+      "workshop": {
+        "stationId": "refiner",
+        "stationZh": "精加工机",
+        "minLevel": 2,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Salvage_ElectricalComponents": {
+      "workshop": {
+        "stationId": "refiner",
+        "stationZh": "精加工机",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Salvage_MechanicalComponents": {
+      "workshop": {
+        "stationId": "refiner",
+        "stationZh": "精加工机",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    },
+    "Salvage_WovenCloth": {
+      "workshop": {
+        "stationId": "refiner",
+        "stationZh": "精加工机",
+        "minLevel": 1,
+        "blueprintRequired": false,
+        "blueprintId": null,
+        "outputCount": 1,
+        "fallbackWorkbenchLv1": false
+      },
+      "trader": null
+    }
+  }
+}

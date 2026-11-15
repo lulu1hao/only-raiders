@@ -40,6 +40,8 @@ const {
   refreshGameWindowStatus,
   runPrecheckInGameState,
   weaponLoadWaitSec,
+  syncOptions,
+  RESTOCK_POLICY_OPTIONS,
 } = useRaiderLoadoutSync(store, {
   currentLabelPrefix: '当前战备',
   onBeforeProcess: () => {
@@ -58,6 +60,7 @@ const liveDiff = computed(() => {
   return analyzeLoadoutSyncDiff(
     precheckInGameLoadout.value,
     activeTargetSource.value.loadout,
+    syncOptions.value,
   )
 })
 
@@ -91,6 +94,7 @@ async function handleStartAutoSync() {
     const res = await runLoadoutAutoSyncSession({
       targetLoadout: src.loadout,
       weaponLoadWaitMs: Math.round((Number(weaponLoadWaitSec.value) || 0) * 1000),
+      syncOptions: syncOptions.value,
       onProgress(ev) {
         if (ev?.message) rt.value.text = ev.message
         if (typeof ev?.progressPct === 'number') rt.value.progressPct = ev.progressPct
@@ -298,6 +302,76 @@ onBeforeUnmount(() => {
             <b class="ar-num">{{ Number(weaponLoadWaitSec).toFixed(1) }}s</b>
           </div>
 
+          <div v-if="isDesktop" class="orl-sync-opts">
+            <div class="orl-chk-grid">
+              <label class="orl-chk" title="开启后将校对武器 I~IV 等阶，优先取仓库高阶武器或在工坊武器台自动升阶（默认关闭）">
+                <input
+                  v-model="syncOptions.syncWeaponTier"
+                  type="checkbox"
+                  :disabled="rt.running"
+                />
+                <span>匹配武器等级 (I~IV)</span>
+              </label>
+              <label class="orl-chk" title="开启后将核对并同步武器枪口/弹匣/枪托/握把等配件（默认关闭）">
+                <input
+                  v-model="syncOptions.syncWeaponMods"
+                  type="checkbox"
+                  :disabled="rt.running"
+                />
+                <span>同步武器配件</span>
+              </label>
+              <label class="orl-chk wide" title="仓库找不到缺失物品时，自动前往商人购买或工坊制造（跳过游牧使团与以物易物项）">
+                <input
+                  v-model="syncOptions.autoRestockEnabled"
+                  type="checkbox"
+                  :disabled="rt.running"
+                />
+                <span>仓库缺失时自动补货 (商人/工坊)</span>
+              </label>
+            </div>
+
+            <div v-if="syncOptions.autoRestockEnabled" class="orl-restock-sub">
+              <select
+                v-model="syncOptions.restockSourcePolicy"
+                class="orl-select"
+                :disabled="rt.running"
+              >
+                <option
+                  v-for="opt in RESTOCK_POLICY_OPTIONS"
+                  :key="opt.value"
+                  :value="opt.value"
+                >
+                  {{ opt.label }}
+                </option>
+              </select>
+              <div class="orl-chk-grid">
+                <label
+                  class="orl-chk"
+                  :class="{ disabled: syncOptions.restockSourcePolicy === 'workshop_only' }"
+                  title="弹药默认优先在枪械商人「天纹」处成组购买，节省工作台材料"
+                >
+                  <input
+                    v-model="syncOptions.ammoPreferTrader"
+                    type="checkbox"
+                    :disabled="rt.running || syncOptions.restockSourcePolicy === 'workshop_only'"
+                  />
+                  <span>弹药优先商人</span>
+                </label>
+                <label
+                  class="orl-chk"
+                  title="结合本软件「工坊升级 / 蓝图追踪」档案，预筛尚未解锁的工作台配方与蓝图"
+                >
+                  <input
+                    v-model="syncOptions.respectLocalProgression"
+                    type="checkbox"
+                    :disabled="rt.running"
+                  />
+                  <span>按工坊/蓝图档案预筛</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
           <div v-if="isDesktop" class="orl-btn-row">
             <button
               type="button"
@@ -315,7 +389,7 @@ onBeforeUnmount(() => {
               :disabled="!liveDiff?.totalTargetSlots"
               @click="handleStartAutoSync"
             >
-              仓库辅助自动配装
+              {{ syncOptions.autoRestockEnabled ? '自动补货并配装' : '仓库辅助自动配装' }}
             </button>
             <button
               v-else
@@ -358,8 +432,11 @@ onBeforeUnmount(() => {
                 <small>{{ e.slotLabel }}</small>
                 <strong>{{ e.targetName }}</strong>
               </div>
-              <div v-if="e.subTags?.length" class="osr-sub">
-                {{ e.subTags.slice(0, 3).join(' · ') }}
+              <div v-if="e.subTags?.length || (!e.matched && e.restockBadge)" class="osr-sub">
+                <span v-if="!e.matched && e.restockBadge" class="osr-restock-tag">
+                  {{ e.restockBadge }}
+                </span>
+                <span v-if="e.subTags?.length">{{ e.subTags.slice(0, 3).join(' · ') }}</span>
               </div>
             </div>
             <em class="ar-num">{{ e.matched ? '✓' : e.badge }}</em>
@@ -796,5 +873,66 @@ onBeforeUnmount(() => {
   object-fit: cover;
   border-radius: 3px;
   border: 1px solid var(--line);
+}
+
+.orl-sync-opts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  background: rgba(9, 12, 25, 0.55);
+  border: 1px solid var(--line);
+}
+
+.orl-chk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px 8px;
+}
+
+.orl-chk {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--cream);
+  cursor: pointer;
+  user-select: none;
+}
+
+.orl-chk.wide {
+  grid-column: 1 / -1;
+}
+
+.orl-chk.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.orl-chk input {
+  margin: 0;
+  accent-color: #2ce8f5;
+  cursor: inherit;
+}
+
+.orl-restock-sub {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--line);
+}
+
+.osr-restock-tag {
+  display: inline-block;
+  margin-right: 5px;
+  padding: 0 4px;
+  border-radius: 3px;
+  background: rgba(44, 232, 245, 0.14);
+  border: 1px solid rgba(44, 232, 245, 0.35);
+  color: #5fffff;
+  font-size: 9.5px;
+  font-weight: 700;
 }
 </style>
