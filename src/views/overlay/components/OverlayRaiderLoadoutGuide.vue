@@ -1,9 +1,11 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useOverlayWindowStore } from '../../../stores/useOverlayWindowStore'
+import { useRaiderSyncOptions } from '../../../composables/useRaiderLoadoutSync'
 import { analyzeLoadoutSyncDiff } from '../../../utils/raiderLoadoutSyncPlanner'
 
 const overlayStore = useOverlayWindowStore()
+const { syncOptions } = useRaiderSyncOptions()
 
 const vw = ref(typeof window !== 'undefined' ? window.innerWidth : 1920)
 const vh = ref(typeof window !== 'undefined' ? window.innerHeight : 1080)
@@ -47,7 +49,11 @@ const guideSpec = computed(() => overlayStore.raiderGuideSpec)
 const diffPlan = computed(() => {
   const spec = guideSpec.value
   if (!spec?.targetLoadout) return null
-  return analyzeLoadoutSyncDiff(spec.inGameLoadout || null, spec.targetLoadout)
+  return analyzeLoadoutSyncDiff(
+    spec.inGameLoadout || null,
+    spec.targetLoadout,
+    spec.syncOptions || syncOptions.value,
+  )
 })
 
 const projectedBoxes = computed(() => {

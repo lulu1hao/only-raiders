@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useRaiderStore } from '../../stores/useRaiderStore'
+import { useGlidingNavIndicator } from '../../composables/useGlidingNavIndicator'
 
 const route = useRoute()
 const router = useRouter()
@@ -13,18 +14,41 @@ const navTabs = [
   { id: 'skills', label: '天赋树', path: '/raider/skills' },
   { id: 'loadout', label: '战备', path: '/raider/loadout' },
 ]
+
+const {
+  navRef,
+  setTabRef,
+  onTabPointerEnter,
+  onNavPointerLeave,
+  railStyle,
+  glowStyle,
+  hoverPillStyle,
+} = useGlidingNavIndicator({
+  activeId: activeSubTab,
+  items: navTabs,
+  insetLeft: 16,
+  insetRight: 16,
+  pillInset: 5,
+  defaultRgb: [95, 255, 255],
+})
 </script>
 
 <template>
   <div class="raider-shell">
     <header class="raider-subnav">
-      <nav class="rsn-tabs" aria-label="奇袭者分区导航">
+      <nav ref="navRef" class="rsn-tabs" aria-label="奇袭者分区导航" @pointerleave="onNavPointerLeave">
+        <span class="rsn-hover-pill" :style="hoverPillStyle" aria-hidden="true" />
+        <span class="rsn-active-glow" :style="glowStyle" aria-hidden="true" />
         <button
           v-for="tab in navTabs"
           :key="tab.id"
+          :ref="(el) => setTabRef(tab.id, el)"
           type="button"
           class="rsn-tab"
           :class="{ active: activeSubTab === tab.id }"
+          @pointerenter="onTabPointerEnter(tab.id)"
+          @focus="onTabPointerEnter(tab.id)"
+          @blur="onNavPointerLeave"
           @click="router.push(tab.path)"
         >
           <span class="rsn-label">{{ tab.label }}</span>
@@ -32,6 +56,7 @@ const navTabs = [
             {{ raiderStore.totalSpentPoints }}/{{ raiderStore.maxSkillPoints }}P
           </em>
         </button>
+        <span class="rsn-active-rail" :style="railStyle" aria-hidden="true" />
       </nav>
 
       <div v-if="activeSubTab === 'skills'" class="rsn-right">
@@ -79,13 +104,63 @@ const navTabs = [
 }
 
 .rsn-tabs {
+  position: relative;
   display: flex;
   align-items: stretch;
   gap: 4px;
+  margin-left: -10px;
+}
+
+.rsn-hover-pill {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 0;
+  border-radius: 6px;
+  background: linear-gradient(
+    180deg,
+    rgba(249, 238, 223, 0.075) 0%,
+    rgba(249, 238, 223, 0.03) 100%
+  );
+  border: 1px solid rgba(249, 238, 223, 0.11);
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform, width, opacity;
+}
+
+.rsn-active-glow {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 0;
+  border-radius: 6px;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(var(--nav-accent-rgb, 95, 255, 255), 0.07) 0%,
+    rgba(var(--nav-accent-rgb, 95, 255, 255), 0.16) 100%
+  );
+  border: 1px solid rgba(var(--nav-accent-rgb, 95, 255, 255), 0.26);
+  will-change: transform, width, opacity;
+}
+
+.rsn-active-rail {
+  position: absolute;
+  left: 0;
+  bottom: 5px;
+  height: 2px;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 2;
+  background: rgb(var(--nav-accent-rgb, 95, 255, 255));
+  box-shadow: 0 0 8px rgba(var(--nav-accent-rgb, 95, 255, 255), 0.55);
+  will-change: transform, width, opacity;
 }
 
 .rsn-tab {
   position: relative;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -98,40 +173,25 @@ const navTabs = [
   font-weight: 800;
   letter-spacing: 0.06em;
   cursor: pointer;
-  transition: color 0.15s var(--ease);
+  transition: color 0.2s var(--ease);
 }
 
-.rsn-tab:first-child {
-  padding-left: 4px;
+.rsn-label {
+  display: inline-block;
+  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .rsn-tab:hover {
   color: var(--tx-1);
 }
 
+.rsn-tab:hover .rsn-label,
+.rsn-tab.active .rsn-label {
+  transform: translateY(-0.5px);
+}
+
 .rsn-tab.active {
   color: var(--cream);
-}
-
-.rsn-tab::after {
-  content: '';
-  position: absolute;
-  left: 14px;
-  right: 14px;
-  bottom: -1px;
-  height: 2.5px;
-  background: var(--c-raider);
-  box-shadow: 0 0 8px rgba(95, 255, 255, 0.45);
-  transform: scaleX(0);
-  transition: transform 0.18s var(--ease-out);
-}
-
-.rsn-tab:first-child::after {
-  left: 4px;
-}
-
-.rsn-tab.active::after {
-  transform: scaleX(1);
 }
 
 .rsn-badge {
@@ -144,11 +204,22 @@ const navTabs = [
   font-size: 11px;
   font-weight: 700;
   color: var(--tx-3);
+  transition:
+    border-color 0.22s var(--ease),
+    color 0.22s var(--ease);
 }
 
 .rsn-tab.active .rsn-badge {
   border-color: rgba(95, 255, 255, 0.38);
   color: var(--c-raider);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rsn-tab,
+  .rsn-label,
+  .rsn-badge {
+    transition: none;
+  }
 }
 
 .rsn-right {

@@ -2532,7 +2532,7 @@ function selectQuestInMap(quest) {
 .tactical-detail-shell {
   flex: 1;
   min-height: 0;
-  height: calc(100vh - 56px);
+  height: calc(100vh - var(--topbar-h, 42px));
   display: flex;
   flex-direction: column;
   background: #080b12;

@@ -132,6 +132,60 @@ mod win32 {
         ) -> i32;
     }
 
+    #[link(name = "dwmapi")]
+    extern "system" {
+        pub fn DwmSetWindowAttribute(
+            hwnd: *mut c_void,
+            dw_attribute: u32,
+            pv_attribute: *const c_void,
+            cb_attribute: u32,
+        ) -> i32;
+    }
+
+    pub fn apply_dark_frameless_chrome(hwnd_ptr: *mut c_void) {
+        if hwnd_ptr.is_null() {
+            return;
+        }
+        const DWMWA_USE_IMMERSIVE_DARK_MODE: u32 = 20;
+        const DWMWA_USE_IMMERSIVE_DARK_MODE_LEGACY: u32 = 19;
+        const DWMWA_BORDER_COLOR: u32 = 34;
+        const DWMWA_CAPTION_COLOR: u32 = 35;
+
+        let dark_mode: i32 = 1;
+        // COLORREF uses 0x00BBGGRR: #090c19 -> 0x00190C09, #151a2b -> 0x002B1A15
+        let caption_color: u32 = 0x0019_0C09;
+        let border_color: u32 = 0x002B_1A15;
+
+        unsafe {
+            let hr = DwmSetWindowAttribute(
+                hwnd_ptr,
+                DWMWA_USE_IMMERSIVE_DARK_MODE,
+                &dark_mode as *const i32 as *const c_void,
+                std::mem::size_of::<i32>() as u32,
+            );
+            if hr != 0 {
+                let _ = DwmSetWindowAttribute(
+                    hwnd_ptr,
+                    DWMWA_USE_IMMERSIVE_DARK_MODE_LEGACY,
+                    &dark_mode as *const i32 as *const c_void,
+                    std::mem::size_of::<i32>() as u32,
+                );
+            }
+            let _ = DwmSetWindowAttribute(
+                hwnd_ptr,
+                DWMWA_CAPTION_COLOR,
+                &caption_color as *const u32 as *const c_void,
+                std::mem::size_of::<u32>() as u32,
+            );
+            let _ = DwmSetWindowAttribute(
+                hwnd_ptr,
+                DWMWA_BORDER_COLOR,
+                &border_color as *const u32 as *const c_void,
+                std::mem::size_of::<u32>() as u32,
+            );
+        }
+    }
+
     pub fn is_key_down(vkey: i32) -> bool {
         unsafe { (GetAsyncKeyState(vkey) as u16 & 0x8000) != 0 }
     }
@@ -683,6 +737,52 @@ async fn start_overlay_drag(app: AppHandle) -> Result<(), String> {
 }
 
 #[tauri::command]
+async fn main_window_minimize(app: AppHandle) -> Result<(), String> {
+    if let Some(win) = app.get_webview_window("main") {
+        win.minimize().map_err(|e| e.to_string())?;
+    }
+    Ok(())
+}
+
+#[tauri::command]
+async fn main_window_toggle_maximize(app: AppHandle) -> Result<bool, String> {
+    if let Some(win) = app.get_webview_window("main") {
+        let was_max = win.is_maximized().map_err(|e| e.to_string())?;
+        if was_max {
+            win.unmaximize().map_err(|e| e.to_string())?;
+        } else {
+            win.maximize().map_err(|e| e.to_string())?;
+        }
+        return win.is_maximized().map_err(|e| e.to_string());
+    }
+    Ok(false)
+}
+
+#[tauri::command]
+async fn main_window_is_maximized(app: AppHandle) -> Result<bool, String> {
+    if let Some(win) = app.get_webview_window("main") {
+        return win.is_maximized().map_err(|e| e.to_string());
+    }
+    Ok(false)
+}
+
+#[tauri::command]
+async fn main_window_close(app: AppHandle) -> Result<(), String> {
+    if let Some(win) = app.get_webview_window("main") {
+        win.close().map_err(|e| e.to_string())?;
+    }
+    Ok(())
+}
+
+#[tauri::command]
+async fn main_window_start_drag(app: AppHandle) -> Result<(), String> {
+    if let Some(win) = app.get_webview_window("main") {
+        win.start_dragging().map_err(|e| e.to_string())?;
+    }
+    Ok(())
+}
+
+#[tauri::command]
 async fn navigate_main_window(
     app: AppHandle,
     path: String,
@@ -830,12 +930,29 @@ pub fn run() {
             // saving ~150 MB of physical RAM and speeding up cold startup.
 
             if let Some(main_win) = app.get_webview_window("main") {
+                #[cfg(target_os = "windows")]
+                if let Ok(hwnd) = main_win.hwnd() {
+                    win32::apply_dark_frameless_chrome(hwnd.0);
+                }
+
                 let handle_for_main = handle.clone();
                 main_win.on_window_event(move |event| {
-                    if let WindowEvent::Destroyed = event {
-                        if let Some(ov) = handle_for_main.get_webview_window("overlay") {
-                            let _ = ov.destroy();
+                    match event {
+                        WindowEvent::Destroyed => {
+                            if let Some(ov) = handle_for_main.get_webview_window("overlay") {
+                                let _ = ov.destroy();
+                            }
                         }
+                        WindowEvent::Resized(_) => {
+                            if let Some(w) = handle_for_main.get_webview_window("main") {
+                                if let Ok(maximized) = w.is_maximized() {
+                                    let _ = w.eval(&format!(
+                                        "window.__ARC_ON_MAIN_MAXIMIZED__ && window.__ARC_ON_MAIN_MAXIMIZED__({maximized});"
+                                    ));
+                                }
+                            }
+                        }
+                        _ => {}
                     }
                 });
             }
@@ -858,6 +975,11 @@ pub fn run() {
             set_overlay_opacity,
             set_overlay_auto_minimize,
             start_overlay_drag,
+            main_window_minimize,
+            main_window_toggle_maximize,
+            main_window_is_maximized,
+            main_window_close,
+            main_window_start_drag,
             navigate_main_window,
             api_bridge::fetch_official_schedule,
             api_bridge::sync_arctracker_quests,

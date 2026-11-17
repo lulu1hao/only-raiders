@@ -4,6 +4,7 @@ import { sanitizeLoadoutState } from '../stores/useRaiderLoadoutStore'
 import {
   DEFAULT_RAIDER_SYNC_OPTIONS,
   RESTOCK_POLICY_OPTIONS,
+  describeSyncOptionsUiState,
   sanitizeRaiderSyncOptions,
 } from '../utils/raiderAcquisitionCatalog'
 import {
@@ -104,8 +105,10 @@ if (typeof window !== 'undefined') {
   })
 }
 
+const syncOptionsUi = computed(() => describeSyncOptionsUiState(raiderSyncOptions.value))
+
 export function useRaiderSyncOptions() {
-  return { syncOptions: raiderSyncOptions, RESTOCK_POLICY_OPTIONS }
+  return { syncOptions: raiderSyncOptions, syncOptionsUi, RESTOCK_POLICY_OPTIONS }
 }
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
@@ -245,6 +248,16 @@ export function useRaiderLoadoutSync(loadoutStore, options = {}) {
   const precheckLoading = ref(false)
   const precheckError = ref('')
 
+  // 从「仅快速使用」切回完整战备模式时，丢弃仅包含快捷栏的局部实机快照，避免误判其余槽位缺失
+  watch(
+    () => raiderSyncOptions.value.quickUseOnly,
+    (next, prev) => {
+      if (prev && !next && precheckInGameLoadout.value?._quickUseOnly) {
+        precheckInGameLoadout.value = null
+      }
+    },
+  )
+
   const availableLoadoutSources = computed(() => {
     const curBrief = describeLoadoutBrief(loadoutStore.currentLoadout)
     const opts = [
@@ -284,18 +297,20 @@ export function useRaiderLoadoutSync(loadoutStore, options = {}) {
     try {
       await refreshGameWindowStatus()
       const info = gameWinStatus.value
+      const quickUseOnly = Boolean(raiderSyncOptions.value?.quickUseOnly)
       let { imageData } = await captureGameClientImageData(info?.hwnd || 0, 2560)
-      let rec = await recognizeLoadoutFromImageData(imageData)
-      // 武器栏已占用但实时渲染缩略图仍在加载时，按配置等待后重读一次
+      let rec = await recognizeLoadoutFromImageData(imageData, { quickUseOnly })
+      // 武器栏已占用但实时渲染缩略图仍在加载时，按配置等待后重读一次（仅快捷栏模式跳过）
       const waitMs = Math.round(clampWeaponWaitSec(weaponLoadWaitSec.value) * 1000)
       if (
+        !quickUseOnly &&
         rec.ok &&
         waitMs > 0 &&
         (rec.weaponSlotStates || []).some((s) => s?.occupied && !s.identified)
       ) {
         await sleep(waitMs)
         ;({ imageData } = await captureGameClientImageData(info?.hwnd || 0, 2560))
-        rec = await recognizeLoadoutFromImageData(imageData)
+        rec = await recognizeLoadoutFromImageData(imageData, { quickUseOnly })
       }
       if (!rec.ok) {
         precheckError.value = rec.error || defaultPrecheckError
@@ -334,6 +349,7 @@ export function useRaiderLoadoutSync(loadoutStore, options = {}) {
     runPrecheckInGameState,
     weaponLoadWaitSec,
     syncOptions: raiderSyncOptions,
+    syncOptionsUi,
     RESTOCK_POLICY_OPTIONS,
   }
 }

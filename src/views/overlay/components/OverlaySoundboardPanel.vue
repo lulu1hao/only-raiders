@@ -747,10 +747,6 @@ function isMissing(list, id) {
       </button>
     </div>
 
-    <div v-if="state.status.shortcutError" class="osb-alert warn">
-      <span>{{ state.status.shortcutError }}</span>
-    </div>
-
     <div v-if="state.notice" class="osb-alert info">
       <span>{{ state.notice }}</span>
       <button type="button" class="osb-mini-btn" @click="state.notice = ''">✕</button>

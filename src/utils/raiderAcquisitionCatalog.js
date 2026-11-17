@@ -22,6 +22,8 @@ export const WORKSHOP_STATIONS_ORDER = [
 export const TRADERS_ORDER = ['shani', 'tian_wen', 'lance', 'apollo']
 
 export const DEFAULT_RAIDER_SYNC_OPTIONS = {
+  // 仅自动配装快速使用栏位（默认关闭）
+  quickUseOnly: false,
   // 按要求默认关闭武器等级匹配与武器配件同步，由用户在 UI 显式开启
   syncWeaponTier: false,
   syncWeaponMods: false,
@@ -63,6 +65,7 @@ export function sanitizeRaiderSyncOptions(raw) {
   const src = raw && typeof raw === 'object' ? raw : {}
   const validPolicies = new Set(RESTOCK_POLICY_OPTIONS.map((o) => o.value))
   return {
+    quickUseOnly: src.quickUseOnly === true,
     syncWeaponTier: src.syncWeaponTier === true,
     syncWeaponMods: src.syncWeaponMods === true,
     autoRestockEnabled: src.autoRestockEnabled === true,
@@ -74,6 +77,92 @@ export function sanitizeRaiderSyncOptions(raw) {
         ? src.ammoPreferTrader
         : DEFAULT_RAIDER_SYNC_OPTIONS.ammoPreferTrader,
     respectLocalProgression: src.respectLocalProgression === true,
+  }
+}
+
+/**
+ * 解析并计算经过范围开关与策略互斥规则裁剪后的生效选项（不修改原始持久化配置）
+ */
+export function resolveEffectiveSyncOptions(raw) {
+  const base = sanitizeRaiderSyncOptions(raw)
+  const quickUseOnly = base.quickUseOnly
+  const policy = base.restockSourcePolicy
+  const usesWorkshop = base.autoRestockEnabled && policy !== 'trader_only'
+
+  let ammoPreferTrader
+  if (quickUseOnly || policy === 'workshop_only') {
+    ammoPreferTrader = false
+  } else if (policy === 'trader_first' || policy === 'trader_only') {
+    ammoPreferTrader = true
+  } else {
+    ammoPreferTrader = base.ammoPreferTrader
+  }
+
+  const respectLocalProgression =
+    policy === 'trader_only' ? false : base.respectLocalProgression
+  const syncWeaponTier = quickUseOnly ? false : base.syncWeaponTier
+  const syncWeaponMods = quickUseOnly ? false : base.syncWeaponMods
+  const allowWorkshopUpgrade = Boolean(!quickUseOnly && base.syncWeaponTier && usesWorkshop)
+
+  return {
+    ...base,
+    quickUseOnly,
+    syncWeaponTier,
+    syncWeaponMods,
+    ammoPreferTrader,
+    respectLocalProgression,
+    usesWorkshop,
+    allowWorkshopUpgrade,
+  }
+}
+
+/**
+ * 推导战备同步选项在 UI 层的勾选展示、禁用态、提示文案与主操作按钮名称
+ */
+export function describeSyncOptionsUiState(raw) {
+  const base = sanitizeRaiderSyncOptions(raw)
+  const effective = resolveEffectiveSyncOptions(base)
+  const policy = base.restockSourcePolicy
+
+  let ammoPreferTitle =
+    '优先工坊制作时，弹药例外优先在枪械商人「天纹」处成组购买，节省工作台材料'
+  if (base.quickUseOnly) {
+    ammoPreferTitle = '已开启「只自动配装快速使用」，快捷栏不包含弹药'
+  } else if (policy === 'workshop_only') {
+    ammoPreferTitle = '「仅从工坊制作」策略下不前往商人购买'
+  } else if (policy === 'trader_only') {
+    ammoPreferTitle = '「仅从商人购买」策略下所有可购物品均从商人采购'
+  } else if (policy === 'trader_first') {
+    ammoPreferTitle = '「优先商人购买」策略下已默认优先向商人采购'
+  }
+
+  return {
+    effective,
+    weaponOptsDisabled: base.quickUseOnly,
+    weaponTierChecked: !base.quickUseOnly && base.syncWeaponTier,
+    weaponModsChecked: !base.quickUseOnly && base.syncWeaponMods,
+    weaponTierTitle: base.quickUseOnly
+      ? '已开启「只自动配装快速使用」，跳过武器识别与等级校对'
+      : '开启后将校对武器 I~IV 等阶，优先取仓库高阶武器或在工坊武器台自动升阶（默认关闭）',
+    weaponModsTitle: base.quickUseOnly
+      ? '已开启「只自动配装快速使用」，跳过武器与配件识别装配'
+      : '开启后将核对并同步武器枪口/弹匣/枪托/握把等配件（默认关闭）',
+    ammoPreferDisabled: base.quickUseOnly || policy !== 'workshop_first',
+    ammoPreferChecked: effective.ammoPreferTrader,
+    ammoPreferTitle,
+    progressionDisabled: policy === 'trader_only',
+    progressionChecked: effective.respectLocalProgression,
+    progressionTitle:
+      policy === 'trader_only'
+        ? '「仅从商人购买」策略下不使用工坊配方与蓝图'
+        : '结合本软件「工坊升级 / 蓝图追踪」档案，预筛尚未解锁的工作台配方与蓝图',
+    getPrimaryActionLabel(compact = false) {
+      if (base.quickUseOnly) {
+        return base.autoRestockEnabled ? '补货并配装快捷栏' : '自动配装快速使用'
+      }
+      if (base.autoRestockEnabled) return '自动补货并配装'
+      return compact ? '仓库辅助配装' : '仓库辅助自动配装'
+    },
   }
 }
 
@@ -188,7 +277,7 @@ export function resolveItemRestockChannels(
   progressionCtx = null,
   opts = {},
 ) {
-  const options = sanitizeRaiderSyncOptions(syncOptions)
+  const options = resolveEffectiveSyncOptions(syncOptions)
   const info = getItemAcquisitionInfo(kind, targetId, opts)
   if (!info.restockable) {
     return {

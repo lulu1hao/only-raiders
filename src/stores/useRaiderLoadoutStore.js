@@ -12,6 +12,7 @@ import {
   getModById,
   getWeaponById,
   rarityMeta,
+  resolveWeaponVisualState,
   slotLabels,
 } from '../composables/useWeaponCalculator'
 import { useRaiderStore } from './useRaiderStore'
@@ -163,7 +164,11 @@ export function sanitizeLoadoutState(raw) {
     idx < bpCap ? sanitizeItemStack(rawBp[idx], null) : null,
   )
 
-  const quCap = aug.quickUseSlots || 4
+  const hasExplicitQuCap =
+    typeof raw.quickUseSlotCap === 'number' && Number.isFinite(raw.quickUseSlotCap)
+  const quCap = hasExplicitQuCap
+    ? Math.max(4, Math.min(MAX_QUICK_CAP, Math.round(raw.quickUseSlotCap)))
+    : aug.quickUseSlots || 4
   const rawQu = Array.isArray(raw.quickUse) ? raw.quickUse : []
   const quickUse = Array.from({ length: MAX_QUICK_CAP }, (_, idx) =>
     idx < quCap ? sanitizeItemStack(rawQu[idx], QUICK_USE_ALLOWED_CATS) : null,
@@ -182,7 +187,7 @@ export function sanitizeLoadoutState(raw) {
     idx < spCap ? sanitizeItemStack(rawSp[idx], null) : null,
   )
 
-  return {
+  const result = {
     augmentId,
     shieldId,
     weapons,
@@ -191,6 +196,13 @@ export function sanitizeLoadoutState(raw) {
     aux,
     safePocket,
   }
+  if (hasExplicitQuCap) {
+    result.quickUseSlotCap = quCap
+  }
+  if (raw._quickUseOnly === true) {
+    result._quickUseOnly = true
+  }
+  return result
 }
 
 function cloneLoadout(l) {
@@ -374,8 +386,10 @@ export const useRaiderLoadoutStore = defineStore('raiderLoadout', () => {
       const ascVis = weaponVisuals.weapons?.[weapon.id]?.ascended || null
       const hasAscendedVariant = Boolean(ascVis || weapon.amplifications?.length)
       const amplified = entry.amplified === true || (entry.ampIds?.length || 0) > 0
-      const displayImage = (amplified && ascVis?.image) || weapon.image
-      const displayRarity = amplified ? ascVis?.rarity || 'Legendary' : weapon.rarity
+      const effectiveAmps = entry.ampIds?.length ? entry.ampIds : amplified ? ['__asc__'] : []
+      const visState = resolveWeaponVisualState(weapon, entry.tier || 1, effectiveAmps)
+      const displayImage = visState.hdImage || (amplified && ascVis?.image) || weapon.image
+      const displayRarity = visState.displayRarity
 
       return {
         index: idx,

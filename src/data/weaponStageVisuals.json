@@ -1,0 +1,260 @@
+{
+  "weapons": {
+    "kettle": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/kettle_t1.png",
+        "2": "weapons/hd/tiers/kettle_t2.png",
+        "3": "weapons/hd/tiers/kettle_t3.png",
+        "4": "weapons/hd/tiers/kettle_t4.png"
+      },
+      "ascendedImage": "weapons/hd/ascended/kettle.png",
+      "variantImages": {}
+    },
+    "rattler": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/rattler_t1.png",
+        "2": "weapons/hd/tiers/rattler_t2.png",
+        "3": "weapons/hd/tiers/rattler_t3.png",
+        "4": "weapons/hd/tiers/rattler_t4.png"
+      },
+      "ascendedImage": "weapons/hd/ascended/rattler.png",
+      "variantImages": {
+        "drum-mag": "weapons/hd/ascended/rattler__drum-mag.png"
+      }
+    },
+    "arpeggio": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/arpeggio_t1.png",
+        "2": "weapons/hd/tiers/arpeggio_t2.png",
+        "3": "weapons/hd/tiers/arpeggio_t3.png",
+        "4": "weapons/hd/tiers/arpeggio_t4.png"
+      },
+      "ascendedImage": null,
+      "variantImages": {}
+    },
+    "tempest": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/tempest_t1.png",
+        "2": "weapons/hd/tiers/tempest_t2.png",
+        "3": "weapons/hd/tiers/tempest_t3.png",
+        "4": "weapons/hd/tiers/tempest_t4.png"
+      },
+      "ascendedImage": null,
+      "variantImages": {}
+    },
+    "bettina": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/bettina_t1.png",
+        "2": "weapons/hd/tiers/bettina_t2.png",
+        "3": "weapons/hd/tiers/bettina_t3.png",
+        "4": "weapons/hd/tiers/bettina_t4.png"
+      },
+      "ascendedImage": "weapons/hd/ascended/bettina.png",
+      "variantImages": {}
+    },
+    "ferro": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/ferro_t1.png",
+        "2": "weapons/hd/tiers/ferro_t2.png",
+        "3": "weapons/hd/tiers/ferro_t3.png",
+        "4": "weapons/hd/tiers/ferro_t4.png"
+      },
+      "ascendedImage": null,
+      "variantImages": {}
+    },
+    "stiletto": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/stiletto_t1.png",
+        "2": "weapons/hd/tiers/stiletto_t2.png",
+        "3": "weapons/hd/tiers/stiletto_t3.png",
+        "4": "weapons/hd/tiers/stiletto_t4.png"
+      },
+      "ascendedImage": null,
+      "variantImages": {}
+    },
+    "renegade": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/renegade_t1.png",
+        "2": "weapons/hd/tiers/renegade_t2.png",
+        "3": "weapons/hd/tiers/renegade_t3.png",
+        "4": "weapons/hd/tiers/renegade_t4.png"
+      },
+      "ascendedImage": "weapons/hd/ascended/renegade.png",
+      "variantImages": {
+        "scoped": "weapons/hd/ascended/renegade__scoped.png"
+      }
+    },
+    "aphelion": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/aphelion_t1.png"
+      },
+      "ascendedImage": "weapons/hd/ascended/aphelion.png",
+      "variantImages": {}
+    },
+    "stitcher": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/stitcher_t1.png",
+        "2": "weapons/hd/tiers/stitcher_t2.png",
+        "3": "weapons/hd/tiers/stitcher_t3.png",
+        "4": "weapons/hd/tiers/stitcher_t4.png"
+      },
+      "ascendedImage": null,
+      "variantImages": {}
+    },
+    "canto": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/canto_t1.png",
+        "2": "weapons/hd/tiers/canto_t2.png",
+        "3": "weapons/hd/tiers/canto_t3.png",
+        "4": "weapons/hd/tiers/canto_t4.png"
+      },
+      "ascendedImage": "weapons/hd/ascended/canto.png",
+      "variantImages": {
+        "carbine-conversion": "weapons/hd/ascended/canto__carbine-conversion.png"
+      }
+    },
+    "bobcat": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/bobcat_t1.png",
+        "2": "weapons/hd/tiers/bobcat_t2.png",
+        "3": "weapons/hd/tiers/bobcat_t3.png",
+        "4": "weapons/hd/tiers/bobcat_t4.png"
+      },
+      "ascendedImage": null,
+      "variantImages": {}
+    },
+    "il_toro": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/il_toro_t1.png",
+        "2": "weapons/hd/tiers/il_toro_t2.png",
+        "3": "weapons/hd/tiers/il_toro_t3.png",
+        "4": "weapons/hd/tiers/il_toro_t4.png"
+      },
+      "ascendedImage": "weapons/hd/ascended/il_toro.png",
+      "variantImages": {}
+    },
+    "vulcano": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/vulcano_t1.png",
+        "2": "weapons/hd/tiers/vulcano_t2.png",
+        "3": "weapons/hd/tiers/vulcano_t3.png",
+        "4": "weapons/hd/tiers/vulcano_t4.png"
+      },
+      "ascendedImage": null,
+      "variantImages": {}
+    },
+    "dolabra": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/dolabra_t1.png"
+      },
+      "ascendedImage": null,
+      "variantImages": {}
+    },
+    "hairpin": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/hairpin_t1.png",
+        "2": "weapons/hd/tiers/hairpin_t2.png",
+        "3": "weapons/hd/tiers/hairpin_t3.png",
+        "4": "weapons/hd/tiers/hairpin_t4.png"
+      },
+      "ascendedImage": "weapons/hd/ascended/hairpin.png",
+      "variantImages": {}
+    },
+    "burletta": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/burletta_t1.png",
+        "2": "weapons/hd/tiers/burletta_t2.png",
+        "3": "weapons/hd/tiers/burletta_t3.png",
+        "4": "weapons/hd/tiers/burletta_t4.png"
+      },
+      "ascendedImage": "weapons/hd/ascended/burletta.png",
+      "variantImages": {}
+    },
+    "venator": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/venator_t1.png",
+        "2": "weapons/hd/tiers/venator_t2.png",
+        "3": "weapons/hd/tiers/venator_t3.png",
+        "4": "weapons/hd/tiers/venator_t4.png"
+      },
+      "ascendedImage": null,
+      "variantImages": {}
+    },
+    "bantam": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/bantam_t1.png",
+        "2": "weapons/hd/tiers/bantam_t2.png",
+        "3": "weapons/hd/tiers/bantam_t3.png",
+        "4": "weapons/hd/tiers/bantam_t4.png"
+      },
+      "ascendedImage": null,
+      "variantImages": {}
+    },
+    "anvil": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/anvil_t1.png",
+        "2": "weapons/hd/tiers/anvil_t2.png",
+        "3": "weapons/hd/tiers/anvil_t3.png",
+        "4": "weapons/hd/tiers/anvil_t4.png"
+      },
+      "ascendedImage": "weapons/hd/ascended/anvil.png",
+      "variantImages": {}
+    },
+    "torrente": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/torrente_t1.png",
+        "2": "weapons/hd/tiers/torrente_t2.png",
+        "3": "weapons/hd/tiers/torrente_t3.png",
+        "4": "weapons/hd/tiers/torrente_t4.png"
+      },
+      "ascendedImage": null,
+      "variantImages": {}
+    },
+    "osprey": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/osprey_t1.png",
+        "2": "weapons/hd/tiers/osprey_t2.png",
+        "3": "weapons/hd/tiers/osprey_t3.png",
+        "4": "weapons/hd/tiers/osprey_t4.png"
+      },
+      "ascendedImage": "weapons/hd/ascended/osprey.png",
+      "variantImages": {}
+    },
+    "jupiter": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/jupiter_t1.png"
+      },
+      "ascendedImage": "weapons/hd/ascended/jupiter.png",
+      "variantImages": {
+        "scoped": "weapons/hd/ascended/jupiter__scoped.png"
+      }
+    },
+    "rascal": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/rascal_t1.png",
+        "2": "weapons/hd/tiers/rascal_t2.png",
+        "3": "weapons/hd/tiers/rascal_t3.png",
+        "4": "weapons/hd/tiers/rascal_t4.png"
+      },
+      "ascendedImage": "weapons/hd/ascended/rascal.png",
+      "variantImages": {}
+    },
+    "hullcracker": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/hullcracker_t1.png",
+        "2": "weapons/hd/tiers/hullcracker_t2.png",
+        "3": "weapons/hd/tiers/hullcracker_t3.png",
+        "4": "weapons/hd/tiers/hullcracker_t4.png"
+      },
+      "ascendedImage": "weapons/hd/ascended/hullcracker.png",
+      "variantImages": {}
+    },
+    "equalizer": {
+      "tierImages": {
+        "1": "weapons/hd/tiers/equalizer_t1.png"
+      },
+      "ascendedImage": "weapons/hd/ascended/equalizer.png",
+      "variantImages": {}
+    }
+  }
+}

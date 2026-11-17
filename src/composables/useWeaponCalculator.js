@@ -1,4 +1,6 @@
 import weaponsData from '../data/weaponsData.json'
+import weaponVisuals from '../data/weaponVisuals.json'
+import weaponStageVisuals from '../data/weaponStageVisuals.json'
 import { assetUrl } from '../utils/assetUrl'
 
 export { assetUrl }
@@ -724,4 +726,81 @@ export function diffRows(from, to) {
       tone: b > a ? 'pos' : 'neg',
     }
   }).filter(Boolean)
+}
+
+const DEFAULT_AMP_ICON_KEY = 'T_UI_Icon_Upgrade_Amplified'
+
+export function getAscensionIconPath(weaponId) {
+  const iconKey = weaponVisuals.weapons?.[weaponId]?.ascended?.ascensionIcon || DEFAULT_AMP_ICON_KEY
+  return (
+    weaponVisuals.ampIcons?.[iconKey] ||
+    weaponVisuals.ampIcons?.[DEFAULT_AMP_ICON_KEY] ||
+    'weapons/amps/Amplified.png'
+  )
+}
+
+export function getAmpIconPath(weaponId, ampId) {
+  const iconKey =
+    weaponVisuals.weapons?.[weaponId]?.ascended?.amps?.[ampId]?.icon ||
+    weaponVisuals.weapons?.[weaponId]?.ascended?.ascensionIcon ||
+    DEFAULT_AMP_ICON_KEY
+  return (
+    weaponVisuals.ampIcons?.[iconKey] ||
+    weaponVisuals.ampIcons?.[DEFAULT_AMP_ICON_KEY] ||
+    'weapons/amps/Amplified.png'
+  )
+}
+
+export function resolveWeaponVisualState(weaponOrId, tierNum = 1, enabledAmpIds = []) {
+  const weapon = typeof weaponOrId === 'string' ? getWeaponById(weaponOrId) : weaponOrId
+  const wid = weapon?.id || ''
+  const maxTier = weapon?.tiers?.length || 1
+  const clampedTier = Math.max(1, Math.min(maxTier, Number(tierNum) || 1))
+  const stageSpec = weaponStageVisuals.weapons?.[wid] || {}
+  const visMeta = weaponVisuals.weapons?.[wid] || {}
+  const ascMeta = visMeta.ascended || null
+
+  const cleanAmps = Array.isArray(enabledAmpIds) ? enabledAmpIds.filter(Boolean) : []
+  const realAmps = cleanAmps.filter((id) => id !== '__asc__')
+  const isAmplified = cleanAmps.length > 0
+
+  const tierImages = stageSpec.tierImages || {}
+  const baseTierHd = tierImages[String(clampedTier)] || tierImages['1'] || weapon?.image || ''
+
+  let variantKey = null
+  let hdImage = baseTierHd
+  let smallImage = visMeta.imageSmall || weapon?.imageSmall || ''
+
+  if (isAmplified) {
+    const matchedVis = (ascMeta?.visuals || []).find((vis) =>
+      (vis.ampIds || []).some((reqId) => realAmps.includes(reqId)),
+    )
+    if (matchedVis) {
+      variantKey = matchedVis.key
+      hdImage =
+        stageSpec.variantImages?.[variantKey] ||
+        matchedVis.image ||
+        stageSpec.ascendedImage ||
+        baseTierHd
+      smallImage = matchedVis.imageSmall || ascMeta?.imageSmall || smallImage
+    } else if (stageSpec.ascendedImage || ascMeta?.image) {
+      hdImage = stageSpec.ascendedImage || ascMeta?.image || baseTierHd
+      smallImage = ascMeta?.imageSmall || smallImage
+    }
+  }
+
+  const displayRarity = isAmplified ? ascMeta?.rarity || 'Legendary' : weapon?.rarity || 'Common'
+  const displayRarityColor = isAmplified ? '#ffc600' : weapon?.rarityColor || '#a4a5aa'
+
+  return {
+    clampedTier,
+    isAmplified,
+    hasAscendedModel: Boolean(stageSpec.ascendedImage || ascMeta?.image),
+    variantKey,
+    hdImage,
+    smallImage,
+    ascensionIcon: getAscensionIconPath(wid),
+    displayRarity,
+    displayRarityColor,
+  }
 }

@@ -39,7 +39,7 @@ const tone = inject('weaponsTone', (c) => c)
         :key="item.slot.uid"
         class="ar-panel loadout ca-col"
         :class="{ focused: store.activeCompareSlotIdx === idx }"
-        :style="{ '--r': tone(item.weapon.rarityColor) }"
+        :style="{ '--r': tone(item.slot.ampIds?.length ? '#ffc600' : item.weapon.rarityColor) }"
         @click="store.activeCompareSlotIdx = idx"
       >
         <div class="cac-head">

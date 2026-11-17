@@ -13,8 +13,8 @@ import { assetUrl } from './assetUrl'
 import {
   DEFAULT_RAIDER_SYNC_OPTIONS,
   readLocalProgressionContext,
+  resolveEffectiveSyncOptions,
   resolveItemRestockChannels,
-  sanitizeRaiderSyncOptions,
 } from './raiderAcquisitionCatalog'
 import { runAutoRestockSession } from './raiderAutoRestockRunner'
 import { abortRaiderAutoSync, captureGameClientImageData } from './raiderAutoSyncPlanner'
@@ -145,7 +145,7 @@ function findModIdForSlot(modsObj, slotKey) {
  * 计算目标战备与游戏内实机战备的逐槽位差量及 1080p UMG 投影框
  */
 export function analyzeLoadoutSyncDiff(inGameLoadout, targetLoadout, rawSyncOptions = {}) {
-  const syncOptions = sanitizeRaiderSyncOptions(rawSyncOptions)
+  const syncOptions = resolveEffectiveSyncOptions(rawSyncOptions)
   const progressionCtx =
     syncOptions.autoRestockEnabled && syncOptions.respectLocalProgression
       ? readLocalProgressionContext()
@@ -157,167 +157,169 @@ export function analyzeLoadoutSyncDiff(inGameLoadout, targetLoadout, rawSyncOpti
   const tgtAug = augMap.get(tgt.augmentId) || augMap.get('none')
   const liveAug = live ? augMap.get(live.augmentId) || augMap.get('none') : null
 
-  // 1. 强化槽
-  if (tgtAug && tgtAug.id !== 'none') {
-    const matched = Boolean(live && live.augmentId === tgtAug.id)
-    entries.push({
-      key: 'augment',
-      kind: 'augment',
-      stashFilter: 'augment',
-      slotLabel: '强化',
-      targetId: tgtAug.id,
-      targetName: tgtAug.zhName,
-      icon: assetUrl(tgtAug.icon),
-      rarity: tgtAug.rarity,
-      color: rarityMeta[tgtAug.rarity]?.color || '#5fffff',
-      badge: `${tgtAug.maxWeight}kg`,
-      subTags: [],
-      liveName: liveAug && liveAug.id !== 'none' ? liveAug.zhName : null,
-      matched,
-      rect1080p: UMG_RECTS_1080P.augment,
-    })
-  }
-
-  // 2. 护盾槽
-  const tgtShield = tgt.shieldId ? shieldMap.get(tgt.shieldId) : null
-  const liveShield = live?.shieldId ? shieldMap.get(live.shieldId) : null
-  if (tgtShield) {
-    const matched = Boolean(live && live.shieldId === tgtShield.id)
-    entries.push({
-      key: 'shield',
-      kind: 'shield',
-      stashFilter: 'armor',
-      slotLabel: '护盾',
-      targetId: tgtShield.id,
-      targetName: tgtShield.zhName,
-      icon: assetUrl(tgtShield.icon),
-      rarity: tgtShield.rarity,
-      color: rarityMeta[tgtShield.rarity]?.color || '#00a9f2',
-      badge: `充能${tgtShield.charge}`,
-      subTags: [`减伤${tgtShield.mitigationPct}%`],
-      liveName: liveShield ? liveShield.zhName : null,
-      matched,
-      rect1080p: UMG_RECTS_1080P.shield,
-    })
-  }
-
-  // 3. 武器 I & II
-  for (let i = 0; i < 2; i++) {
-    const wEntry = tgt.weapons?.[i]
-    if (!wEntry?.weaponId) continue
-    const wMeta = weaponMap.get(wEntry.weaponId)
-    if (!wMeta) continue
-
-    const liveW = live?.weapons?.[i]
-    const liveWMeta = liveW?.weaponId ? weaponMap.get(liveW.weaponId) : null
-    // 增强型武器（游戏内 Ascended 变体）与普通版本为不同物品：须同时比对增强状态
-    const tgtAmplified = isWeaponEntryAmplified(wEntry)
-    const liveAmplified = isWeaponEntryAmplified(liveW)
-    const liveSameWeapon = Boolean(
-      liveW && liveW.weaponId === wMeta.id && liveAmplified === tgtAmplified,
-    )
-    const tgtTier = tgtAmplified ? 1 : Math.max(1, Math.min(4, Number(wEntry.tier) || 1))
-    const liveTier = liveSameWeapon ? Math.max(1, Number(liveW.tier) || 1) : 0
-    const tierMatched = !syncOptions.syncWeaponTier || tgtAmplified || liveTier >= tgtTier
-    const matched = Boolean(liveSameWeapon && tierMatched)
-    const needsTierUpgrade = Boolean(
-      syncOptions.syncWeaponTier && !tgtAmplified && liveSameWeapon && liveTier < tgtTier,
-    )
-    // 增强型武器的部分增强项（瞄准镜 / 卡宾枪托 / 弹鼓）会改变实机缩略图，按目标增强组合选取对应外观
-    const tgtVisual = resolveWeaponVisualVariant(wMeta.id, tgtAmplified, wEntry.ampIds || [])
-
-    const roman = ROMAN[tgtTier - 1] || 'I'
-    const liveRoman = ROMAN[liveTier - 1] || String(liveTier)
-    const modBadges = Object.values(wEntry.mods || {})
-      .map((mId) => getModById(mId))
-      .filter(Boolean)
-      .map((m) => ({
-        id: m.id,
-        name: m.zhName || m.name,
-        icon: assetUrl(m.image),
-      }))
-    const ampBadges = (wMeta.amplifications || [])
-      .filter((a) => (wEntry.ampIds || []).includes(a.id))
-      .map((a) => shortAmpName(a))
-
-    const wRect = i === 0 ? UMG_RECTS_1080P.weapon1 : UMG_RECTS_1080P.weapon2
-    entries.push({
-      key: `weapon${i + 1}`,
-      kind: 'weapon',
-      slotIndex: i,
-      stashFilter: 'weapons',
-      slotLabel: `武器 ${i === 0 ? 'I' : 'II'}`,
-      targetId: wMeta.id,
-      targetName: tgtAmplified ? `增强型 ${wMeta.zhName}` : wMeta.zhName,
-      amplified: tgtAmplified,
-      ampIds: [...(wEntry.ampIds || [])],
-      targetTier: tgtTier,
-      liveTier,
-      needsTierUpgrade,
-      minTier: syncOptions.syncWeaponTier && !tgtAmplified ? tgtTier : 1,
-      strictTierMatch: Boolean(syncOptions.syncWeaponTier && !tgtAmplified && tgtTier > 1),
-      icon: assetUrl(
-        (tgtAmplified &&
-          (tgtVisual?.image || weaponVisuals.weapons?.[wMeta.id]?.ascended?.image)) ||
-          wMeta.image,
-      ),
-      rarity: tgtAmplified ? 'Legendary' : wMeta.rarity,
-      color: rarityMeta[tgtAmplified ? 'Legendary' : wMeta.rarity]?.color || '#fd4b10',
-      badge: tgtAmplified
-        ? '增强型'
-        : needsTierUpgrade
-          ? `Lv.${liveRoman}→${roman}`
-          : `Lv.${roman}`,
-      modBadges,
-      subTags: [...ampBadges, ...modBadges.map((m) => m.name)],
-      liveName: liveWMeta
-        ? liveAmplified
-          ? `增强型 ${liveWMeta.zhName}`
-          : liveWMeta.zhName
-        : null,
-      matched,
-      rect1080p: wRect,
-    })
-
-    // 3b. 武器配件差异条目（默认关闭，仅开启 syncWeaponMods 时参与计算）
-    if (syncOptions.syncWeaponMods && wEntry.mods && typeof wEntry.mods === 'object') {
-      const slotKeys = resolveVisibleModSlotKeys(wMeta, {
-        amplified: tgtAmplified,
-        ampIds: wEntry.ampIds || [],
-        mods: wEntry.mods,
+  if (!syncOptions.quickUseOnly) {
+    // 1. 强化槽
+    if (tgtAug && tgtAug.id !== 'none') {
+      const matched = Boolean(live && live.augmentId === tgtAug.id)
+      entries.push({
+        key: 'augment',
+        kind: 'augment',
+        stashFilter: 'augment',
+        slotLabel: '强化',
+        targetId: tgtAug.id,
+        targetName: tgtAug.zhName,
+        icon: assetUrl(tgtAug.icon),
+        rarity: tgtAug.rarity,
+        color: rarityMeta[tgtAug.rarity]?.color || '#5fffff',
+        badge: `${tgtAug.maxWeight}kg`,
+        subTags: [],
+        liveName: liveAug && liveAug.id !== 'none' ? liveAug.zhName : null,
+        matched,
+        rect1080p: UMG_RECTS_1080P.augment,
       })
-      const modBoxes = weaponModRowBoxes(wRect, slotKeys.length, tgtAmplified).mods
-      for (let sIdx = 0; sIdx < slotKeys.length; sIdx++) {
-        const slotKey = slotKeys[sIdx]
-        const modId = findModIdForSlot(wEntry.mods, slotKey)
-        if (!modId) continue
-        const modMeta = getModById(modId)
-        if (!modMeta) continue
+    }
 
-        const liveModId = liveSameWeapon ? findModIdForSlot(liveW?.mods, slotKey) : null
-        const modMatched = Boolean(liveSameWeapon && liveModId === modId)
-        entries.push({
-          key: `weapon${i}_mod_${slotKey}`,
-          kind: 'mod',
-          weaponSlotIndex: i,
-          parentWeaponId: wMeta.id,
-          parentAmplified: tgtAmplified,
-          modSlotKey: slotKey,
-          slotIndex: sIdx,
-          stashFilter: 'modifications',
-          slotLabel: `武器${i === 0 ? 'I' : 'II'}配件`,
-          targetId: modMeta.id,
-          targetName: modMeta.zhName || modMeta.name,
-          icon: assetUrl(modMeta.image || modMeta.icon || ''),
-          rarity: modMeta.rarity || 'Common',
-          color: rarityMeta[modMeta.rarity]?.color || '#37d7ff',
-          targetCount: 1,
-          badge: '配件',
-          subTags: [wMeta.zhName],
-          liveName: liveModId ? getModById(liveModId)?.zhName || liveModId : null,
-          matched: modMatched,
-          rect1080p: modBoxes[sIdx] || wRect,
+    // 2. 护盾槽
+    const tgtShield = tgt.shieldId ? shieldMap.get(tgt.shieldId) : null
+    const liveShield = live?.shieldId ? shieldMap.get(live.shieldId) : null
+    if (tgtShield) {
+      const matched = Boolean(live && live.shieldId === tgtShield.id)
+      entries.push({
+        key: 'shield',
+        kind: 'shield',
+        stashFilter: 'armor',
+        slotLabel: '护盾',
+        targetId: tgtShield.id,
+        targetName: tgtShield.zhName,
+        icon: assetUrl(tgtShield.icon),
+        rarity: tgtShield.rarity,
+        color: rarityMeta[tgtShield.rarity]?.color || '#00a9f2',
+        badge: `充能${tgtShield.charge}`,
+        subTags: [`减伤${tgtShield.mitigationPct}%`],
+        liveName: liveShield ? liveShield.zhName : null,
+        matched,
+        rect1080p: UMG_RECTS_1080P.shield,
+      })
+    }
+
+    // 3. 武器 I & II
+    for (let i = 0; i < 2; i++) {
+      const wEntry = tgt.weapons?.[i]
+      if (!wEntry?.weaponId) continue
+      const wMeta = weaponMap.get(wEntry.weaponId)
+      if (!wMeta) continue
+
+      const liveW = live?.weapons?.[i]
+      const liveWMeta = liveW?.weaponId ? weaponMap.get(liveW.weaponId) : null
+      // 增强型武器（游戏内 Ascended 变体）与普通版本为不同物品：须同时比对增强状态
+      const tgtAmplified = isWeaponEntryAmplified(wEntry)
+      const liveAmplified = isWeaponEntryAmplified(liveW)
+      const liveSameWeapon = Boolean(
+        liveW && liveW.weaponId === wMeta.id && liveAmplified === tgtAmplified,
+      )
+      const tgtTier = tgtAmplified ? 1 : Math.max(1, Math.min(4, Number(wEntry.tier) || 1))
+      const liveTier = liveSameWeapon ? Math.max(1, Number(liveW.tier) || 1) : 0
+      const tierMatched = !syncOptions.syncWeaponTier || tgtAmplified || liveTier >= tgtTier
+      const matched = Boolean(liveSameWeapon && tierMatched)
+      const needsTierUpgrade = Boolean(
+        syncOptions.syncWeaponTier && !tgtAmplified && liveSameWeapon && liveTier < tgtTier,
+      )
+      // 增强型武器的部分增强项（瞄准镜 / 卡宾枪托 / 弹鼓）会改变实机缩略图，按目标增强组合选取对应外观
+      const tgtVisual = resolveWeaponVisualVariant(wMeta.id, tgtAmplified, wEntry.ampIds || [])
+
+      const roman = ROMAN[tgtTier - 1] || 'I'
+      const liveRoman = ROMAN[liveTier - 1] || String(liveTier)
+      const modBadges = Object.values(wEntry.mods || {})
+        .map((mId) => getModById(mId))
+        .filter(Boolean)
+        .map((m) => ({
+          id: m.id,
+          name: m.zhName || m.name,
+          icon: assetUrl(m.image),
+        }))
+      const ampBadges = (wMeta.amplifications || [])
+        .filter((a) => (wEntry.ampIds || []).includes(a.id))
+        .map((a) => shortAmpName(a))
+
+      const wRect = i === 0 ? UMG_RECTS_1080P.weapon1 : UMG_RECTS_1080P.weapon2
+      entries.push({
+        key: `weapon${i + 1}`,
+        kind: 'weapon',
+        slotIndex: i,
+        stashFilter: 'weapons',
+        slotLabel: `武器 ${i === 0 ? 'I' : 'II'}`,
+        targetId: wMeta.id,
+        targetName: tgtAmplified ? `增强型 ${wMeta.zhName}` : wMeta.zhName,
+        amplified: tgtAmplified,
+        ampIds: [...(wEntry.ampIds || [])],
+        targetTier: tgtTier,
+        liveTier,
+        needsTierUpgrade,
+        minTier: syncOptions.syncWeaponTier && !tgtAmplified ? tgtTier : 1,
+        strictTierMatch: Boolean(syncOptions.syncWeaponTier && !tgtAmplified && tgtTier > 1),
+        icon: assetUrl(
+          (tgtAmplified &&
+            (tgtVisual?.image || weaponVisuals.weapons?.[wMeta.id]?.ascended?.image)) ||
+            wMeta.image,
+        ),
+        rarity: tgtAmplified ? 'Legendary' : wMeta.rarity,
+        color: rarityMeta[tgtAmplified ? 'Legendary' : wMeta.rarity]?.color || '#fd4b10',
+        badge: tgtAmplified
+          ? '增强型'
+          : needsTierUpgrade
+            ? `Lv.${liveRoman}→${roman}`
+            : `Lv.${roman}`,
+        modBadges,
+        subTags: [...ampBadges, ...modBadges.map((m) => m.name)],
+        liveName: liveWMeta
+          ? liveAmplified
+            ? `增强型 ${liveWMeta.zhName}`
+            : liveWMeta.zhName
+          : null,
+        matched,
+        rect1080p: wRect,
+      })
+
+      // 3b. 武器配件差异条目（默认关闭，仅开启 syncWeaponMods 时参与计算）
+      if (syncOptions.syncWeaponMods && wEntry.mods && typeof wEntry.mods === 'object') {
+        const slotKeys = resolveVisibleModSlotKeys(wMeta, {
+          amplified: tgtAmplified,
+          ampIds: wEntry.ampIds || [],
+          mods: wEntry.mods,
         })
+        const modBoxes = weaponModRowBoxes(wRect, slotKeys.length, tgtAmplified).mods
+        for (let sIdx = 0; sIdx < slotKeys.length; sIdx++) {
+          const slotKey = slotKeys[sIdx]
+          const modId = findModIdForSlot(wEntry.mods, slotKey)
+          if (!modId) continue
+          const modMeta = getModById(modId)
+          if (!modMeta) continue
+
+          const liveModId = liveSameWeapon ? findModIdForSlot(liveW?.mods, slotKey) : null
+          const modMatched = Boolean(liveSameWeapon && liveModId === modId)
+          entries.push({
+            key: `weapon${i}_mod_${slotKey}`,
+            kind: 'mod',
+            weaponSlotIndex: i,
+            parentWeaponId: wMeta.id,
+            parentAmplified: tgtAmplified,
+            modSlotKey: slotKey,
+            slotIndex: sIdx,
+            stashFilter: 'modifications',
+            slotLabel: `武器${i === 0 ? 'I' : 'II'}配件`,
+            targetId: modMeta.id,
+            targetName: modMeta.zhName || modMeta.name,
+            icon: assetUrl(modMeta.image || modMeta.icon || ''),
+            rarity: modMeta.rarity || 'Common',
+            color: rarityMeta[modMeta.rarity]?.color || '#37d7ff',
+            targetCount: 1,
+            badge: '配件',
+            subTags: [wMeta.zhName],
+            liveName: liveModId ? getModById(liveModId)?.zhName || liveModId : null,
+            matched: modMatched,
+            rect1080p: modBoxes[sIdx] || wRect,
+          })
+        }
       }
     }
   }
@@ -344,7 +346,13 @@ export function analyzeLoadoutSyncDiff(inGameLoadout, targetLoadout, rawSyncOpti
   }
 
   // 4. 快速使用栏位
-  const quLimit = tgtAug?.quickUseSlots || 4
+  const tgtQuLimit = tgtAug?.quickUseSlots || 4
+  const liveQuCap = live
+    ? typeof live.quickUseSlotCap === 'number'
+      ? live.quickUseSlotCap
+      : liveAug?.quickUseSlots || 4
+    : tgtQuLimit
+  const quLimit = syncOptions.quickUseOnly && live ? Math.min(tgtQuLimit, liveQuCap) : tgtQuLimit
   for (let i = 0; i < quLimit; i++) {
     const qEntry = tgt.quickUse?.[i]
     if (!qEntry?.itemId) continue
@@ -375,123 +383,125 @@ export function analyzeLoadoutSyncDiff(inGameLoadout, targetLoadout, rawSyncOpti
     })
   }
 
-  // 5. 强化专属槽位
-  const auxSpec = tgtAug?.auxSlots
-  const hasAuxRow = Boolean(tgtAug?.integratedItem || auxSpec?.count)
-  if (auxSpec?.count) {
-    const integratedOffset = tgtAug.integratedItem ? 1 : 0
-    for (let i = 0; i < auxSpec.count; i++) {
-      const aEntry = tgt.aux?.[i]
-      if (!aEntry?.itemId) continue
-      const aMeta = itemMap.get(aEntry.itemId)
-      if (!aMeta) continue
+  if (!syncOptions.quickUseOnly) {
+    // 5. 强化专属槽位
+    const auxSpec = tgtAug?.auxSlots
+    const hasAuxRow = Boolean(tgtAug?.integratedItem || auxSpec?.count)
+    if (auxSpec?.count) {
+      const integratedOffset = tgtAug.integratedItem ? 1 : 0
+      for (let i = 0; i < auxSpec.count; i++) {
+        const aEntry = tgt.aux?.[i]
+        if (!aEntry?.itemId) continue
+        const aMeta = itemMap.get(aEntry.itemId)
+        if (!aMeta) continue
 
-      const pos = evalPositionalSlot(live?.aux?.[i], aEntry, aMeta)
-      const rectIdx = Math.min(2, i + integratedOffset)
+        const pos = evalPositionalSlot(live?.aux?.[i], aEntry, aMeta)
+        const rectIdx = Math.min(2, i + integratedOffset)
+        entries.push({
+          key: `aux${i}`,
+          kind: 'aux',
+          slotIndex: i,
+          stashFilter: resolveItemStashFilter(aMeta.category),
+          itemCategory: aMeta.category,
+          slotLabel: `${auxSpec.label} ${i + 1}`,
+          targetId: aMeta.id,
+          targetName: aMeta.zhName,
+          icon: assetUrl(aMeta.icon),
+          rarity: aMeta.rarity,
+          color: rarityMeta[aMeta.rarity]?.color || '#ffbc13',
+          targetCount: pos.tgtCount,
+          liveCount: pos.liveCount,
+          deficitCount: pos.deficitCount,
+          badge: pos.badge,
+          subTags: aMeta.statTags?.slice(0, 1) || [],
+          liveName: pos.liveName,
+          matched: pos.matched,
+          rect1080p: UMG_RECTS_1080P.aux[rectIdx],
+        })
+      }
+    }
+
+    // 6. 安全口袋槽位
+    const spLimit = tgtAug?.safePocketSlots || 0
+    const spRects = hasAuxRow
+      ? UMG_RECTS_1080P.safePocketWithAux
+      : UMG_RECTS_1080P.safePocketNoAux
+    for (let i = 0; i < spLimit; i++) {
+      const spEntry = tgt.safePocket?.[i]
+      if (!spEntry?.itemId) continue
+      const spMeta = itemMap.get(spEntry.itemId)
+      if (!spMeta) continue
+
+      const pos = evalPositionalSlot(live?.safePocket?.[i], spEntry, spMeta)
       entries.push({
-        key: `aux${i}`,
-        kind: 'aux',
+        key: `safePocket${i}`,
+        kind: 'safePocket',
         slotIndex: i,
-        stashFilter: resolveItemStashFilter(aMeta.category),
-        itemCategory: aMeta.category,
-        slotLabel: `${auxSpec.label} ${i + 1}`,
-        targetId: aMeta.id,
-        targetName: aMeta.zhName,
-        icon: assetUrl(aMeta.icon),
-        rarity: aMeta.rarity,
-        color: rarityMeta[aMeta.rarity]?.color || '#ffbc13',
+        stashFilter: resolveItemStashFilter(spMeta.category),
+        itemCategory: spMeta.category,
+        slotLabel: `安全袋 ${i + 1}`,
+        targetId: spMeta.id,
+        targetName: spMeta.zhName,
+        icon: assetUrl(spMeta.icon),
+        rarity: spMeta.rarity,
+        color: rarityMeta[spMeta.rarity]?.color || '#00a9f2',
         targetCount: pos.tgtCount,
         liveCount: pos.liveCount,
         deficitCount: pos.deficitCount,
         badge: pos.badge,
-        subTags: aMeta.statTags?.slice(0, 1) || [],
+        subTags: spMeta.statTags?.slice(0, 1) || [],
         liveName: pos.liveName,
         matched: pos.matched,
-        rect1080p: UMG_RECTS_1080P.aux[rectIdx],
+        rect1080p: spRects?.[i] || UMG_RECTS_1080P.safePocketWithAux[i],
       })
     }
-  }
 
-  // 6. 安全口袋槽位
-  const spLimit = tgtAug?.safePocketSlots || 0
-  const spRects = hasAuxRow
-    ? UMG_RECTS_1080P.safePocketWithAux
-    : UMG_RECTS_1080P.safePocketNoAux
-  for (let i = 0; i < spLimit; i++) {
-    const spEntry = tgt.safePocket?.[i]
-    if (!spEntry?.itemId) continue
-    const spMeta = itemMap.get(spEntry.itemId)
-    if (!spMeta) continue
-
-    const pos = evalPositionalSlot(live?.safePocket?.[i], spEntry, spMeta)
-    entries.push({
-      key: `safePocket${i}`,
-      kind: 'safePocket',
-      slotIndex: i,
-      stashFilter: resolveItemStashFilter(spMeta.category),
-      itemCategory: spMeta.category,
-      slotLabel: `安全袋 ${i + 1}`,
-      targetId: spMeta.id,
-      targetName: spMeta.zhName,
-      icon: assetUrl(spMeta.icon),
-      rarity: spMeta.rarity,
-      color: rarityMeta[spMeta.rarity]?.color || '#00a9f2',
-      targetCount: pos.tgtCount,
-      liveCount: pos.liveCount,
-      deficitCount: pos.deficitCount,
-      badge: pos.badge,
-      subTags: spMeta.statTags?.slice(0, 1) || [],
-      liveName: pos.liveName,
-      matched: pos.matched,
-      rect1080p: spRects?.[i] || UMG_RECTS_1080P.safePocketWithAux[i],
-    })
-  }
-
-  // 7. 背包槽位（仅比较物品种类与总数量，不要求格位顺序一致）
-  const bpLimit = tgtAug?.backpackSlots || 10
-  const liveBpRemain = new Map()
-  if (Array.isArray(live?.backpack)) {
-    for (const lb of live.backpack) {
-      if (!lb?.itemId) continue
-      const qty = Math.max(1, Number(lb.count) || 1)
-      liveBpRemain.set(lb.itemId, (liveBpRemain.get(lb.itemId) || 0) + qty)
+    // 7. 背包槽位（仅比较物品种类与总数量，不要求格位顺序一致）
+    const bpLimit = tgtAug?.backpackSlots || 10
+    const liveBpRemain = new Map()
+    if (Array.isArray(live?.backpack)) {
+      for (const lb of live.backpack) {
+        if (!lb?.itemId) continue
+        const qty = Math.max(1, Number(lb.count) || 1)
+        liveBpRemain.set(lb.itemId, (liveBpRemain.get(lb.itemId) || 0) + qty)
+      }
     }
-  }
-  for (let i = 0; i < bpLimit; i++) {
-    const bEntry = tgt.backpack?.[i]
-    if (!bEntry?.itemId) continue
-    const bMeta = itemMap.get(bEntry.itemId)
-    if (!bMeta) continue
+    for (let i = 0; i < bpLimit; i++) {
+      const bEntry = tgt.backpack?.[i]
+      if (!bEntry?.itemId) continue
+      const bMeta = itemMap.get(bEntry.itemId)
+      if (!bMeta) continue
 
-    const tgtCount = Math.max(1, Number(bEntry.count) || 1)
-    const avail = liveBpRemain.get(bMeta.id) || 0
-    const take = Math.min(avail, tgtCount)
-    if (take > 0) {
-      liveBpRemain.set(bMeta.id, avail - take)
+      const tgtCount = Math.max(1, Number(bEntry.count) || 1)
+      const avail = liveBpRemain.get(bMeta.id) || 0
+      const take = Math.min(avail, tgtCount)
+      if (take > 0) {
+        liveBpRemain.set(bMeta.id, avail - take)
+      }
+      const matched = avail >= tgtCount
+      const deficitCount = matched ? 0 : tgtCount - avail
+
+      entries.push({
+        key: `backpack${i}`,
+        kind: 'backpack',
+        slotIndex: i,
+        stashFilter: resolveItemStashFilter(bMeta.category),
+        itemCategory: bMeta.category,
+        slotLabel: `背包 ${i + 1}`,
+        targetId: bMeta.id,
+        targetName: bMeta.zhName,
+        icon: assetUrl(bMeta.icon),
+        rarity: bMeta.rarity,
+        color: rarityMeta[bMeta.rarity]?.color || '#a4a5aa',
+        targetCount: tgtCount,
+        deficitCount,
+        badge: !matched && avail > 0 ? `${avail}/${tgtCount}` : `×${tgtCount}`,
+        subTags: bMeta.statTags?.slice(0, 1) || [],
+        liveName: avail > 0 ? `${bMeta.zhName} ×${take}` : null,
+        matched,
+        rect1080p: UMG_RECTS_1080P.backpack[i],
+      })
     }
-    const matched = avail >= tgtCount
-    const deficitCount = matched ? 0 : tgtCount - avail
-
-    entries.push({
-      key: `backpack${i}`,
-      kind: 'backpack',
-      slotIndex: i,
-      stashFilter: resolveItemStashFilter(bMeta.category),
-      itemCategory: bMeta.category,
-      slotLabel: `背包 ${i + 1}`,
-      targetId: bMeta.id,
-      targetName: bMeta.zhName,
-      icon: assetUrl(bMeta.icon),
-      rarity: bMeta.rarity,
-      color: rarityMeta[bMeta.rarity]?.color || '#a4a5aa',
-      targetCount: tgtCount,
-      deficitCount,
-      badge: !matched && avail > 0 ? `${avail}/${tgtCount}` : `×${tgtCount}`,
-      subTags: bMeta.statTags?.slice(0, 1) || [],
-      liveName: avail > 0 ? `${bMeta.zhName} ×${take}` : null,
-      matched,
-      rect1080p: UMG_RECTS_1080P.backpack[i],
-    })
   }
 
   if (syncOptions.autoRestockEnabled) {
@@ -499,7 +509,7 @@ export function analyzeLoadoutSyncDiff(inGameLoadout, targetLoadout, rawSyncOpti
       if (entry.matched) continue
       if (entry.needsTierUpgrade) {
         entry.canRestock = false
-        entry.restockBadge = '工坊·升级'
+        entry.restockBadge = syncOptions.allowWorkshopUpgrade ? '工坊·升级' : '仅商人·不升阶'
         continue
       }
       const ch = resolveItemRestockChannels(
@@ -833,14 +843,15 @@ async function trySwapFromOtherWeaponSlot({
  */
 export const DEFAULT_WEAPON_LOAD_WAIT_MS = 3000
 
-export function buildRestockBillAndUpgrades(diff, syncOptions) {
+export function buildRestockBillAndUpgrades(diff, rawSyncOptions) {
+  const syncOptions = resolveEffectiveSyncOptions(rawSyncOptions)
   const billMap = new Map()
   const upgradeTasks = []
 
   for (const e of diff?.entries || []) {
     if (e.matched) continue
     if (e.kind === 'weapon' && e.needsTierUpgrade) {
-      if (syncOptions.syncWeaponTier && !e.amplified && e.targetTier > 1) {
+      if (syncOptions.allowWorkshopUpgrade && !e.amplified && e.targetTier > 1) {
         upgradeTasks.push({
           weaponId: e.targetId,
           weaponName: e.targetName,
@@ -869,7 +880,7 @@ export function buildRestockBillAndUpgrades(diff, syncOptions) {
       })
     }
 
-    if (syncOptions.syncWeaponTier && e.kind === 'weapon' && !e.amplified && e.targetTier > 1) {
+    if (syncOptions.allowWorkshopUpgrade && e.kind === 'weapon' && !e.amplified && e.targetTier > 1) {
       upgradeTasks.push({
         weaponId: e.targetId,
         weaponName: e.targetName,
@@ -901,18 +912,21 @@ function stashSignatureMeanDiff(sigA, sigB) {
 /**
  * 按当前实机实际穿戴的强化动态校验槽位上限与安全口袋行坐标
  */
-function resolveDynamicSlotRect(item, activeAugmentInGame, tgtAug) {
+function resolveDynamicSlotRect(item, activeAugmentInGame, tgtAug, inGameQuickUseCap = null) {
   let slotRect1080p = item.rect1080p
+  if (item.kind === 'quickUse') {
+    const quCap =
+      typeof inGameQuickUseCap === 'number'
+        ? inGameQuickUseCap
+        : activeAugmentInGame?.quickUseSlots || 4
+    if (item.slotIndex >= quCap) {
+      return { skip: true, rect1080p: null }
+    }
+  }
   if (activeAugmentInGame && activeAugmentInGame.id !== tgtAug.id) {
     if (
       item.kind === 'backpack' &&
       item.slotIndex >= (activeAugmentInGame.backpackSlots || 10)
-    ) {
-      return { skip: true, rect1080p: null }
-    }
-    if (
-      item.kind === 'quickUse' &&
-      item.slotIndex >= (activeAugmentInGame.quickUseSlots || 4)
     ) {
       return { skip: true, rect1080p: null }
     }
@@ -1054,7 +1068,12 @@ async function equipSingleEntryDirect(ctx, item, { pct, stepLabel }) {
   const stepWait = (normalMs) =>
     item?.kind === 'weapon' ? Math.max(normalMs, weaponWait) : normalMs
 
-  const { skip, rect1080p } = resolveDynamicSlotRect(item, ctx.activeAugmentInGame, tgtAug)
+  const { skip, rect1080p } = resolveDynamicSlotRect(
+    item,
+    ctx.activeAugmentInGame,
+    tgtAug,
+    ctx.inGameQuickUseCap,
+  )
   if (skip || !rect1080p) return
 
   let slotRect1080p = rect1080p
@@ -1100,7 +1119,10 @@ async function equipSingleEntryDirect(ctx, item, { pct, stepLabel }) {
       itemMatchOpts(item),
     )
     if (preCheck.matched) {
-      if (item.kind === 'augment') ctx.activeAugmentInGame = tgtAug
+      if (item.kind === 'augment') {
+        ctx.activeAugmentInGame = tgtAug
+        ctx.inGameQuickUseCap = tgtAug?.quickUseSlots || 4
+      }
       return
     }
 
@@ -1354,6 +1376,7 @@ async function equipSingleEntryDirect(ctx, item, { pct, stepLabel }) {
         }
         if (item.kind === 'augment') {
           ctx.activeAugmentInGame = tgtAug
+          ctx.inGameQuickUseCap = tgtAug?.quickUseSlots || 4
         }
         break
       }
@@ -1880,6 +1903,12 @@ async function executeStashEquipPass({
   const tgtAug = augMap.get(targetLoadout?.augmentId) || augMap.get('none')
   const liveInitialAug = augMap.get(baseLoadout?.augmentId) || augMap.get('none')
 
+  const activeAugmentInGame = baseLoadout?.augmentId === tgtAug.id ? tgtAug : liveInitialAug
+  const inGameQuickUseCap =
+    typeof baseLoadout?.quickUseSlotCap === 'number'
+      ? baseLoadout.quickUseSlotCap
+      : activeAugmentInGame?.quickUseSlots || 4
+
   const ctx = {
     hwnd,
     vp,
@@ -1893,7 +1922,8 @@ async function executeStashEquipPass({
     equippedCount: 0,
     equippedBaseWeapon: false,
     anyChanged: false,
-    activeAugmentInGame: baseLoadout?.augmentId === tgtAug.id ? tgtAug : liveInitialAug,
+    activeAugmentInGame,
+    inGameQuickUseCap,
     activeFilter: null,
     latestFrameImg: initialImageData,
     lastNonBackpackRect: detectSelectedNonBackpackSlot1080p(initialImageData, vp),
@@ -1940,80 +1970,93 @@ async function executeStashEquipPass({
 
   // 阶段 3：容器物品（快捷栏 / 专属栏 / 安全口袋 / 背包）
   const activeContainerPending = containerEntries.filter(
-    (e) => !resolveDynamicSlotRect(e, ctx.activeAugmentInGame, tgtAug).skip,
+    (e) =>
+      !resolveDynamicSlotRect(e, ctx.activeAugmentInGame, tgtAug, ctx.inGameQuickUseCap).skip,
   )
 
   if (activeContainerPending.length > 0) {
-    const splitStackIds = detectSplitStackPositionalIds(targetLoadout, ctx.activeAugmentInGame)
-    const directFallbackEntries = []
-    const filterGroups = new Map()
-
-    for (const entry of activeContainerPending) {
-      if (entry.kind !== 'backpack' && splitStackIds.has(entry.targetId)) {
-        directFallbackEntries.push(entry)
-        continue
+    if (syncOptions.quickUseOnly) {
+      // 仅快速使用模式：逐格单槽直拖装配，不执行批量 Shift 移仓与跨容器理货
+      for (const item of activeContainerPending) {
+        if (ctx.exhaustedTargetIds.has(item.targetId)) continue
+        stepDone++
+        await equipSingleEntryDirect(ctx, item, {
+          pct: calcPct(Math.min(totalApprox, stepDone)),
+          stepLabel: `(${stepDone}/${totalApprox})`,
+        })
       }
-      const fKey = entry.stashFilter || 'all'
-      if (!filterGroups.has(fKey)) filterGroups.set(fKey, [])
-      filterGroups.get(fKey).push(entry)
-    }
+    } else {
+      const splitStackIds = detectSplitStackPositionalIds(targetLoadout, ctx.activeAugmentInGame)
+      const directFallbackEntries = []
+      const filterGroups = new Map()
 
-    const batchGroups = []
-    for (const [fKey, group] of filterGroups.entries()) {
-      // 同一筛选栏内仅剩单个格位待装时，直接单次拖拽比 Shift+核对更省步骤
-      if (group.length === 1) {
-        directFallbackEntries.push(group[0])
-      } else {
-        batchGroups.push([fKey, group])
+      for (const entry of activeContainerPending) {
+        if (entry.kind !== 'backpack' && splitStackIds.has(entry.targetId)) {
+          directFallbackEntries.push(entry)
+          continue
+        }
+        const fKey = entry.stashFilter || 'all'
+        if (!filterGroups.has(fKey)) filterGroups.set(fKey, [])
+        filterGroups.get(fKey).push(entry)
       }
-    }
 
-    // 阶段 3a：同筛选栏多格物品 Ctrl 多选 + Shift 快速移仓
-    let batchMovedAny = false
-    for (const [fKey, group] of batchGroups) {
-      const bRes = await batchQuickMoveContainerGroup(ctx, fKey, group, {
-        pct: calcPct(stepDone + Math.max(1, Math.round(group.length * 0.5))),
-      })
-      if (bRes.movedAny) batchMovedAny = true
-    }
+      const batchGroups = []
+      for (const [fKey, group] of filterGroups.entries()) {
+        // 同一筛选栏内仅剩单个格位待装时，直接单次拖拽比 Shift+核对更省步骤
+        if (group.length === 1) {
+          directFallbackEntries.push(group[0])
+        } else {
+          batchGroups.push([fKey, group])
+        }
+      }
 
-    // 阶段 3b：右侧快捷栏 / 专属栏 / 安全口袋对位核对与错位腾挪
-    let rearrangedAny = false
-    if (batchMovedAny || directFallbackEntries.some((e) => e.kind !== 'backpack')) {
-      rearrangedAny = await rearrangeRightPanelContainers(ctx, {
-        pct: calcPct(stepDone + Math.max(1, activeContainerPending.length - 1)),
-      })
-    }
+      // 阶段 3a：同筛选栏多格物品 Ctrl 多选 + Shift 快速移仓
+      let batchMovedAny = false
+      for (const [fKey, group] of batchGroups) {
+        const bRes = await batchQuickMoveContainerGroup(ctx, fKey, group, {
+          pct: calcPct(stepDone + Math.max(1, Math.round(group.length * 0.5))),
+        })
+        if (bRes.movedAny) batchMovedAny = true
+      }
 
-    // 阶段 3c：整画面复核剩余缺口，未满或需精准放置的物品走单槽拖拽补齐
-    let remainingDirect = directFallbackEntries
-    if (batchMovedAny || rearrangedAny) {
-      ctx.anyChanged = true
-      const afterCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
-      ctx.latestFrameImg = afterCap.imageData
-      const afterRec = await recognizeLoadoutFromImageData(afterCap.imageData, { fullWindowOnly: true })
-      if (afterRec?.ok) {
-        const afterDiff = analyzeLoadoutSyncDiff(afterRec.loadout, targetLoadout, syncOptions)
-        const afterByKey = new Map(afterDiff.entries.map((e) => [e.key, e]))
-        remainingDirect = []
-        for (const pe of activeContainerPending) {
-          const ae = afterByKey.get(pe.key)
-          if (ae?.matched) {
-            ctx.equippedCount++
-          } else if (ae && !ctx.exhaustedTargetIds.has(ae.targetId)) {
-            remainingDirect.push(ae)
+      // 阶段 3b：右侧快捷栏 / 专属栏 / 安全口袋对位核对与错位腾挪
+      let rearrangedAny = false
+      if (batchMovedAny || directFallbackEntries.some((e) => e.kind !== 'backpack')) {
+        rearrangedAny = await rearrangeRightPanelContainers(ctx, {
+          pct: calcPct(stepDone + Math.max(1, activeContainerPending.length - 1)),
+        })
+      }
+
+      // 阶段 3c：整画面复核剩余缺口，未满或需精准放置的物品走单槽拖拽补齐
+      let remainingDirect = directFallbackEntries
+      if (batchMovedAny || rearrangedAny) {
+        ctx.anyChanged = true
+        const afterCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
+        ctx.latestFrameImg = afterCap.imageData
+        const afterRec = await recognizeLoadoutFromImageData(afterCap.imageData, { fullWindowOnly: true })
+        if (afterRec?.ok) {
+          const afterDiff = analyzeLoadoutSyncDiff(afterRec.loadout, targetLoadout, syncOptions)
+          const afterByKey = new Map(afterDiff.entries.map((e) => [e.key, e]))
+          remainingDirect = []
+          for (const pe of activeContainerPending) {
+            const ae = afterByKey.get(pe.key)
+            if (ae?.matched) {
+              ctx.equippedCount++
+            } else if (ae && !ctx.exhaustedTargetIds.has(ae.targetId)) {
+              remainingDirect.push(ae)
+            }
           }
         }
       }
-    }
 
-    for (const item of remainingDirect) {
-      if (ctx.exhaustedTargetIds.has(item.targetId)) continue
-      stepDone++
-      await equipSingleEntryDirect(ctx, item, {
-        pct: calcPct(Math.min(totalApprox, stepDone)),
-        stepLabel: `(${stepDone}/${totalApprox})`,
-      })
+      for (const item of remainingDirect) {
+        if (ctx.exhaustedTargetIds.has(item.targetId)) continue
+        stepDone++
+        await equipSingleEntryDirect(ctx, item, {
+          pct: calcPct(Math.min(totalApprox, stepDone)),
+          stepLabel: `(${stepDone}/${totalApprox})`,
+        })
+      }
     }
   }
 
@@ -2035,7 +2078,7 @@ export async function runLoadoutAutoSyncSession({
   if (!isTauriRuntime()) {
     throw new Error('仅桌面端支持自动配装，浏览器端请使用全屏透视配装指引')
   }
-  const syncOptions = sanitizeRaiderSyncOptions(rawSyncOptions)
+  const syncOptions = resolveEffectiveSyncOptions(rawSyncOptions)
   const weaponWait = Math.round(
     Math.max(0, Math.min(15000, Number(weaponLoadWaitMs) || 0)),
   )
@@ -2061,10 +2104,19 @@ export async function runLoadoutAutoSyncSession({
     await execSafePark(hwnd, false)
     await waitSafeOrThrow(hwnd, 90, true)
 
-    onProgress?.({ progressPct: 16, message: '正在扫描当前实机战备槽位...' })
+    onProgress?.({
+      progressPct: 16,
+      message: syncOptions.quickUseOnly
+        ? '正在扫描快速使用栏位...'
+        : '正在扫描当前实机战备槽位...',
+    })
     let firstCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
-    let firstRec = await recognizeLoadoutFromImageData(firstCap.imageData, { fullWindowOnly: true })
+    let firstRec = await recognizeLoadoutFromImageData(firstCap.imageData, {
+      fullWindowOnly: true,
+      quickUseOnly: syncOptions.quickUseOnly,
+    })
     if (
+      !syncOptions.quickUseOnly &&
       firstRec.ok &&
       weaponWait > 0 &&
       (firstRec.weaponSlotStates || []).some((s) => s?.occupied && !s.identified)
@@ -2075,7 +2127,10 @@ export async function runLoadoutAutoSyncSession({
       })
       await waitSafeOrThrow(hwnd, weaponWait)
       firstCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
-      firstRec = await recognizeLoadoutFromImageData(firstCap.imageData, { fullWindowOnly: true })
+      firstRec = await recognizeLoadoutFromImageData(firstCap.imageData, {
+        fullWindowOnly: true,
+        quickUseOnly: syncOptions.quickUseOnly,
+      })
     }
     if (!firstRec.ok) {
       return {
@@ -2088,7 +2143,9 @@ export async function runLoadoutAutoSyncSession({
     if (initialDiff.totalTargetSlots === 0) {
       return {
         ok: false,
-        message: '目标战备为空，请先配置装备后再同步',
+        message: syncOptions.quickUseOnly
+          ? '所选战备未配置「快速使用」栏位道具，请先配置快捷栏或关闭「只自动配装快速使用」'
+          : '目标战备为空，请先配置装备后再同步',
       }
     }
     if (initialDiff.alreadySynced) {
@@ -2142,7 +2199,10 @@ export async function runLoadoutAutoSyncSession({
 
       if (syncOptions.autoRestockEnabled && p1.anyChanged) {
         const midCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
-        const midRec = await recognizeLoadoutFromImageData(midCap.imageData, { fullWindowOnly: true })
+        const midRec = await recognizeLoadoutFromImageData(midCap.imageData, {
+          fullWindowOnly: true,
+          quickUseOnly: syncOptions.quickUseOnly,
+        })
         if (midRec?.ok) {
           midLoadout = midRec.loadout
         }
@@ -2178,15 +2238,22 @@ export async function runLoadoutAutoSyncSession({
           ) {
             onProgress?.({ progressPct: 78, message: '补货完毕，正在返仓二次装配...' })
             let postCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
-            let postRec = await recognizeLoadoutFromImageData(postCap.imageData, { fullWindowOnly: true })
+            let postRec = await recognizeLoadoutFromImageData(postCap.imageData, {
+              fullWindowOnly: true,
+              quickUseOnly: syncOptions.quickUseOnly,
+            })
             if (
+              !syncOptions.quickUseOnly &&
               postRec.ok &&
               weaponWait > 0 &&
               (postRec.weaponSlotStates || []).some((s) => s?.occupied && !s.identified)
             ) {
               await waitSafeOrThrow(hwnd, weaponWait)
               postCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
-              postRec = await recognizeLoadoutFromImageData(postCap.imageData, { fullWindowOnly: true })
+              postRec = await recognizeLoadoutFromImageData(postCap.imageData, {
+                fullWindowOnly: true,
+                quickUseOnly: syncOptions.quickUseOnly,
+              })
             }
             if (postRec.ok && postRec.hasStashPanel) {
               vp = postRec.viewport
@@ -2240,7 +2307,10 @@ export async function runLoadoutAutoSyncSession({
 
     onProgress?.({ progressPct: 96, message: '正在复核实机战备状态...' })
     const finalCap = await captureGameClientImageData(hwnd, CAPTURE_MAX_WIDTH)
-    const finalRec = await recognizeLoadoutFromImageData(finalCap.imageData, { fullWindowOnly: true })
+    const finalRec = await recognizeLoadoutFromImageData(finalCap.imageData, {
+      fullWindowOnly: true,
+      quickUseOnly: syncOptions.quickUseOnly,
+    })
     const finalLoadout = finalRec.ok ? finalRec.loadout : firstRec.loadout
     const finalDiff = analyzeLoadoutSyncDiff(finalLoadout, targetLoadout, syncOptions)
 

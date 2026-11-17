@@ -1,14 +1,17 @@
 <script setup>
-import { inject } from 'vue'
+import { computed, inject } from 'vue'
 import { useWeaponsStore } from '../../../stores/useWeaponsStore'
 import {
+  applyAmpToggle,
   assetUrl,
   slotLabels,
   formatAmpTrigger,
+  getAscensionIconPath,
   modGrade,
   modColor,
   pctDelta,
   deltaClass,
+  resolveWeaponVisualState,
 } from '../../../composables/useWeaponCalculator'
 
 const props = defineProps({
@@ -25,6 +28,28 @@ const emit = defineEmits(['clear-mods'])
 const store = useWeaponsStore()
 const overlay = inject('weaponsOverlay')
 const tone = inject('weaponsTone', (c) => c)
+
+const stageVisual = computed(() => {
+  const tip = overlay?.tip
+  if (tip?.show && (tip.compareIdx ?? -1) === props.compareIdx && overlay.menu?.open) {
+    if (tip.kind === 'tier' && overlay.menu.type === 'tier' && tip.data?.tier) {
+      const maxTier = props.weapon.tiers?.[props.weapon.tiers.length - 1]?.tier || 1
+      const clearsAmps = tip.data.tier < maxTier && props.ampIds.length > 0
+      return resolveWeaponVisualState(props.weapon, tip.data.tier, clearsAmps ? [] : props.ampIds)
+    }
+    if (tip.kind === 'amp' && overlay.menu.type === 'amp' && tip.data?.id) {
+      const res = applyAmpToggle(
+        props.weapon,
+        props.calc.clampedTier,
+        props.ampIds,
+        props.mods,
+        tip.data,
+      )
+      return resolveWeaponVisualState(props.weapon, res.tier, res.ampIds)
+    }
+  }
+  return resolveWeaponVisualState(props.weapon, props.calc.clampedTier, props.ampIds)
+})
 
 function isMenuOpen(type, slotKey = '') {
   if (!overlay?.menu.open) return false
@@ -72,7 +97,16 @@ function checkBest(getter, higherBetter = true) {
         @mouseleave="overlay.hideTip"
       >
         <span class="dd-label">5 级增强</span>
-        <strong>{{ formatAmpTrigger(weapon, ampIds) }}</strong>
+        <strong>
+          <img
+            v-if="ampIds.length"
+            :src="assetUrl(getAscensionIconPath(weapon.id))"
+            class="dd-amp-icon"
+            alt=""
+            draggable="false"
+          />
+          <span>{{ formatAmpTrigger(weapon, ampIds) }}</span>
+        </strong>
         <i class="dd-caret"></i>
       </button>
 
@@ -87,11 +121,11 @@ function checkBest(getter, higherBetter = true) {
     </div>
 
     <!-- Weapon stage render -->
-    <div class="lo-stage">
+    <div class="lo-stage" :class="{ 'is-ascended': stageVisual.isAmplified }">
       <span class="lo-watermark">{{ weapon.name }}</span>
       <img
         class="lo-weapon"
-        :src="assetUrl(weapon.image)"
+        :src="assetUrl(stageVisual.hdImage)"
         :alt="weapon.zhName"
         draggable="false"
       />

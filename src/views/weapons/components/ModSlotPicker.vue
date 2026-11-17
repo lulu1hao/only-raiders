@@ -2,6 +2,8 @@
 import { inject } from 'vue'
 import {
   assetUrl,
+  getAmpIconPath,
+  resolveWeaponVisualState,
   slotLabels,
   modGrade,
   modColor,
@@ -45,6 +47,7 @@ const tone = inject('weaponsTone', (c) => c)
             class="mm-item none"
             :class="{ active: !overlay.menuCtx.mods[overlay.menu.slotKey] }"
             @click="overlay.equipMod(overlay.menu.slotKey, null)"
+            @mouseenter="overlay.hideTip"
           >
             <span class="mm-none">∅</span>
             <span class="mm-name">不装配</span>
@@ -83,6 +86,12 @@ const tone = inject('weaponsTone', (c) => c)
             @mouseleave="overlay.hideTip"
           >
             <span class="dl-radio"></span>
+            <img
+              class="dl-tier-thumb"
+              :src="assetUrl(resolveWeaponVisualState(overlay.menuCtx.weapon, t.tier, []).hdImage)"
+              alt=""
+              draggable="false"
+            />
             <span class="dl-body">
               <strong>
                 TIER {{ t.roman }}
@@ -119,6 +128,12 @@ const tone = inject('weaponsTone', (c) => c)
             @mouseleave="overlay.hideTip"
           >
             <span class="dl-box"></span>
+            <img
+              class="dl-amp-icon"
+              :src="assetUrl(getAmpIconPath(overlay.menuCtx.weapon.id, amp.id))"
+              alt=""
+              draggable="false"
+            />
             <span class="dl-body">
               <strong>
                 {{ shortAmpName(amp) }}

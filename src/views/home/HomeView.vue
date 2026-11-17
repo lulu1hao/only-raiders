@@ -17,7 +17,6 @@ const stripeModules = [
   {
     idx: 0,
     id: 'weapons',
-    code: '01',
     title: '武器',
     chars: ['武', '器'],
     en: 'WEAPONS',
@@ -38,7 +37,6 @@ const stripeModules = [
   {
     idx: 1,
     id: 'quests',
-    code: '02',
     title: '任务',
     chars: ['任', '务'],
     en: 'QUESTS',
@@ -59,7 +57,6 @@ const stripeModules = [
   {
     idx: 2,
     id: 'maps',
-    code: '03',
     title: '地图',
     chars: ['地', '图'],
     en: 'MAPS',
@@ -80,7 +77,6 @@ const stripeModules = [
   {
     idx: 3,
     id: 'raider',
-    code: '04',
     title: '奇袭者',
     chars: ['奇', '袭', '者'],
     en: 'RAIDER',
@@ -126,6 +122,10 @@ const anim = reactive({
   contentOp1: 0,
   contentOp2: 0,
   contentOp3: 0,
+  contentSlide0: -2.4,
+  contentSlide1: -2.4,
+  contentSlide2: -2.4,
+  contentSlide3: -2.4,
   logoShift: 0,
   wordX0: 0,
   wordX1: 0,
@@ -158,9 +158,13 @@ watch(hoveredStripe, (h) => {
     contentOp1: h === 1 ? 1 : 0,
     contentOp2: h === 2 ? 1 : 0,
     contentOp3: h === 3 ? 1 : 0,
+    contentSlide0: h === 0 ? 0 : -2.4,
+    contentSlide1: h === 1 ? 0 : -2.4,
+    contentSlide2: h === 2 ? 0 : -2.4,
+    contentSlide3: h === 3 ? 0 : -2.4,
     logoShift: h !== null ? HALF_EXPAND_X : 0,
-    duration: 0.3,
-    ease: 'power3.out',
+    duration: 0.36,
+    ease: 'expo.out',
     overwrite: 'auto',
   })
 })
@@ -273,19 +277,15 @@ function stripePt(m, dy) {
   }
 }
 
-function stripeBadgeTopDy(m) {
-  return m.chars.length === 3 ? -16.2 : -12.6
-}
-
 function stripeBadgeBotDy(m) {
-  return m.chars.length === 3 ? 16.2 : 12.6
+  return m.chars.length === 3 ? 13.6 : 9.9
 }
 
 function stripeCharDy(m, charIdx) {
   if (m.chars.length === 3) {
-    return (charIdx - 1) * 7.6
+    return -10.0 + charIdx * 7.6
   }
-  return charIdx === 0 ? -4.0 : 4.0
+  return charIdx === 0 ? -6.5 : 1.5
 }
 
 function handleStripeClick(m) {
@@ -456,36 +456,14 @@ onBeforeUnmount(() => {
               :d="m.coreD"
             />
 
-            <!-- In-Stripe Button Content (driven via SVG opacity attribute to prevent Chromium Overlap layer churn) -->
+            <!-- In-Stripe Button Content (driven via SVG attributes to prevent Chromium Overlap layer churn) -->
             <g
               v-show="anim['contentOp' + m.idx] > 0.01"
               class="stripe-content"
               :opacity="anim['contentOp' + m.idx]"
+              :transform="`translate(${(anim['contentSlide' + m.idx] * STRIPE_SLOPE).toFixed(3)}, ${anim['contentSlide' + m.idx].toFixed(3)})`"
               :style="{ '--st-fg': m.textColor }"
             >
-              <!-- Top Tactical Code Badge along stripe centerline -->
-              <g
-                :transform="`translate(${stripePt(m, stripeBadgeTopDy(m)).x}, ${stripePt(m, stripeBadgeTopDy(m)).y})`"
-              >
-                <rect
-                  x="-4.1"
-                  y="-2.4"
-                  width="8.2"
-                  height="4.0"
-                  rx="1.1"
-                  :fill="m.badgeBg"
-                />
-                <text
-                  x="0"
-                  y="0.4"
-                  text-anchor="middle"
-                  class="stripe-code-tx"
-                  :fill="m.badgeFg"
-                >
-                  {{ m.code }}
-                </text>
-              </g>
-
               <!-- Chinese Characters along stripe centerline (武/器, 任/务, 地/图, 奇/袭/者) -->
               <text
                 v-for="(ch, cIdx) in m.chars"
@@ -574,13 +552,6 @@ onBeforeUnmount(() => {
 
 .stripe-content {
   pointer-events: none;
-}
-
-.stripe-code-tx {
-  font-family: var(--font-mono);
-  font-size: 2.45px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
 }
 
 .stripe-char-tx {

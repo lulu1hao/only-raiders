@@ -58,7 +58,10 @@ function handleSendToCompare(targetIdx = null) {
           </div>
         </header>
 
-        <section class="ar-panel loadout" :style="{ '--r': tone(store.selectedEnriched.rarityColor) }">
+        <section
+          class="ar-panel loadout"
+          :style="{ '--r': tone(store.activeAmpIds.length ? '#ffc600' : store.selectedEnriched.rarityColor) }"
+        >
           <LoadoutCard
             :weapon="store.selectedEnriched"
             :calc="store.currentCalc"

@@ -2754,6 +2754,73 @@ export async function recognizeLoadoutFromImageData(imageData, options = {}) {
   const db = await ensureLoadoutTemplates()
 
   const slotConfidences = {}
+  const quickUseOnly = options?.quickUseOnly === true
+  const quAllowed = new Set(['medical', 'throwable', 'deployable', 'gadget'])
+
+  if (quickUseOnly) {
+    const augFrect = mapRectFloat(UMG_RECTS_1080P.augment, vp)
+    const augMatch = matchBestInSlot(
+      imageData,
+      augFrect,
+      'gear',
+      'gear',
+      db.augments,
+    )
+    let quCount = 4
+    if (augMatch) {
+      const matchedAug = loadoutData.augments.find((a) => a.id === augMatch.id)
+      quCount = matchedAug?.quickUseSlots || 4
+    } else if (analyzeCardState(imageData, augFrect, 'gear').occupied) {
+      quCount = 5
+    }
+
+    const quickUse = [null, null, null, null, null, null]
+    for (let i = 0; i < quCount && i < UMG_RECTS_1080P.quickUse.length; i++) {
+      const qFrect = mapRectFloat(UMG_RECTS_1080P.quickUse[i], vp)
+      const qMatch = matchBestInSlot(
+        imageData,
+        qFrect,
+        'tile',
+        'tile',
+        db.items,
+        (it) => quAllowed.has(it.category),
+      )
+      if (qMatch) {
+        quickUse[i] = {
+          itemId: qMatch.id,
+          count: recognizeTileStackCount(
+            imageData,
+            UMG_RECTS_1080P.quickUse[i],
+            vp,
+            qMatch.meta.maxStack || 1,
+          ),
+        }
+        slotConfidences[`quickUse${i}`] = qMatch.score
+      }
+    }
+
+    const effectiveQuCap = quickUse[4] ? Math.max(5, quCount) : quCount
+    return {
+      ok: true,
+      viewport: vp,
+      hasStashPanel: loc.hasStashPanel,
+      recognizedCount: quickUse.filter(Boolean).length,
+      slotConfidences,
+      weaponSlotStates: [null, null],
+      quickUseOnly: true,
+      loadout: {
+        augmentId: 'none',
+        quickUseSlotCap: effectiveQuCap,
+        _quickUseOnly: true,
+        shieldId: null,
+        weapons: [null, null],
+        backpack: Array.from({ length: 24 }, () => null),
+        quickUse,
+        aux: [null, null, null],
+        safePocket: [null, null, null],
+      },
+    }
+  }
 
   // 1. 识别强化 (Augment)
   const augMatch = matchBestInSlot(
@@ -2824,7 +2891,6 @@ export async function recognizeLoadoutFromImageData(imageData, options = {}) {
   }
 
   // 5. 识别快速使用栏位 (Quick Use 4 ~ 6 格)
-  const quAllowed = new Set(['medical', 'throwable', 'deployable', 'gadget'])
   const quCount = activeAugment.quickUseSlots || 4
   const quickUse = [null, null, null, null, null, null]
   for (let i = 0; i < quCount && i < UMG_RECTS_1080P.quickUse.length; i++) {

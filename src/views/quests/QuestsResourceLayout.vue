@@ -5,6 +5,7 @@ import { useQuestsStore } from '../../stores/useQuestsStore'
 import { useWorkshopStore } from '../../stores/useWorkshopStore'
 import { useBlueprintsStore } from '../../stores/useBlueprintsStore'
 import { useOutpostStore } from '../../stores/useOutpostStore'
+import { useGlidingNavIndicator } from '../../composables/useGlidingNavIndicator'
 import SearchInput from '../../components/common/SearchInput.vue'
 import './resource-shared.css'
 
@@ -39,6 +40,23 @@ const mainTabs = [
   { id: 'blueprints', title: '蓝图', path: '/quests/blueprints' },
 ]
 
+const {
+  navRef,
+  setTabRef,
+  onTabPointerEnter,
+  onNavPointerLeave,
+  railStyle,
+  glowStyle,
+  hoverPillStyle,
+} = useGlidingNavIndicator({
+  activeId: activeSubTab,
+  items: mainTabs,
+  insetLeft: 18,
+  insetRight: 18,
+  pillInset: 6,
+  defaultRgb: [255, 188, 19],
+})
+
 const pct = (a, b) => (b ? Math.round((a / b) * 100) : 0)
 
 const stats = computed(() => [
@@ -72,16 +90,24 @@ const stats = computed(() => [
 <template>
   <main class="page-viewport qr-shell">
     <header class="qr-header">
-      <nav class="qr-main-tabs" aria-label="任务资源分区">
+      <nav ref="navRef" class="qr-main-tabs" aria-label="任务资源分区" @pointerleave="onNavPointerLeave">
+        <span class="qr-hover-pill" :style="hoverPillStyle" aria-hidden="true" />
+        <span class="qr-active-glow" :style="glowStyle" aria-hidden="true" />
         <button
           v-for="tab in mainTabs"
           :key="tab.id"
+          :ref="(el) => setTabRef(tab.id, el)"
+          type="button"
           class="qr-tab"
           :class="{ active: activeSubTab === tab.id }"
+          @pointerenter="onTabPointerEnter(tab.id)"
+          @focus="onTabPointerEnter(tab.id)"
+          @blur="onNavPointerLeave"
           @click="router.push(tab.path)"
         >
-          {{ tab.title }}
+          <span class="qr-tab-label">{{ tab.title }}</span>
         </button>
+        <span class="qr-active-rail" :style="railStyle" aria-hidden="true" />
       </nav>
 
       <div class="qr-controls">
@@ -140,14 +166,65 @@ const stats = computed(() => [
   border-bottom: 1px solid var(--line);
 }
 
-/* Module tabs: large condensed labels with amber underline (in-game top menu) */
+/* Module tabs: large condensed labels with ARC Raiders gliding underline */
 .qr-main-tabs {
+  position: relative;
   display: flex;
+  align-items: stretch;
   gap: 4px;
+  margin-left: -12px;
+}
+
+.qr-hover-pill {
+  position: absolute;
+  top: 11px;
+  bottom: 11px;
+  left: 0;
+  border-radius: 7px;
+  background: linear-gradient(
+    180deg,
+    rgba(249, 238, 223, 0.075) 0%,
+    rgba(249, 238, 223, 0.03) 100%
+  );
+  border: 1px solid rgba(249, 238, 223, 0.1);
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform, width, opacity;
+}
+
+.qr-active-glow {
+  position: absolute;
+  top: 11px;
+  bottom: 11px;
+  left: 0;
+  border-radius: 7px;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(var(--nav-accent-rgb, 255, 188, 19), 0.07) 0%,
+    rgba(var(--nav-accent-rgb, 255, 188, 19), 0.15) 100%
+  );
+  border: 1px solid rgba(var(--nav-accent-rgb, 255, 188, 19), 0.25);
+  will-change: transform, width, opacity;
+}
+
+.qr-active-rail {
+  position: absolute;
+  left: 0;
+  bottom: 11px;
+  height: 2.5px;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 2;
+  background: rgb(var(--nav-accent-rgb, 255, 188, 19));
+  box-shadow: 0 0 7px rgba(var(--nav-accent-rgb, 255, 188, 19), 0.55);
+  will-change: transform, width, opacity;
 }
 
 .qr-tab {
   position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   padding: 0 18px;
@@ -159,39 +236,32 @@ const stats = computed(() => [
   font-weight: 700;
   letter-spacing: 0.08em;
   cursor: pointer;
-  transition: color 0.15s var(--ease);
+  transition: color 0.2s var(--ease);
 }
 
-.qr-tab:first-child {
-  padding-left: 2px;
+.qr-tab-label {
+  display: inline-block;
+  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .qr-tab:hover {
   color: var(--tx-1);
 }
 
+.qr-tab:hover .qr-tab-label,
+.qr-tab.active .qr-tab-label {
+  transform: translateY(-0.5px);
+}
+
 .qr-tab.active {
   color: var(--cream);
 }
 
-.qr-tab::after {
-  content: '';
-  position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: -1px;
-  height: 3px;
-  background: var(--amber);
-  transform: scaleX(0);
-  transition: transform 0.2s var(--ease-out);
-}
-
-.qr-tab:first-child::after {
-  left: 2px;
-}
-
-.qr-tab.active::after {
-  transform: scaleX(1);
+@media (prefers-reduced-motion: reduce) {
+  .qr-tab,
+  .qr-tab-label {
+    transition: none;
+  }
 }
 
 .qr-controls {

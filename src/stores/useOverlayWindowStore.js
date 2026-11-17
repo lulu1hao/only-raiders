@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { defineStore, getActivePinia } from 'pinia'
 import { flushPersistedStorage } from './index'
 
@@ -38,11 +38,54 @@ const STORE_ID_BY_STORAGE_KEY = {
   arc_maps_store_v2: 'maps',
 }
 
+export const OVERLAY_NAV_ITEMS = [
+  { id: 'quests', label: '局内任务', desc: '当前地图待办与追踪目标' },
+  { id: 'map', label: '地图/词条', desc: '2D 战术雷达与整点词条轮换' },
+  { id: 'blueprints', label: '蓝图', desc: '局内拾取蓝图快速查重' },
+  { id: 'raider', label: '奇袭者', desc: '天赋树/战备识别与自动同步' },
+  { id: 'soundboard', label: '局内放歌', desc: '语音混音与局内音效台' },
+]
+
+const VALID_NAV_IDS = new Set(OVERLAY_NAV_ITEMS.map((it) => it.id))
+const NAV_META_BY_ID = Object.fromEntries(OVERLAY_NAV_ITEMS.map((it) => [it.id, it]))
+
+export function createDefaultNavTabsConfig() {
+  return OVERLAY_NAV_ITEMS.map((it) => ({ id: it.id, visible: true }))
+}
+
+export function normalizeNavTabsConfig(raw) {
+  const seen = new Set()
+  const result = []
+  if (Array.isArray(raw)) {
+    for (const entry of raw) {
+      const id = typeof entry === 'string' ? entry : entry?.id
+      if (!id || !VALID_NAV_IDS.has(id) || seen.has(id)) continue
+      seen.add(id)
+      const visible =
+        typeof entry === 'object' && entry !== null ? entry.visible !== false : true
+      result.push({ id, visible })
+    }
+  }
+  for (const item of OVERLAY_NAV_ITEMS) {
+    if (!seen.has(item.id)) {
+      seen.add(item.id)
+      result.push({ id: item.id, visible: true })
+    }
+  }
+  if (!result.some((it) => it.visible)) {
+    if (result[0]) result[0].visible = true
+  }
+  return result
+}
+
 export const useOverlayWindowStore = defineStore(
   'overlayWindow',
   () => {
-    // Active tab inside the overlay window: 'quests' | 'map' | 'blueprints' | 'soundboard'
+    // Active tab inside the overlay window: 'quests' | 'map' | 'blueprints' | 'raider' | 'soundboard'
     const activeTab = ref('quests')
+    // Persisted navigation bar order & visibility preferences
+    const navTabsConfig = ref(createDefaultNavTabsConfig())
+    const hideSingleNavBar = ref(false)
     // Map tab sub-mode: 'radar' (2D tactical map) | 'schedule' (7-map live conditions rotation)
     const mapSubMode = ref('radar')
     // Active map inside overlay (defaults to dam-battlegrounds)
@@ -79,6 +122,96 @@ export const useOverlayWindowStore = defineStore(
       loadoutSourceKey: 'current',
       subTab: 'sync',
     })
+
+    // Navigation bar customization helpers
+    const orderedNavTabs = computed(() =>
+      normalizeNavTabsConfig(navTabsConfig.value).map((entry) => ({
+        ...NAV_META_BY_ID[entry.id],
+        visible: entry.visible,
+      })),
+    )
+
+    const visibleNavTabs = computed(() => orderedNavTabs.value.filter((t) => t.visible))
+
+    const isDefaultNavConfig = computed(() => {
+      if (hideSingleNavBar.value) return false
+      const normalized = normalizeNavTabsConfig(navTabsConfig.value)
+      return normalized.every(
+        (entry, idx) => entry.id === OVERLAY_NAV_ITEMS[idx]?.id && entry.visible === true,
+      )
+    })
+
+    function persistOverlayPrefsNow() {
+      const piniaInst = getActivePinia()
+      piniaInst?._s?.get('overlayWindow')?.$persist?.()
+      flushPersistedStorage('arc_overlay_store_v1')
+      void nextTick(() => {
+        piniaInst?._s?.get('overlayWindow')?.$persist?.()
+        flushPersistedStorage('arc_overlay_store_v1')
+      })
+    }
+
+    function isTabVisible(tabId) {
+      return visibleNavTabs.value.some((t) => t.id === tabId)
+    }
+
+    function getNavTabLabel(tabId) {
+      return NAV_META_BY_ID[tabId]?.label || tabId
+    }
+
+    function switchToFirstVisibleTab() {
+      activeTab.value = visibleNavTabs.value[0]?.id || 'quests'
+    }
+
+    function setNavTabVisible(tabId, visible) {
+      const normalized = normalizeNavTabsConfig(navTabsConfig.value)
+      const target = normalized.find((it) => it.id === tabId)
+      if (!target) return false
+      const nextVisible = Boolean(visible)
+      if (!nextVisible) {
+        const visibleCount = normalized.filter((it) => it.visible).length
+        if (visibleCount <= 1 && target.visible) {
+          return false
+        }
+      }
+      const next = normalized.map((it) =>
+        it.id === tabId ? { ...it, visible: nextVisible } : it,
+      )
+      navTabsConfig.value = normalizeNavTabsConfig(next)
+      if (!nextVisible && (activeTab.value === tabId || !isTabVisible(activeTab.value))) {
+        switchToFirstVisibleTab()
+      }
+      persistOverlayPrefsNow()
+      return true
+    }
+
+    function moveNavTab(fromIndex, toIndex) {
+      const list = normalizeNavTabsConfig(navTabsConfig.value).map((it) => ({ ...it }))
+      if (
+        fromIndex < 0 ||
+        fromIndex >= list.length ||
+        toIndex < 0 ||
+        toIndex >= list.length ||
+        fromIndex === toIndex
+      ) {
+        return
+      }
+      const [moved] = list.splice(fromIndex, 1)
+      list.splice(toIndex, 0, moved)
+      navTabsConfig.value = list
+      persistOverlayPrefsNow()
+    }
+
+    function setHideSingleNavBar(val) {
+      hideSingleNavBar.value = Boolean(val)
+      persistOverlayPrefsNow()
+    }
+
+    function resetNavTabsConfig() {
+      navTabsConfig.value = createDefaultNavTabsConfig()
+      hideSingleNavBar.value = false
+      persistOverlayPrefsNow()
+    }
 
     // O(1) Set lookup for pinned quests
     const pinnedQuestIdSet = computed(() => new Set(pinnedQuestIds.value))
@@ -126,9 +259,13 @@ export const useOverlayWindowStore = defineStore(
           activeTab.value = 'map'
           mapSubMode.value = 'radar'
         }
-        if (!dto.fullscreen && prevFs && raiderGuideSpec.value?.active) {
-          raiderGuideSpec.value = null
-          activeTab.value = 'raider'
+        if (!dto.fullscreen && prevFs) {
+          if (raiderGuideSpec.value?.active) {
+            raiderGuideSpec.value = null
+            activeTab.value = 'raider'
+          } else if (!isTabVisible(activeTab.value)) {
+            switchToFirstVisibleTab()
+          }
         }
       }
       if (!dto.visible && raiderGuideSpec.value?.active) {
@@ -150,6 +287,9 @@ export const useOverlayWindowStore = defineStore(
     let browserPopupRef = null
 
     async function openOverlay() {
+      if (!overlayVisible.value && !raiderGuideSpec.value?.active && !isTabVisible(activeTab.value)) {
+        switchToFirstVisibleTab()
+      }
       if (isTauriRuntime()) {
         const dto = await invokeTauri('open_overlay_window', {
           minimizeMain: autoMinimizeMain.value,
@@ -254,6 +394,8 @@ export const useOverlayWindowStore = defineStore(
         raiderGuideSpec.value = null
         activeTab.value = 'raider'
         clickThrough.value = false
+      } else if (!isTabVisible(activeTab.value)) {
+        switchToFirstVisibleTab()
       }
       if (isTauriRuntime()) {
         if (!next && wasGuide) {
@@ -279,6 +421,7 @@ export const useOverlayWindowStore = defineStore(
         inGameBuild: spec?.inGameBuild || null,
         targetLoadout: spec?.targetLoadout || null,
         inGameLoadout: spec?.inGameLoadout || null,
+        syncOptions: spec?.syncOptions || null,
         ts: Date.now(),
       }
       const piniaInst = getActivePinia()
@@ -409,6 +552,7 @@ export const useOverlayWindowStore = defineStore(
     async function setOpacity(val) {
       const clamped = Math.max(0.1, Math.min(1, Number(val) ?? 0.88))
       opacity.value = clamped
+      persistOverlayPrefsNow()
       if (isTauriRuntime()) {
         queuedOpacityVal = clamped
         if (opacityIpcPending) return
@@ -431,6 +575,7 @@ export const useOverlayWindowStore = defineStore(
     async function setAutoMinimizeMain(val) {
       const next = Boolean(val)
       autoMinimizeMain.value = next
+      persistOverlayPrefsNow()
       if (isTauriRuntime()) {
         const dto = await invokeTauri('set_overlay_auto_minimize', { autoMinimize: next })
         applyDto(dto)
@@ -457,12 +602,46 @@ export const useOverlayWindowStore = defineStore(
       if (syncInitialized || typeof window === 'undefined') return
       syncInitialized = true
       const pinia = getActivePinia()
+      navTabsConfig.value = normalizeNavTabsConfig(navTabsConfig.value)
 
       window.addEventListener('storage', (e) => {
         if (!e.key || !e.newValue || e.newValue === e.oldValue) return
         try {
           const parsed = JSON.parse(e.newValue)
           if (e.key === 'arc_overlay_store_v1') {
+            if (Array.isArray(parsed.navTabsConfig)) {
+              const normalized = normalizeNavTabsConfig(parsed.navTabsConfig)
+              if (JSON.stringify(navTabsConfig.value) !== JSON.stringify(normalized)) {
+                navTabsConfig.value = normalized
+                if (
+                  !fullscreen.value &&
+                  !raiderGuideSpec.value?.active &&
+                  !isTabVisible(activeTab.value)
+                ) {
+                  switchToFirstVisibleTab()
+                }
+              }
+            }
+            if (
+              typeof parsed.hideSingleNavBar === 'boolean' &&
+              hideSingleNavBar.value !== parsed.hideSingleNavBar
+            ) {
+              hideSingleNavBar.value = parsed.hideSingleNavBar
+            }
+            if (
+              !isTauriRuntime() &&
+              typeof parsed.opacity === 'number' &&
+              opacity.value !== parsed.opacity
+            ) {
+              opacity.value = parsed.opacity
+            }
+            if (
+              !isTauriRuntime() &&
+              typeof parsed.autoMinimizeMain === 'boolean' &&
+              autoMinimizeMain.value !== parsed.autoMinimizeMain
+            ) {
+              autoMinimizeMain.value = parsed.autoMinimizeMain
+            }
             if (
               Array.isArray(parsed.pinnedQuestIds) &&
               JSON.stringify(pinnedQuestIds.value) !== JSON.stringify(parsed.pinnedQuestIds)
@@ -542,6 +721,12 @@ export const useOverlayWindowStore = defineStore(
         if (raiderOverlayIntent.value.moduleMode) {
           raiderSyncRuntime.value.moduleMode = raiderOverlayIntent.value.moduleMode
         }
+      } else if (
+        !fullscreen.value &&
+        !raiderGuideSpec.value?.active &&
+        !isTabVisible(activeTab.value)
+      ) {
+        switchToFirstVisibleTab()
       }
 
       if (isTauriRuntime()) {
@@ -560,6 +745,11 @@ export const useOverlayWindowStore = defineStore(
 
     return {
       activeTab,
+      navTabsConfig,
+      hideSingleNavBar,
+      orderedNavTabs,
+      visibleNavTabs,
+      isDefaultNavConfig,
       mapSubMode,
       overlayMapId,
       overlayVisible,
@@ -578,6 +768,13 @@ export const useOverlayWindowStore = defineStore(
       raiderGuideSpec,
       raiderOverlayIntent,
       raiderSyncRuntime,
+      isTabVisible,
+      getNavTabLabel,
+      switchToFirstVisibleTab,
+      setNavTabVisible,
+      moveNavTab,
+      setHideSingleNavBar,
+      resetNavTabsConfig,
       isQuestPinned,
       togglePinQuest,
       getStashedCount,
@@ -612,6 +809,8 @@ export const useOverlayWindowStore = defineStore(
     persist: {
       key: 'arc_overlay_store_v1',
       pick: [
+        'navTabsConfig',
+        'hideSingleNavBar',
         'opacity',
         'mapOpacity',
         'autoMinimizeMain',

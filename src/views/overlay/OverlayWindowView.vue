@@ -11,6 +11,7 @@ import { ITEM_ICON_MAP, parseQuestRequiredItems } from '../../utils/questItemIco
 import { abortRaiderAutoSync } from '../../utils/raiderAutoSyncPlanner'
 import { useSoundboard } from '../../composables/useSoundboard'
 import RotationCountdownText from '../../components/common/RotationCountdownText.vue'
+import OverlaySettingsPanel from './components/OverlaySettingsPanel.vue'
 
 const OverlayMiniRadarMap = defineAsyncComponent(
   () => import('./components/OverlayMiniRadarMap.vue'),
@@ -53,10 +54,41 @@ const sbCurrentTrack = computed(() =>
   sbState.tracks.find((t) => t.id === sbState.status.trackId),
 )
 
-const showOpacityPanel = ref(false)
-const showHotkeysTip = ref(false)
+const showSettingsPanel = ref(false)
 const expandedQuestIds = ref([])
 const expandedQuestIdSet = computed(() => new Set(expandedQuestIds.value))
+
+watch(
+  () => [overlayStore.clickThrough, overlayStore.collapsed],
+  ([ct, col]) => {
+    if (ct || col) showSettingsPanel.value = false
+  },
+)
+
+const shouldShowNavBar = computed(() => {
+  if (overlayStore.fullscreen) return false
+  if (
+    overlayStore.hideSingleNavBar &&
+    overlayStore.visibleNavTabs.length <= 1 &&
+    overlayStore.isTabVisible(overlayStore.activeTab)
+  ) {
+    return false
+  }
+  return true
+})
+
+const OV_TAB_ACCENT_RGB = {
+  quests: '255, 188, 19',
+  map: '31, 255, 118',
+  blueprints: '255, 210, 5',
+  raider: '95, 255, 255',
+  soundboard: '253, 75, 16',
+}
+const hoveredOvTabIdx = ref(-1)
+const activeOvTabIdx = computed(() =>
+  overlayStore.visibleNavTabs.findIndex((t) => t.id === overlayStore.activeTab),
+)
+const activeOvAccentRgb = computed(() => OV_TAB_ACCENT_RGB[overlayStore.activeTab] || '255, 188, 19')
 
 const activeStatesByMap = computed(() => {
   const dict = {}
@@ -318,26 +350,21 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="ovt-controls no-drag">
-          <!-- Hotkeys Info Button -->
+          <!-- Overlay Settings Popover Button -->
           <button
             type="button"
             class="ov-icon-btn"
-            :class="{ active: showHotkeysTip }"
-            title="查看全局快捷键说明"
-            @click="showHotkeysTip = !showHotkeysTip; showOpacityPanel = false"
+            :class="{ active: showSettingsPanel }"
+            title="悬浮窗设置（导航栏排序与显隐、背景浓度、热键说明）"
+            @click="showSettingsPanel = !showSettingsPanel"
           >
-            热键
-          </button>
-
-          <!-- Background Opacity Popover Button -->
-          <button
-            type="button"
-            class="ov-icon-btn"
-            :class="{ active: showOpacityPanel }"
-            title="调节背景不透明度（仅淡化底色，文字保持高清突出）"
-            @click="showOpacityPanel = !showOpacityPanel; showHotkeysTip = false"
-          >
-            背景 {{ Math.round(overlayStore.opacity * 100) }}%
+            <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"
+              />
+            </svg>
+            <span>设置</span>
           </button>
 
           <!-- Always on Top Toggle -->
@@ -390,122 +417,91 @@ onBeforeUnmount(() => {
         <strong>Alt+X / F10</strong>
       </div>
 
-      <!-- Background Opacity Slider Bar (Collapsible) -->
-      <div v-if="showOpacityPanel" class="ov-dropdown-bar no-drag">
-        <div class="odb-row">
-          <span class="odb-lbl">背景底色浓度（文字始终保持 100% 清晰）</span>
-          <input
-            type="range"
-            min="0.1"
-            max="1"
-            step="0.05"
-            :value="overlayStore.opacity"
-            class="odb-slider"
-            @input="overlayStore.setOpacity(Number($event.target.value))"
-          />
-          <strong class="ar-num odb-val">{{ Math.round(overlayStore.opacity * 100) }}%</strong>
-        </div>
-        <div class="odb-presets">
-          <button
-            v-for="p in [0.15, 0.35, 0.6, 0.85, 1]"
-            :key="p"
-            type="button"
-            class="odb-preset-btn"
-            :class="{ active: Math.abs(overlayStore.opacity - p) < 0.03 }"
-            @click="overlayStore.setOpacity(p)"
-          >
-            {{ Math.round(p * 100) }}%
-          </button>
-        </div>
+      <!-- Overlay Settings Dropdown Panel (Collapsible) -->
+      <div v-if="showSettingsPanel" class="ov-dropdown-bar ov-settings-dropdown no-drag">
+        <OverlaySettingsPanel context="overlay" @close="showSettingsPanel = false" />
       </div>
 
-      <!-- Global Hotkeys Cheat Sheet (Collapsible) -->
-      <div v-if="showHotkeysTip" class="ov-dropdown-bar hotkeys-bar no-drag">
-        <div class="hk-row">
-          <span>呼出 / 隐藏悬浮窗</span>
-          <div><kbd>Alt + Q</kbd> / <kbd>F9</kbd></div>
-        </div>
-        <div class="hk-row">
-          <span>全屏地图透视对标模式</span>
-          <div><kbd>Alt + F</kbd></div>
-        </div>
-        <div class="hk-row">
-          <span>开启 / 取消鼠标穿透标点</span>
-          <div><kbd>Alt + X</kbd> / <kbd>F10</kbd></div>
-        </div>
-        <div class="hk-row">
-          <span>折叠 / 展开迷你胶囊条</span>
-          <div><kbd>Alt + M</kbd></div>
-        </div>
-      </div>
-
-      <!-- 4 Core Module Navigation Tabs (Single-line tactical layout, no emoji clutter) -->
-      <nav v-if="!overlayStore.fullscreen" class="ov-nav-tabs no-drag" aria-label="悬浮窗功能切换">
+      <!-- Dynamic Core Module Navigation Tabs (Single-line tactical layout, no emoji clutter) -->
+      <nav
+        v-if="shouldShowNavBar"
+        class="ov-nav-tabs no-drag"
+        :style="{ '--ov-tab-cols': Math.max(1, overlayStore.visibleNavTabs.length) }"
+        aria-label="悬浮窗功能切换"
+        @pointerleave="hoveredOvTabIdx = -1"
+      >
+        <span
+          v-if="hoveredOvTabIdx >= 0 && hoveredOvTabIdx !== activeOvTabIdx"
+          class="ov-nav-hover-pill"
+          :style="{ '--ov-hover-idx': hoveredOvTabIdx }"
+          aria-hidden="true"
+        />
+        <span
+          v-if="activeOvTabIdx >= 0"
+          class="ov-nav-indicator"
+          :style="{
+            '--ov-active-idx': activeOvTabIdx,
+            '--ov-accent-rgb': activeOvAccentRgb,
+          }"
+          aria-hidden="true"
+        />
         <button
-          type="button"
-          class="ov-nav-tab"
-          :class="{ active: overlayStore.activeTab === 'quests' }"
-          @click="overlayStore.activeTab = 'quests'"
-        >
-          <span>局内任务</span>
-          <em class="ar-num">{{ mapTodoCount }}</em>
-        </button>
-
-        <button
-          type="button"
-          class="ov-nav-tab"
-          :class="{ active: overlayStore.activeTab === 'map' }"
-          @click="overlayStore.activeTab = 'map'"
-        >
-          <span>地图/词条</span>
-        </button>
-
-        <button
-          type="button"
-          class="ov-nav-tab"
-          :class="{ active: overlayStore.activeTab === 'blueprints' }"
-          @click="overlayStore.activeTab = 'blueprints'"
-        >
-          <span>蓝图</span>
-          <em class="ar-num">{{ blueprintsStore.validOwnedCount }}/{{ blueprintsStore.allBlueprintsCount }}</em>
-        </button>
-
-        <button
+          v-for="(tab, idx) in overlayStore.visibleNavTabs"
+          :key="tab.id"
           type="button"
           class="ov-nav-tab"
           :class="{
-            active: overlayStore.activeTab === 'raider',
-            'is-live-audio': overlayStore.raiderSyncRuntime?.running,
+            active: overlayStore.activeTab === tab.id,
+            'is-live-audio':
+              (tab.id === 'raider' && overlayStore.raiderSyncRuntime?.running) ||
+              (tab.id === 'soundboard' && sbState.status.playing),
           }"
-          @click="overlayStore.activeTab = 'raider'"
+          @pointerenter="hoveredOvTabIdx = idx"
+          @focus="hoveredOvTabIdx = idx"
+          @blur="hoveredOvTabIdx === idx && (hoveredOvTabIdx = -1)"
+          @click="overlayStore.activeTab = tab.id"
         >
-          <span>奇袭者</span>
-          <em v-if="overlayStore.raiderSyncRuntime?.running" class="ar-num live-dot">●</em>
-          <em
-            v-else-if="overlayStore.raiderSyncRuntime?.moduleMode === 'loadout'"
-            class="ar-num"
-          >
-            {{ loadoutStore.loadoutSummary.totalWeight }}kg
-          </em>
-          <em v-else-if="raiderStore.totalSpentPoints > 0" class="ar-num">
-            {{ raiderStore.totalSpentPoints }}P
-          </em>
-        </button>
+          <span>{{ tab.label }}</span>
 
-        <button
-          type="button"
-          class="ov-nav-tab"
-          :class="{
-            active: overlayStore.activeTab === 'soundboard',
-            'is-live-audio': sbState.status.playing,
-          }"
-          @click="overlayStore.activeTab = 'soundboard'"
-        >
-          <span>局内放歌</span>
-          <em v-if="sbState.status.playing" class="ar-num live-dot">▶</em>
-          <em v-else-if="sbState.tracks.length" class="ar-num">{{ sbState.tracks.length }}</em>
+          <em v-if="tab.id === 'quests'" class="ar-num">{{ mapTodoCount }}</em>
+
+          <em v-else-if="tab.id === 'blueprints'" class="ar-num">
+            {{ blueprintsStore.validOwnedCount }}/{{ blueprintsStore.allBlueprintsCount }}
+          </em>
+
+          <template v-else-if="tab.id === 'raider'">
+            <em v-if="overlayStore.raiderSyncRuntime?.running" class="ar-num live-dot">●</em>
+            <em
+              v-else-if="overlayStore.raiderSyncRuntime?.moduleMode === 'loadout'"
+              class="ar-num"
+            >
+              {{ loadoutStore.loadoutSummary.totalWeight }}kg
+            </em>
+            <em v-else-if="raiderStore.totalSpentPoints > 0" class="ar-num">
+              {{ raiderStore.totalSpentPoints }}P
+            </em>
+          </template>
+
+          <template v-else-if="tab.id === 'soundboard'">
+            <em v-if="sbState.status.playing" class="ar-num live-dot">▶</em>
+            <em v-else-if="sbState.tracks.length" class="ar-num">{{ sbState.tracks.length }}</em>
+          </template>
         </button>
       </nav>
+
+      <div
+        v-if="!overlayStore.fullscreen && !overlayStore.isTabVisible(overlayStore.activeTab)"
+        class="ov-temp-tab-bar no-drag"
+      >
+        <span>临时查看：{{ overlayStore.getNavTabLabel(overlayStore.activeTab) }}</span>
+        <button
+          type="button"
+          class="ov-temp-back-btn"
+          @click="overlayStore.switchToFirstVisibleTab()"
+        >
+          ← 返回{{ overlayStore.visibleNavTabs[0]?.label }}
+        </button>
+      </div>
 
       <!-- ===============================================================
            TAB 1: 局内任务单 (Raid Quests & Pin Tracker)
@@ -1387,93 +1383,142 @@ onBeforeUnmount(() => {
   white-space: nowrap;
 }
 
-/* Dropdown Bars (Opacity & Hotkeys) */
+/* Dropdown Bars (Settings) */
 .ov-dropdown-bar {
   flex-shrink: 0;
   padding: 8px 12px;
-  background: rgba(11, 15, 28, 0.94);
+  background: rgba(11, 15, 28, 0.96);
   border-bottom: 1px solid var(--line-strong);
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.odb-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.ov-dropdown-bar.ov-settings-dropdown {
+  padding: 0;
+  gap: 0;
 }
 
-.odb-lbl {
-  font-size: 11px;
-  color: var(--tx-2);
-  white-space: nowrap;
-}
-
-.odb-slider {
-  flex: 1;
-  accent-color: var(--amber);
-  cursor: pointer;
-}
-
-.odb-val {
-  font-size: 12px;
-  color: var(--amber);
-  min-width: 34px;
-  text-align: right;
-}
-
-.odb-presets {
-  display: flex;
-  gap: 5px;
-}
-
-.odb-preset-btn {
-  flex: 1;
-  height: 22px;
-  border-radius: 3px;
-  border: 1px solid var(--line);
-  background: var(--ov-bg-chip);
-  color: var(--tx-2);
-  font-size: 11px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.odb-preset-btn.active {
-  border-color: var(--amber);
-  color: var(--amber);
-}
-
-.hotkeys-bar .hk-row {
+.ov-temp-tab-bar {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  background: rgba(255, 188, 19, 0.12);
+  border-bottom: 1px solid rgba(255, 188, 19, 0.35);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 11.5px;
-  color: var(--tx-1);
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--cream);
 }
 
-.hotkeys-bar kbd {
-  padding: 1px 6px;
+.ov-temp-back-btn {
+  height: 20px;
+  padding: 0 7px;
   border-radius: 3px;
-  background: var(--bg-3);
-  border: 1px solid var(--line-strong);
-  font-family: var(--font-mono);
-  font-size: 10.5px;
+  border: 1px solid rgba(255, 188, 19, 0.55);
+  background: rgba(9, 12, 25, 0.72);
   color: var(--amber);
+  font-family: var(--font-display);
+  font-size: 10.5px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
-/* 5-Tab Bar (Strictly single-line, no wrap) */
+.ov-temp-back-btn:hover {
+  background: var(--amber);
+  color: var(--ink);
+}
+
+/* Dynamic Tab Bar (Strictly single-line, no wrap) */
 .ov-nav-tabs {
+  position: relative;
   flex-shrink: 0;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--ov-tab-cols, 5), minmax(0, 1fr));
   background: var(--ov-bg-bar);
   border-bottom: 1px solid var(--line-strong);
+  overflow: hidden;
+}
+
+@keyframes ovPillIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ov-nav-hover-pill {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  width: calc(100% / var(--ov-tab-cols, 5));
+  transform: translate3d(calc(var(--ov-hover-idx, 0) * 100%), 0, 0);
+  pointer-events: none;
+  z-index: 0;
+  animation: ovPillIn 0.14s ease both;
+  transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.ov-nav-hover-pill::before {
+  content: '';
+  position: absolute;
+  inset: 0 4px;
+  border-radius: 6px;
+  background: rgba(249, 238, 223, 0.075);
+  border: 1px solid rgba(249, 238, 223, 0.11);
+}
+
+.ov-nav-indicator {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: calc(100% / var(--ov-tab-cols, 5));
+  transform: translate3d(calc(var(--ov-active-idx, 0) * 100%), 0, 0);
+  pointer-events: none;
+  z-index: 0;
+  transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.ov-nav-indicator::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 6px;
+  background: linear-gradient(
+    180deg,
+    rgba(var(--ov-accent-rgb, 255, 188, 19), 0.08) 0%,
+    rgba(var(--ov-accent-rgb, 255, 188, 19), 0.16) 100%
+  );
+  border: 1px solid rgba(var(--ov-accent-rgb, 255, 188, 19), 0.26);
+}
+
+.ov-nav-indicator::after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 4px;
+  height: 2px;
+  border-radius: 999px;
+  background-color: rgb(var(--ov-accent-rgb, 255, 188, 19));
+  box-shadow: 0 0 8px rgba(var(--ov-accent-rgb, 255, 188, 19), 0.55);
+  transition:
+    background-color 0.28s ease,
+    box-shadow 0.28s ease;
 }
 
 .ov-nav-tab {
   position: relative;
+  z-index: 1;
   height: 36px;
   padding: 0 2px;
   border: none;
@@ -1488,27 +1533,22 @@ onBeforeUnmount(() => {
   justify-content: center;
   gap: 3px;
   cursor: pointer;
-  transition: color 0.15s, background 0.15s;
+  transition: color 0.2s var(--ease);
 }
 
-.ov-nav-tab:hover {
-  color: var(--cream);
-  background: rgba(249, 238, 223, 0.05);
-}
-
+.ov-nav-tab:hover,
 .ov-nav-tab.active {
   color: var(--cream);
-  background: rgba(249, 238, 223, 0.08);
 }
 
-.ov-nav-tab.active::after {
-  content: '';
-  position: absolute;
-  left: 6px;
-  right: 6px;
-  bottom: 0;
-  height: 2.5px;
-  background: var(--amber);
+@media (prefers-reduced-motion: reduce) {
+  .ov-nav-hover-pill,
+  .ov-nav-indicator,
+  .ov-nav-indicator::after,
+  .ov-nav-tab {
+    animation: none;
+    transition: none;
+  }
 }
 
 .ov-nav-tab em {

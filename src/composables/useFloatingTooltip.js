@@ -5,9 +5,12 @@ import {
   assetUrl,
   computeWeaponStats,
   diffRows,
+  getAmpIconPath,
   getAmpRestrictionState,
+  getAscensionIconPath,
   getCompatibleModsForSlot,
   modColor,
+  resolveWeaponVisualState,
   shortAmpName,
   slotLabels,
   slotPlaceholderImg,
@@ -227,6 +230,7 @@ export function useFloatingTooltip() {
       return {
         title: `TIER ${t.roman || t.tier}`,
         sub: t.label || '工坊强化等级',
+        img: assetUrl(resolveWeaponVisualState(w, t.tier, clearsAmps ? [] : amps).hdImage),
         color: '#ffbc13',
         badge: isCurrent ? '当前等级' : '',
         effects: t.zhEffects?.length
@@ -280,6 +284,7 @@ export function useFloatingTooltip() {
       return {
         title: amp.zhName || amp.name,
         sub: amp.name,
+        img: assetUrl(getAmpIconPath(w.id, amp.id)),
         color: '#ffc600',
         badge: st.isActive ? '已激活' : st.activeConflicts.length ? '互斥' : '',
         desc: amp.zhDesc || amp.description,
@@ -308,6 +313,7 @@ export function useFloatingTooltip() {
       return {
         title: '已激活的 5 级增强',
         sub: `${active.length} 项 · 激活增强额外 +${w.rarity === 'Legendary' ? 100 : 70} 耐久`,
+        img: assetUrl(getAscensionIconPath(w.id)),
         color: '#ffc600',
         groups: active.map((a) => ({
           name: `${shortAmpName(a)}（${a.zhMaterials}）`,

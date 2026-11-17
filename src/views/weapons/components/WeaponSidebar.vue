@@ -2,7 +2,7 @@
 import { computed, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useWeaponsStore } from '../../../stores/useWeaponsStore'
-import { assetUrl } from '../../../composables/useWeaponCalculator'
+import { assetUrl, resolveWeaponVisualState } from '../../../composables/useWeaponCalculator'
 
 const route = useRoute()
 const router = useRouter()
@@ -12,6 +12,17 @@ const tone = inject('weaponsTone', (c) => c)
 const isCompare = computed(() => route.path.includes('/weapons/compare'))
 
 const sortUnits = { dps: 'DPS', armorDps: '破甲', damage: '单发', rpm: 'RPM', range: 'M' }
+
+function rowVisual(w) {
+  if (!isCompare.value && w.id === store.selectedWeaponId) {
+    return resolveWeaponVisualState(w, store.selectedTier, store.activeAmpIds)
+  }
+  const activeSlot = store.compareSlots[store.activeCompareSlotIdx]
+  if (isCompare.value && activeSlot?.weaponId === w.id) {
+    return resolveWeaponVisualState(w, activeSlot.tier, activeSlot.ampIds)
+  }
+  return resolveWeaponVisualState(w, 1, [])
+}
 
 function switchMode(mode) {
   router.push(mode === 'compare' ? '/weapons/compare' : '/weapons/workbench')
@@ -79,12 +90,12 @@ function handleClick(weaponId) {
             ? w.id === store.selectedWeaponId
             : store.compareSlots[store.activeCompareSlotIdx]?.weaponId === w.id,
         }"
-        :style="{ '--r': tone(w.rarityColor) }"
+        :style="{ '--r': tone(rowVisual(w).displayRarityColor) }"
         @click="handleClick(w.id)"
       >
         <span class="wi-thumb">
           <img
-            :src="assetUrl(w.image)"
+            :src="assetUrl(rowVisual(w).hdImage)"
             :alt="w.zhName"
             class="wi-icon"
             loading="lazy"

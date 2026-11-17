@@ -22,8 +22,10 @@
         "center": true,
         "resizable": true,
         "fullscreen": false,
-        "decorations": true,
-        "backgroundColor": "#060a10"
+        "decorations": false,
+        "shadow": true,
+        "theme": "Dark",
+        "backgroundColor": "#090c19"
       }
     ],
     "security": {

@@ -5,17 +5,23 @@ import { useQuestsStore } from './useQuestsStore'
 import { useBlueprintsStore } from './useBlueprintsStore'
 import { useMapsStore } from './useMapsStore'
 import {
+  OVERLAY_NAV_ITEMS,
   isTauriRuntime,
   isOverlayWindowContext,
   useOverlayWindowStore,
 } from './useOverlayWindowStore'
 
-export { isTauriRuntime, isOverlayWindowContext }
+export { OVERLAY_NAV_ITEMS, isTauriRuntime, isOverlayWindowContext }
 
 export const useOverlayStore = defineStore('overlay', () => {
   const winStore = useOverlayWindowStore()
   const {
     activeTab,
+    navTabsConfig,
+    hideSingleNavBar,
+    orderedNavTabs,
+    visibleNavTabs,
+    isDefaultNavConfig,
     mapSubMode,
     overlayMapId,
     overlayVisible,
@@ -50,6 +56,13 @@ export const useOverlayStore = defineStore('overlay', () => {
   const bpStatusFilter = ref('ALL') // 'ALL' | 'MISSING' | 'OWNED'
 
   const {
+    isTabVisible,
+    getNavTabLabel,
+    switchToFirstVisibleTab,
+    setNavTabVisible,
+    moveNavTab,
+    setHideSingleNavBar,
+    resetNavTabsConfig,
     isQuestPinned,
     togglePinQuest,
     getStashedCount,
@@ -182,6 +195,11 @@ export const useOverlayStore = defineStore('overlay', () => {
 
   return {
     activeTab,
+    navTabsConfig,
+    hideSingleNavBar,
+    orderedNavTabs,
+    visibleNavTabs,
+    isDefaultNavConfig,
     mapSubMode,
     overlayMapId,
     activeOverlayMap,
@@ -210,6 +228,13 @@ export const useOverlayStore = defineStore('overlay', () => {
     miniBarQuest,
     allBlueprintsPool,
     filteredOverlayBlueprints,
+    isTabVisible,
+    getNavTabLabel,
+    switchToFirstVisibleTab,
+    setNavTabVisible,
+    moveNavTab,
+    setHideSingleNavBar,
+    resetNavTabsConfig,
     isQuestPinned,
     togglePinQuest,
     getStashedCount,

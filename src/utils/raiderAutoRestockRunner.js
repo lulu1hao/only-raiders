@@ -22,6 +22,7 @@ import {
   TRADERS_ORDER,
   WORKSHOP_STATIONS_ORDER,
   readLocalProgressionContext,
+  resolveEffectiveSyncOptions,
   resolveItemRestockChannels,
 } from './raiderAcquisitionCatalog'
 import {
@@ -303,7 +304,8 @@ export async function runAutoRestockSession({
   weaponLoadWaitMs = 3000,
   onProgress,
 }) {
-  const progressionCtx = syncOptions.respectLocalProgression
+  const effectiveOpts = resolveEffectiveSyncOptions(syncOptions)
+  const progressionCtx = effectiveOpts.respectLocalProgression
     ? readLocalProgressionContext()
     : null
 
@@ -312,7 +314,7 @@ export async function runAutoRestockSession({
       const resolved = resolveItemRestockChannels(
         entry.kind,
         entry.targetId,
-        syncOptions,
+        effectiveOpts,
         progressionCtx,
         { amplified: Boolean(entry.amplified) },
       )
@@ -329,9 +331,11 @@ export async function runAutoRestockSession({
     })
     .filter((it) => it.canRestock && it.channels.length > 0)
 
-  const pendingUpgrades = (upgradeTasks || []).filter(
-    (u) => u && u.weaponId && Number(u.targetTier) > Math.max(1, Number(u.fromTier) || 1),
-  )
+  const pendingUpgrades = effectiveOpts.allowWorkshopUpgrade
+    ? (upgradeTasks || []).filter(
+        (u) => u && u.weaponId && Number(u.targetTier) > Math.max(1, Number(u.fromTier) || 1),
+      )
+    : []
 
   if (!items.length && !pendingUpgrades.length) {
     return {
@@ -599,7 +603,7 @@ export async function runAutoRestockSession({
 
   // 根据策略决定首轮优先 Trader 还是 Workshop，第 2 轮自动执行跨渠道兜底剩余缺口
   const passSequence =
-    syncOptions.restockSourcePolicy === 'workshop_first'
+    effectiveOpts.restockSourcePolicy === 'workshop_first'
       ? ['workshop', 'trader']
       : ['trader', 'workshop']
 

@@ -41,6 +41,7 @@ const {
   runPrecheckInGameState,
   weaponLoadWaitSec,
   syncOptions,
+  syncOptionsUi,
   RESTOCK_POLICY_OPTIONS,
 } = useRaiderLoadoutSync(store, {
   currentLabelPrefix: '当前战备',
@@ -75,7 +76,9 @@ async function handleStartAutoSync() {
   if (!src || !liveDiff.value?.totalTargetSlots) {
     rt.value.banner = {
       type: 'warn',
-      text: '所选战备为空，请先切换战备方案或在主窗口选配装备',
+      text: syncOptions.value.quickUseOnly
+        ? '所选战备未配置「快速使用」栏位道具，请先配置快捷栏或关闭「只自动配装快速使用」'
+        : '所选战备为空，请先切换战备方案或在主窗口选配装备',
     }
     return
   }
@@ -133,7 +136,9 @@ async function handleLaunchGuide() {
   if (!src || !liveDiff.value?.totalTargetSlots) {
     rt.value.banner = {
       type: 'warn',
-      text: '请先选择有效的目标战备方案',
+      text: syncOptions.value.quickUseOnly
+        ? '所选战备未配置「快速使用」栏位道具，请先配置快捷栏或关闭「只自动配装快速使用」'
+        : '请先选择有效的目标战备方案',
     }
     return
   }
@@ -143,6 +148,7 @@ async function handleLaunchGuide() {
     title: src.shortTitle || '目标战备',
     targetLoadout: src.loadout,
     inGameLoadout: precheckInGameLoadout.value || null,
+    syncOptions: { ...syncOptions.value },
   })
 }
 
@@ -289,7 +295,16 @@ onBeforeUnmount(() => {
             全屏透视配装指引 (Alt+F)
           </button>
 
-          <div v-if="isDesktop" class="orl-wait-row" title="新版游戏武器缩略图为实时 3D 渲染，加载较慢；选中武器栏、翻页查找武器、拖入武器后都会等待该时长再识别">
+          <div
+            v-if="isDesktop"
+            class="orl-wait-row"
+            :class="{ disabled: syncOptions.quickUseOnly }"
+            :title="
+              syncOptions.quickUseOnly
+                ? '已开启「只自动配装快速使用」，自动跳过武器 3D 渲染等待'
+                : '新版游戏武器缩略图为实时 3D 渲染，加载较慢；选中武器栏、翻页查找武器、拖入武器后都会等待该时长再识别'
+            "
+          >
             <span>武器加载等待</span>
             <input
               v-model.number="weaponLoadWaitSec"
@@ -297,26 +312,50 @@ onBeforeUnmount(() => {
               min="0"
               max="15"
               step="0.5"
-              :disabled="rt.running"
+              :disabled="rt.running || syncOptions.quickUseOnly"
             />
-            <b class="ar-num">{{ Number(weaponLoadWaitSec).toFixed(1) }}s</b>
+            <b class="ar-num">
+              {{ syncOptions.quickUseOnly ? '跳过' : `${Number(weaponLoadWaitSec).toFixed(1)}s` }}
+            </b>
           </div>
 
           <div v-if="isDesktop" class="orl-sync-opts">
             <div class="orl-chk-grid">
-              <label class="orl-chk" title="开启后将校对武器 I~IV 等阶，优先取仓库高阶武器或在工坊武器台自动升阶（默认关闭）">
+              <label
+                class="orl-chk wide orl-chk-scope"
+                title="启用后只识别和配装快速使用栏位里的道具，跳过武器等待及其他所有装备栏位"
+              >
                 <input
-                  v-model="syncOptions.syncWeaponTier"
+                  v-model="syncOptions.quickUseOnly"
                   type="checkbox"
                   :disabled="rt.running"
                 />
+                <span>只自动配装快速使用</span>
+                <em class="orl-opt-pill" :class="{ active: syncOptions.quickUseOnly }">仅快捷栏</em>
+              </label>
+              <label
+                class="orl-chk"
+                :class="{ disabled: syncOptionsUi.weaponOptsDisabled }"
+                :title="syncOptionsUi.weaponTierTitle"
+              >
+                <input
+                  type="checkbox"
+                  :checked="syncOptionsUi.weaponTierChecked"
+                  :disabled="rt.running || syncOptionsUi.weaponOptsDisabled"
+                  @change="syncOptions.syncWeaponTier = $event.target.checked"
+                />
                 <span>匹配武器等级 (I~IV)</span>
               </label>
-              <label class="orl-chk" title="开启后将核对并同步武器枪口/弹匣/枪托/握把等配件（默认关闭）">
+              <label
+                class="orl-chk"
+                :class="{ disabled: syncOptionsUi.weaponOptsDisabled }"
+                :title="syncOptionsUi.weaponModsTitle"
+              >
                 <input
-                  v-model="syncOptions.syncWeaponMods"
                   type="checkbox"
-                  :disabled="rt.running"
+                  :checked="syncOptionsUi.weaponModsChecked"
+                  :disabled="rt.running || syncOptionsUi.weaponOptsDisabled"
+                  @change="syncOptions.syncWeaponMods = $event.target.checked"
                 />
                 <span>同步武器配件</span>
               </label>
@@ -347,24 +386,27 @@ onBeforeUnmount(() => {
               <div class="orl-chk-grid">
                 <label
                   class="orl-chk"
-                  :class="{ disabled: syncOptions.restockSourcePolicy === 'workshop_only' }"
-                  title="弹药默认优先在枪械商人「天纹」处成组购买，节省工作台材料"
+                  :class="{ disabled: syncOptionsUi.ammoPreferDisabled }"
+                  :title="syncOptionsUi.ammoPreferTitle"
                 >
                   <input
-                    v-model="syncOptions.ammoPreferTrader"
                     type="checkbox"
-                    :disabled="rt.running || syncOptions.restockSourcePolicy === 'workshop_only'"
+                    :checked="syncOptionsUi.ammoPreferChecked"
+                    :disabled="rt.running || syncOptionsUi.ammoPreferDisabled"
+                    @change="syncOptions.ammoPreferTrader = $event.target.checked"
                   />
                   <span>弹药优先商人</span>
                 </label>
                 <label
                   class="orl-chk"
-                  title="结合本软件「工坊升级 / 蓝图追踪」档案，预筛尚未解锁的工作台配方与蓝图"
+                  :class="{ disabled: syncOptionsUi.progressionDisabled }"
+                  :title="syncOptionsUi.progressionTitle"
                 >
                   <input
-                    v-model="syncOptions.respectLocalProgression"
                     type="checkbox"
-                    :disabled="rt.running"
+                    :checked="syncOptionsUi.progressionChecked"
+                    :disabled="rt.running || syncOptionsUi.progressionDisabled"
+                    @change="syncOptions.respectLocalProgression = $event.target.checked"
                   />
                   <span>按工坊/蓝图档案预筛</span>
                 </label>
@@ -389,7 +431,7 @@ onBeforeUnmount(() => {
               :disabled="!liveDiff?.totalTargetSlots"
               @click="handleStartAutoSync"
             >
-              {{ syncOptions.autoRestockEnabled ? '自动补货并配装' : '仓库辅助自动配装' }}
+              {{ syncOptionsUi.getPrimaryActionLabel(false) }}
             </button>
             <button
               v-else
@@ -411,7 +453,7 @@ onBeforeUnmount(() => {
       <!-- Compact Slot Checklist -->
       <div v-if="liveDiff?.entries?.length" class="orl-card">
         <div class="orl-card-head">
-          <span>槽位清单 ({{ liveDiff.totalTargetSlots }})</span>
+          <span>{{ syncOptions.quickUseOnly ? '快捷栏清单' : '槽位清单' }} ({{ liveDiff.totalTargetSlots }})</span>
           <span v-if="liveDiff.hasLiveSnapshot" class="ar-num">
             已就绪 <b class="ok">{{ liveDiff.matchedCount }}</b> · 待装
             <b class="warn">{{ liveDiff.pendingCount }}</b>
@@ -713,6 +755,10 @@ onBeforeUnmount(() => {
   color: var(--text-dim, rgba(242, 239, 232, 0.72));
 }
 
+.orl-wait-row.disabled {
+  opacity: 0.48;
+}
+
 .orl-wait-row span {
   flex-shrink: 0;
 }
@@ -903,6 +949,29 @@ onBeforeUnmount(() => {
 
 .orl-chk.wide {
   grid-column: 1 / -1;
+}
+
+.orl-chk-scope {
+  padding-bottom: 5px;
+  border-bottom: 1px dashed var(--line);
+}
+
+.orl-opt-pill {
+  margin-left: auto;
+  padding: 0 5px;
+  border-radius: 3px;
+  font-style: normal;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--tx-3);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.orl-opt-pill.active {
+  color: #5fffff;
+  border-color: rgba(44, 232, 245, 0.4);
+  background: rgba(44, 232, 245, 0.14);
 }
 
 .orl-chk.disabled {
