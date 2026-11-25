@@ -1,0 +1,69 @@
+Only Raiders — Third-Party Software & Content Notices
+=====================================================
+
+This distribution incorporates third-party open-source software, fonts, and
+community-licensed reference data. Their respective licenses and notices are
+acknowledged below.
+
+------------------------------------------------------------------------------
+1. Mozilla Public License 2.0 (MPL-2.0) Components
+------------------------------------------------------------------------------
+The following Rust crates are statically linked in unmodified form under the
+terms of the Mozilla Public License, v. 2.0 (https://mozilla.org/MPL/2.0/):
+
+  - symphonia 0.5.5
+  - symphonia-bundle-flac 0.5.5
+  - symphonia-bundle-mp3 0.5.5
+  - symphonia-codec-pcm 0.5.5
+  - symphonia-core 0.5.5
+  - symphonia-format-riff 0.5.5
+  - symphonia-metadata 0.5.5
+  - symphonia-utils-xiph 0.5.5
+  - cssparser 0.36.0
+  - cssparser-macros 0.6.1
+  - dtoa-short 0.3.5
+  - option-ext 0.2.0
+  - selectors 0.36.1
+
+Source code for all unmodified MPL-2.0 crates above is publicly available at
+https://crates.io/ under each crate's name and version.
+
+------------------------------------------------------------------------------
+2. Permissive Open-Source Dependencies (MIT / Apache-2.0 / BSD / ISC / Zlib)
+------------------------------------------------------------------------------
+Frontend & Desktop Framework:
+  - Vue 3 (MIT) — https://github.com/vuejs/core
+  - Vue Router (MIT) — https://github.com/vuejs/router
+  - Pinia & pinia-plugin-persistedstate (MIT)
+  - @vueuse/core (MIT)
+  - Three.js (MIT) — https://github.com/mrdoob/three.js
+  - Tauri 2 & Tauri Plugins (MIT / Apache-2.0) — https://github.com/tauri-apps/tauri
+
+Rust Backend Crates:
+  - reqwest, hyper, tokio, serde, serde_json, flate2, sha2, rtrb, base64,
+    windows-rs (MIT / Apache-2.0)
+  - cpal (Apache-2.0)
+  - rustls, rustls-webpki, aws-lc-rs (Apache-2.0 / ISC / MIT)
+  - Unicode data crates (Unicode-3.0)
+
+------------------------------------------------------------------------------
+3. GSAP (GreenSock Animation Platform)
+------------------------------------------------------------------------------
+  - gsap (Standard "No Charge" License — https://gsap.com/standard-license)
+  Copyright (c) GreenSock / Webflow, Inc. Used in a free, non-paywalled desktop
+  companion application in accordance with the GSAP Standard License.
+
+------------------------------------------------------------------------------
+4. Fonts (SIL Open Font License 1.1)
+------------------------------------------------------------------------------
+  - Barlow (SIL OFL 1.1)
+  - JetBrains Mono (SIL OFL 1.1)
+  - Prompt (SIL OFL 1.1)
+  - Urbanist (SIL OFL 1.1)
+
+------------------------------------------------------------------------------
+5. Community Reference Content (CC BY-SA)
+------------------------------------------------------------------------------
+  - Selected community reference texts are adapted from ARC Raiders Wiki
+    (https://arcraiders.wiki/), licensed under Creative Commons
+    Attribution-ShareAlike (CC BY-SA).
